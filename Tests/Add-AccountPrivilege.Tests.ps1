@@ -3,8 +3,8 @@ if (-not $ENV:BHProjectPath)
     Set-BuildEnvironment -Path $PSScriptRoot\..
 }
 
-Remove-Module $ENV:BHProjectName -ErrorAction SilentlyContinue
-Import-Module $ENV:BHProjectPath -Force
+Remove-Module $ENV:BHProjectName -ErrorAction SilentlyContinue -Force
+Import-Module (Join-Path $ENV:BHProjectPath $ENV:BHProjectName) -Force
 
 
 InModuleScope 'AutomatedLab.Common' {

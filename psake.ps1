@@ -55,7 +55,7 @@ Task Test -Depends Init {
     }
     "`n"
 }
-<#
+
 Task Build -Depends Test {
     $lines
     
@@ -75,4 +75,4 @@ Task Deploy -Depends Build {
         Recurse = $false # We keep psdeploy artifacts, avoid deploying those : )
     }
     Invoke-PSDeploy @Verbose @Params
-}#>
+}
