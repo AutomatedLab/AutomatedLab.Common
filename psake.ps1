@@ -20,7 +20,6 @@ Properties {
     }
 }
 
-Task Default -Depends Test
 
 Task Init {
     $lines
