@@ -1,6 +1,5 @@
 function Add-StringIncrement
 {
-    # .ExternalHelp AutomatedLab.Help.xml
     param(
         [Parameter(Mandatory = $true)]
         [string]$String

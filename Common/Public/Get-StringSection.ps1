@@ -1,6 +1,5 @@
 function Get-StringSection
 {
-    # .ExternalHelp AutomatedLab.Help.xml
     param(
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
         [string]$String,
@@ -12,7 +11,7 @@ function Get-StringSection
     process
     {
         0..($String.Length - 1) | 
-        Group-Object -Property { [System.Math]::Truncate($_ / $SectionSize) } |
-        ForEach-Object { -join $String[$_.Group] }
+            Group-Object -Property { [System.Math]::Truncate($_ / $SectionSize) } |
+            ForEach-Object { -join $String[$_.Group] }
     }
 }

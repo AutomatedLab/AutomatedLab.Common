@@ -1,6 +1,5 @@
 function Get-FullMesh
 {
-    # .ExternalHelp AutomatedLab.Help.xml
     param(
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]

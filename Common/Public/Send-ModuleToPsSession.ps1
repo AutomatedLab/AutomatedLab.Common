@@ -1,11 +1,10 @@
 function Send-ModuleToPSSession
 {
-    #.ExternalHelp AutomatedLab.Help.xml
     [CmdletBinding(  
-            RemotingCapability		= 'PowerShell',  #V3 and above, values documented here: http://msdn.microsoft.com/en-us/library/system.management.automation.remotingcapability(v=vs.85).aspx
-            SupportsShouldProcess   = $false,
-            ConfirmImpact           = 'None',
-            DefaultParameterSetName = ''
+        RemotingCapability = 'PowerShell', #V3 and above, values documented here: http://msdn.microsoft.com/en-us/library/system.management.automation.remotingcapability(v=vs.85).aspx
+        SupportsShouldProcess = $false,
+        ConfirmImpact = 'None',
+        DefaultParameterSetName = ''
     )]
     
     [OutputType([System.IO.FileInfo])] #OutputType is supported in 3.0 and above
@@ -13,20 +12,20 @@ function Send-ModuleToPSSession
     param
     (
         [Parameter(
-                HelpMessage						= 'Provide the source module info object',
-                Position						= 0,
-                Mandatory						= $true, 
-                ValueFromPipeline				= $true
+            HelpMessage = 'Provide the source module info object',
+            Position = 0,
+            Mandatory = $true, 
+            ValueFromPipeline = $true
         )]
         [ValidateNotNullOrEmpty()]
         [PSModuleInfo]
         $Module,
 
         [Parameter(
-                HelpMessage						= 'Enter the destination path on the remote computer',
-                Position						= 1,
-                Mandatory						= $true, 
-                ValueFromPipelineByPropertyName = $true
+            HelpMessage = 'Enter the destination path on the remote computer',
+            Position = 1,
+            Mandatory = $true, 
+            ValueFromPipelineByPropertyName = $true
         )]
         [System.Management.Automation.Runspaces.PSSession[]] 
         $Session,
@@ -53,7 +52,7 @@ function Send-ModuleToPSSession
         [switch]
         $NoClobber,
 
-        [ValidateRange(1KB,7.4MB)] #might be good to have much higher top end as the underlying max is controlled by New-PSSessionOption
+        [ValidateRange(1KB, 7.4MB)] #might be good to have much higher top end as the underlying max is controlled by New-PSSessionOption
         [uint32]
         $MaxBufferSize = 1MB
     )

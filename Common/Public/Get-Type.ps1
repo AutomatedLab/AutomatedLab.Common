@@ -1,6 +1,5 @@
 function Get-Type
 {
-    # .ExternalHelp AutomatedLab.Help.xml
     param (
         [Parameter(Position = 0, Mandatory = $true)]
         [string] $GenericType,

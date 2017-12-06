@@ -1,6 +1,5 @@
 function Get-Certificate2
 {
-    # .ExternalHelp AutomatedLab.Help.xml
     [cmdletBinding(DefaultParameterSetName = 'Find')]
     param (
         [Parameter(Mandatory = $true, ParameterSetName = 'Find')]
@@ -153,15 +152,15 @@ function Get-Certificate2
         Remove-Item -Path $tempFile
 
         New-Object -TypeName PSObject -Property @{
-            Thumbprint = $cert.Thumbprint
-            DnsNameList = $cert.DnsNameList
-            Location = $cert.Location
-            Store = $cert.Store
-            Computer = $env:COMPUTERNAME
-            Cert = $bytes
+            Thumbprint      = $cert.Thumbprint
+            DnsNameList     = $cert.DnsNameList
+            Location        = $cert.Location
+            Store           = $cert.Store
+            Computer        = $env:COMPUTERNAME
+            Cert            = $bytes
             CertificateType = if ($cert.HasPrivateKey) { 'PFX' } else { 'CER' }
-            ServiceName = $cert.ServiceName
-            Password = $Password
+            ServiceName     = $cert.ServiceName
+            Password        = $Password
         }
     }
 }

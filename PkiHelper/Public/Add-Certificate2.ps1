@@ -1,6 +1,5 @@
 function Add-Certificate2
 {
-    # .ExternalHelp AutomatedLab.Help.xml
     [cmdletBinding(DefaultParameterSetName = 'File')]
     param(
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'File')]
@@ -81,7 +80,7 @@ function Add-Certificate2
         {
             if ($CertificateType -eq 'CER')
             {
-                New-Object System.Security.Cryptography.X509Certificates.X509Certificate2(,$Cert) -ErrorAction Stop
+                New-Object System.Security.Cryptography.X509Certificates.X509Certificate2(, $Cert) -ErrorAction Stop
             }
             else
             {

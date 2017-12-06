@@ -1,6 +1,5 @@
 function Get-NextOid
 {
-    # .ExternalHelp AutomatedLab.Help.xml
     param(
         [Parameter(Mandatory = $true)]
         [string]$Oid

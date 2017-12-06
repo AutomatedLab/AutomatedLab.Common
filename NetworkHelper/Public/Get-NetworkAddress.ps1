@@ -1,6 +1,6 @@
 Function Get-NetworkAddress
 {
-  <#
+    <#
     .Synopsis
     Takes an IP address and subnet mask then calculates the network address for the range.
     .Description
@@ -13,18 +13,18 @@ Function Get-NetworkAddress
     The subnet mask for the network.
   #>
 	
-	[CmdLetBinding()]
-	Param (
-		[Parameter(Mandatory = $True, Position = 0, ValueFromPipeline = $True)]
-		[Net.IPAddress]$IPAddress,
+    [CmdLetBinding()]
+    Param (
+        [Parameter(Mandatory = $True, Position = 0, ValueFromPipeline = $True)]
+        [Net.IPAddress]$IPAddress,
 		
-		[Parameter(Mandatory = $True, Position = 1)]
-		[Alias('Mask')]
-		[Net.IPAddress]$SubnetMask
-	)
+        [Parameter(Mandatory = $True, Position = 1)]
+        [Alias('Mask')]
+        [Net.IPAddress]$SubnetMask
+    )
 	
-	Process
-	{
-		Return ConvertTo-DottedDecimalIP ((ConvertTo-DecimalIP $IPAddress) -BAnd (ConvertTo-DecimalIP $SubnetMask))
-	}
+    Process
+    {
+        Return ConvertTo-DottedDecimalIP ((ConvertTo-DecimalIP $IPAddress) -BAnd (ConvertTo-DecimalIP $SubnetMask))
+    }
 }

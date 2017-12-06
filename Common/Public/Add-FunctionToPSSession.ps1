@@ -1,27 +1,26 @@
 function Add-FunctionToPSSession
 {
-    # .ExternalHelp AutomatedLab.Help.xml
     [CmdletBinding(
-            SupportsShouldProcess   = $false,
-            ConfirmImpact           = 'None'
+        SupportsShouldProcess = $false,
+        ConfirmImpact = 'None'
     )]
 
     param
     ( 
         [Parameter(
-                HelpMessage	= 'Provide the session(s) to load the functions into', 
-                Mandatory	= $true,
-                Position	= 0
+            HelpMessage	= 'Provide the session(s) to load the functions into', 
+            Mandatory	= $true,
+            Position	= 0
         )]
         [ValidateNotNullOrEmpty()]
         [System.Management.Automation.Runspaces.PSSession[]] 
         $Session,
 
         [Parameter( 
-                HelpMessage			= 'Provide the function info to load into the session(s)', 
-                Mandatory			= $true, 
-                Position			= 1, 
-                ValueFromPipeline	= $true 
+            HelpMessage = 'Provide the function info to load into the session(s)', 
+            Mandatory = $true, 
+            Position = 1, 
+            ValueFromPipeline	= $true 
         )]
         [ValidateNotNull()]
         [System.Management.Automation.FunctionInfo]
@@ -35,14 +34,14 @@ function Add-FunctionToPSSession
 
         $scriptBlock = 
         {
-            param([string]$Path,[string]$Definition)
+            param([string]$Path, [string]$Definition)
             $null = Set-Item -Path Function:\$Path -Value $Definition
         }
     }
 
     process
     {
-        Invoke-Command -Session $Session -ScriptBlock $scriptBlock -ArgumentList $FunctionInfo.Name,$FunctionInfo.Definition
+        Invoke-Command -Session $Session -ScriptBlock $scriptBlock -ArgumentList $FunctionInfo.Name, $FunctionInfo.Definition
     }
 
     end

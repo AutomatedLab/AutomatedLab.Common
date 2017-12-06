@@ -1,6 +1,5 @@
 function Add-CATemplateStandardPermission
 {
-    # .ExternalHelp AutomatedLab.Help.xml
     [cmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
@@ -10,7 +9,7 @@ function Add-CATemplateStandardPermission
         [string[]]$SamAccountName
     )
     
-    $configNc= ([adsi]'LDAP://RootDSE').configurationNamingContext
+    $configNc = ([adsi]'LDAP://RootDSE').configurationNamingContext
     $templateContainer = [adsi]"LDAP://CN=Certificate Templates,CN=Public Key Services,CN=Services,$configNc"
     Write-Verbose "Template container is '$templateContainer'"
 

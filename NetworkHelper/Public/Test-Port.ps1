@@ -1,6 +1,5 @@
 function Test-Port
 {  
-    # .ExternalHelp AutomatedLab.Help.xml
     [cmdletbinding()]
 
     Param(  
@@ -52,7 +51,7 @@ function Test-Port
                     $connect = $tcpClient.BeginConnect($c, $Port, $null, $null)
                     $wait = $connect.AsyncWaitHandle.WaitOne($TcpTimeout, $false)
                     
-                    if(-not $wait)
+                    if (-not $wait)
                     {
                         $tcpClient.Close()
                         $sw.Stop()
@@ -91,7 +90,7 @@ function Test-Port
                     Write-Verbose 'Sending message to remote host'
                     [void]$udpClient.Send($byte, $byte.Length)
                     Write-Verbose 'Creating remote endpoint'
-                    $remoteEndpoint = New-Object System.Net.IPEndPoint([System.Net.IPAddress]::Any,0)
+                    $remoteEndpoint = New-Object System.Net.IPEndPoint([System.Net.IPAddress]::Any, 0)
 
                     try
                     {

@@ -1,12 +1,11 @@
 function Sync-Parameter
 {
-    # .ExternalHelp AutomatedLab.Help.xml
     [Cmdletbinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [ValidateScript({
-            $_ -is [System.Management.Automation.FunctionInfo] -or $_ -is [System.Management.Automation.CmdletInfo]
-        })]
+        [ValidateScript( {
+                $_ -is [System.Management.Automation.FunctionInfo] -or $_ -is [System.Management.Automation.CmdletInfo]
+            })]
         [object]$Command,
         
         [hashtable]$Parameters
@@ -26,7 +25,7 @@ function Sync-Parameter
     $parameterKeys = $Parameters.Keys.GetEnumerator() | ForEach-Object { $_ }
     
     $keysToRemove = Compare-Object -ReferenceObject $commandParameterKeys -DifferenceObject $parameterKeys |
-    Select-Object -ExpandProperty InputObject
+        Select-Object -ExpandProperty InputObject
 
     $keysToRemove = $keysToRemove + $commonParameters | Select-Object -Unique #remove the common parameters
     

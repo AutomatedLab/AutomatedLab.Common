@@ -1,8 +1,8 @@
 function Get-PublicIpAddress
 {
-	[CmdletBinding()]
-	param
-	()
+    [CmdletBinding()]
+    param
+    ()
 
     $ipProviderUris = @(
         'http://myip.dnsomatic.com/'
@@ -14,7 +14,7 @@ function Get-PublicIpAddress
     {
         $Matches = $null
 
-        if((Invoke-WebRequest -URI $uri).Content -match '\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}')
+        if ((Invoke-WebRequest -URI $uri).Content -match '\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}')
         {
             return $Matches[0]
         }

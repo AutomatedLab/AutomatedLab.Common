@@ -1,6 +1,6 @@
 Function ConvertTo-BinaryIP
 {
-  <#
+    <#
     .Synopsis
     Converts a Decimal IP address into a binary format.
     .Description
@@ -9,18 +9,18 @@ Function ConvertTo-BinaryIP
     An IP Address to convert.
   #>
 	
-	[CmdLetBinding()]
-	Param (
-		[Parameter(Mandatory = $True, Position = 0, ValueFromPipeline = $True)]
-		[Net.IPAddress]$IPAddress
-	)
+    [CmdLetBinding()]
+    Param (
+        [Parameter(Mandatory = $True, Position = 0, ValueFromPipeline = $True)]
+        [Net.IPAddress]$IPAddress
+    )
 	
-	Process
-	{
-		Return [String]::Join('.', $($IPAddress.GetAddressBytes() |
-		ForEach-Object -Process {
-			[Convert]::ToString($_, 2).PadLeft(8, '0')
-		}
-		))
-	}
+    Process
+    {
+        Return [String]::Join('.', $($IPAddress.GetAddressBytes() |
+                    ForEach-Object -Process {
+                    [Convert]::ToString($_, 2).PadLeft(8, '0')
+                }
+            ))
+    }
 }

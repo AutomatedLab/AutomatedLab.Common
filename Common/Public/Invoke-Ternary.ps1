@@ -1,6 +1,5 @@
 function Invoke-Ternary 
 {
-    # .ExternalHelp AutomatedLab.Help.xml
     param
     (
         [scriptblock]

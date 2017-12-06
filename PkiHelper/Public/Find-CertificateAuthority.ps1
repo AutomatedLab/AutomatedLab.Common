@@ -1,6 +1,5 @@
 function Find-CertificateAuthority
 {
-    # .ExternalHelp AutomatedLab.Help.xml
     [cmdletBinding()]
     param(
         [string]$DomainName

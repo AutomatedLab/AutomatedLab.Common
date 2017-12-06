@@ -1,6 +1,5 @@
 function Publish-CATemplate
 {
-    # .ExternalHelp AutomatedLab.Help.xml
     [cmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]

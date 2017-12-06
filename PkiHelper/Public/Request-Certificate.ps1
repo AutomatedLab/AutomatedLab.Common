@@ -1,6 +1,5 @@
 function Request-Certificate
 {
-    # .ExternalHelp AutomatedLab.Help.xml
     [cmdletBinding()]
     param (
         [Parameter(Mandatory = $true, HelpMessage = 'Please enter the subject beginning with CN=')]
