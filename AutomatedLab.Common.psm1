@@ -1,7 +1,8 @@
 # Get public and private function definition files.
-$types = @( Get-ChildItem -Path $PSScriptRoot\Common\Types\*.ps1 -ErrorAction SilentlyContinue)
-$public = @( Get-ChildItem -Path $PSScriptRoot\Common\Public\*.ps1 -ErrorAction SilentlyContinue )
-$private = @( Get-ChildItem -Path $PSScriptRoot\Common\Private\*.ps1 -ErrorAction SilentlyContinue )
+$moduleName = ([System.IO.Path]::GetFileNameWithoutExtension($PSCommandPath) -split '\.')[-1]
+$types = @( Get-ChildItem -Path $PSScriptRoot\$moduleName\Types\*.ps1 -ErrorAction SilentlyContinue)
+$public = @( Get-ChildItem -Path $PSScriptRoot\$moduleName\Public\*.ps1 -ErrorAction SilentlyContinue )
+$private = @( Get-ChildItem -Path $PSScriptRoot\$moduleName\Private\*.ps1 -ErrorAction SilentlyContinue )
 
 # Types first
 foreach ( $type in $types)
