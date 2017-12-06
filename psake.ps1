@@ -14,7 +14,7 @@ Properties {
     $lines = '----------------------------------------------------------------------'
 }
 
-Task Default -Depends Build
+Task Default -Depends Deploy
 
 Task Init {
     $lines
@@ -62,6 +62,7 @@ Task Build -Depends Test {
 
 Task Deploy -Depends Build {
     $lines
+    "Starting deployment with files inside $ProjectRoot"
 
     $Params = @{
         Path    = $ProjectRoot
