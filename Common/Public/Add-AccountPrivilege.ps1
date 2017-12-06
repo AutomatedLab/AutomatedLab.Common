@@ -47,16 +47,17 @@ function Add-AccountPrivilege
         )]
         [string[]]
         $Privilege
-    )
+    )    
     
+    $lsaWrapper = New-Object -TypeName MyLsaWrapper.LsaWrapper -ErrorAction Stop
+
     foreach ($User in $UserName)
     {
         foreach ($Priv in $Privilege)
         {
-            [MyLsaWrapper.LsaWrapperCaller]::AddPrivileges($User, $Priv)
+            $lsaWrapper.AddPrivileges($User, $Priv)
             Start-Sleep -Milliseconds 250
-            [MyLsaWrapper.LsaWrapperCaller]::AddPrivileges($User, $Priv)
+            $lsaWrapper.AddPrivileges($User, $Priv)
         }
-    }
-    
+    }    
 }
