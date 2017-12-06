@@ -3,8 +3,9 @@ environment:
   NuGetApiKey:
     secure: C6W1vuS0plyq7Z5uaWsTTCIZw7tSLYOyNw3rTujn9C0+/u4BCJ3+aEflh0V6kXN9
 
-# Allow WMF5 (i.e. PowerShellGallery functionality)
-os: WMF 5
+skip_tags: true
+
+image: Visual Studio 2017
 
 # Skip on updates to the readme.
 # We can force this by adding [skip ci] or [ci skip] anywhere in commit message
