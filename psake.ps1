@@ -12,12 +12,6 @@ Properties {
     $PSVersion = $PSVersionTable.PSVersion.Major
     $TestFile = "TestResults_PS$PSVersion`_$TimeStamp.xml"
     $lines = '----------------------------------------------------------------------'
-
-    $Verbose = @{}
-    if ($ENV:BHCommitMessage -match "!verbose")
-    {
-        $Verbose = @{Verbose = $True}
-    }
 }
 
 Task Default -Depends Build
@@ -60,10 +54,10 @@ Task Build -Depends Test {
     $lines
     
     # Load the module, read the exported functions, update the psd1 FunctionsToExport
-    Set-ModuleFunctions
+    Set-ModuleFunctions -Verbose
 
     # Bump the module version
-    Update-Metadata -Path $env:BHPSModuleManifest
+    Update-Metadata -Path $env:BHPSModuleManifest -Verbose
 }
 
 Task Deploy -Depends Build {
@@ -73,6 +67,7 @@ Task Deploy -Depends Build {
         Path    = $ProjectRoot
         Force   = $true
         Recurse = $false # We keep psdeploy artifacts, avoid deploying those : )
+        Verbose = $true
     }
-    Invoke-PSDeploy @Verbose @Params
+    Invoke-PSDeploy @Params
 }
