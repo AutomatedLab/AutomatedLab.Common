@@ -11,7 +11,7 @@ Our current build status of master and develop:
 
 [master-image]: https://ci.appveyor.com/api/projects/status/r5a0oi64jrv367q3/branch/master?svg=true
 [develop-image]: https://ci.appveyor.com/api/projects/status/r5a0oi64jrv367q3/branch/develop?svg=true
-[master-site]: https://ci.appveyor.com/project/nyanHP/AutomatedLab.Common
+[master-site]: https://ci.appveyor.com/project/nyanHP/AutomatedLab-Common
 
 
 ## Common
