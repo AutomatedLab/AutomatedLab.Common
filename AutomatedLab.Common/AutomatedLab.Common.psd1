@@ -1,6 +1,6 @@
-﻿@{
+@{
     RootModule             = 'AutomatedLab.Common.psm1'
-    ModuleVersion          = '1.0.0.0'
+    ModuleVersion          = '1.0.2'
     GUID                   = '554685d3-5c61-4080-afd6-1dd3d4d7a261'
 
     Author                 = 'Raimund Andree, Per Pedersen, Jan-Hendrik Peters'
@@ -16,12 +16,6 @@
     DotNetFrameworkVersion = '4.0'
 
     CLRVersion             = '4.0'
-
-    # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
-    NestedModules          = @(
-        'AutomatedLab.Common.DscHelper.psm1', 
-        'AutomatedLab.Common.NetworkHelper.psm1', 
-        'AutomatedLab.Common.PkiHelper.psm1')
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport      = '*'
