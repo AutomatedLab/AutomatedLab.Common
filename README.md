@@ -1,6 +1,19 @@
 # AutomatedLab.Common
 This repository collects helper functions from different areas like DSC, Networking, PKI, ... for use in your infrastructure. Our module AutomatedLab heavily relies on these cmdlets as well.
 
+## Status
+Our current build status of master and develop:
+
+| AppVeyor (master)        | AppVeyor (develop)       |
+|--------------------------|--------------------------|
+| [![master-image][]][master-site] | [![develop-image][]][master-site] |
+
+
+[master-image]: https://ci.appveyor.com/api/projects/status/r5a0oi64jrv367q3/branch/master?svg=true
+[develop-image]: https://ci.appveyor.com/api/projects/status/r5a0oi64jrv367q3/branch/develop?svg=true
+[master-site]: https://ci.appveyor.com/project/nyanHP/AutomatedLab-Common
+
+
 ## Common
 Our common cmdlets include adding modules, functions and variables to PowerShell sessions, enabling the ?? operator, synchronizing cmdlet parameters and many more.  
 - Add-AccountPrivilege: Adds extended privileges like e.g. LogonAsService for one or more accounts

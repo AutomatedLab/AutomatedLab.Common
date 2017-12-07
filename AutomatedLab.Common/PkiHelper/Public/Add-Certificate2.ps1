@@ -21,7 +21,9 @@ function Add-Certificate2
         [ValidateSet('CER', 'PFX')]
         [string]$CertificateType = 'CER',
         
-        [string]$Password = 'AL'
+        [Parameter(Mandatory = $true)]
+        [securestring]
+        $Password
     )
     
     process

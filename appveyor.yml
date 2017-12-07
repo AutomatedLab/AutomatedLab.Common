@@ -1,14 +1,14 @@
-#Publish to PowerShell Gallery with this key
+#Publish to PowerShell Gallery with this key (AutomatedLab account)
 environment:
   NuGetApiKey:
-    secure: OX4AxdrgR7cWD+b3x/ZcjN87ij7UM1+HYsd/L3CJKxAkJ2ZEX3lIgvWDuoTMcKNM
+    secure: C6W1vuS0plyq7Z5uaWsTTCIZw7tSLYOyNw3rTujn9C0+/u4BCJ3+aEflh0V6kXN9
 
-# Allow WMF5 (i.e. PowerShellGallery functionality)
-os: WMF 5
+skip_tags: true
+
+image: Visual Studio 2017
 
 # Skip on updates to the readme.
-# We can force this by adding [skip ci] or [ci skip] anywhere in commit message 
-
+# We can force this by adding [skip ci] or [ci skip] anywhere in commit message
 skip_commits:
   message: /updated readme.*|update readme.*s/
 

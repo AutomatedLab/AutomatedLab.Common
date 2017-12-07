@@ -20,10 +20,10 @@ function Get-Certificate2
         [Parameter(ParameterSetName = 'All')]
         [switch]$IncludeServices,
         
-        [string]$Password = 'AL'
+        [Parameter(Mandatory = $true)]
+        [securestring]
+        $Password
     )
-    
-    $passwordInternal = $Password | ConvertTo-SecureString -Force -AsPlainText
     
     if ($Location -eq 'CERT_SYSTEM_STORE_SERVICES' -and (-not $ServiceName))
     {
@@ -94,7 +94,7 @@ function Get-Certificate2
                 {
                     $item | Add-Member -MemberType NoteProperty -Name Location -Value $currentLocation
                     $item | Add-Member -MemberType NoteProperty -Name Store -Value $storePath
-                    $item | Add-Member -MemberType NoteProperty -Name Password -Value $passwordInternal
+                    $item | Add-Member -MemberType NoteProperty -Name Password -Value $Password
                     
                     if ($Location -eq 'CERT_SYSTEM_STORE_SERVICES')
                     {
@@ -130,7 +130,7 @@ function Get-Certificate2
             if ($cert.HasPrivateKey)
             {
                 Write-Verbose 'Calling Export-PfxCertificate'
-                Export-PfxCertificate -Cert $cert -FilePath $tempFile -Password $passwordInternal -ErrorAction Stop | Out-Null
+                Export-PfxCertificate -Cert $cert -FilePath $tempFile -Password $Password -ErrorAction Stop | Out-Null
             }
             else
             {
