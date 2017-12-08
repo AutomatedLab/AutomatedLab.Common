@@ -30,15 +30,15 @@ Task Test -Depends Init {
 
     # Run Script Analyzer
     $start = Get-Date
-    Add-AppveyorTest -Name "PsScriptAnalyzer" -Outcome Running
+    If ($ENV:BHBuildSystem -eq 'AppVeyor') {Add-AppveyorTest -Name "PsScriptAnalyzer" -Outcome Running}
     $scriptAnalyerResults = Invoke-ScriptAnalyzer -Path (Join-Path $ENV:BHProjectPath $ENV:BHProjectName) -Recurse -Severity Error -ErrorAction SilentlyContinue
     $end = Get-Date
-    if ($scriptAnalyerResults)
+    if ($scriptAnalyerResults -and $ENV:BHBuildSystem -eq 'AppVeyor')
     {
         Add-AppveyorMessage -Message "PSScriptAnalyzer output contained one or more result(s) with 'Error' severity." -Category Error
         Update-AppveyorTest -Name "PsScriptAnalyzer" -Outcome Failed -ErrorMessage ($scriptAnalyerResults | Out-String) -Duration ([long]($end - $start).TotalMilliSeconds)
     }
-    else
+    elseif ($ENV:BHBuildSystem -eq 'AppVeyor')
     {
         Update-AppveyorTest -Name "PsScriptAnalyzer" -Outcome Passed -Duration ([long]($end - $start).TotalMilliSeconds)
     }

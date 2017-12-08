@@ -26,7 +26,7 @@ Function ConvertTo-DottedDecimalIP
                         }
                     ))
             }
-            '\d'
+            {$_ -as [Uint32]}
             {
                 $IPAddress = [UInt32]$IPAddress
                 $dottedIP = $(For ($i = 3; $i -gt -1; $i--)
@@ -41,7 +41,7 @@ Function ConvertTo-DottedDecimalIP
             }
             default
             {
-                Write-Error 'Cannot convert this format'
+                throw 'Cannot convert this format'
             }
         }
     }

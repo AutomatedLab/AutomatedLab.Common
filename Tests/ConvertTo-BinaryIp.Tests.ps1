@@ -10,6 +10,7 @@ InModuleScope -ModuleName $ENV:BHProjectName {
     Describe "ConvertTo-BinaryIp" {
         $goodIp = "192.168.2.1"
         $badIp = "555.123.123.123"
+        $noIpAtAll = ""
 
         Context "Valid IP" {
             
@@ -23,8 +24,12 @@ InModuleScope -ModuleName $ENV:BHProjectName {
         }
 
         Context "Invalid IP" {
-            It "Should throw" {
+            It "Should throw on bad IP" {
                 {ConvertTo-BinaryIP -IPAddress $badIp} | Should Throw
+            }
+
+            It "Should throw on empty string" {
+                {ConvertTo-BinaryIP -IPAddress $noIpAtAll} | Should Throw
             }
         }
     }
