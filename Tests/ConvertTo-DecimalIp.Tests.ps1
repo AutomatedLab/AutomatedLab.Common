@@ -15,7 +15,7 @@ InModuleScope -ModuleName $ENV:BHProjectName {
         Context "Valid IP" {
             
             It "Should return a binary dotted IP" {
-                ConvertTo-DecimalIP -IPAddress $goodIp | Should BeExactly "11000000.10101000.00000010.00000001"
+                ConvertTo-DecimalIP -IPAddress $goodIp | Should BeExactly 3232236033
             }
 
             It "Should not throw" {
@@ -32,6 +32,5 @@ InModuleScope -ModuleName $ENV:BHProjectName {
                 {ConvertTo-DecimalIP -IPAddress $noIpAtAll} | Should Throw
             }
         }
-    }
     }
 }
