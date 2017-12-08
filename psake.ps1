@@ -28,7 +28,21 @@ Task Test -Depends Init {
     $lines
     "`n`tSTATUS: Testing with PowerShell $PSVersion"
 
+    # Run Script Analyzer
+    Add-AppveyorTest -Name "PsScriptAnalyzer" -Outcome Running
+    $scriptAnalyerResults = Invoke-ScriptAnalyzer -Path (Join-Path $ENV:BHProjectPath $ENV:BHProjectName) -Recurse -Severity Error -ErrorAction SilentlyContinue
+    if ($scriptAnalyerResults)
+    {
+        Add-AppveyorMessage -Message "PSScriptAnalyzer output contained one or more result(s) with 'Error' severity." -Category Error
+        Update-AppveyorTest -Name "PsScriptAnalyzer" -Outcome Failed -ErrorMessage ($scriptAnalyerResults | Out-String)
+    }
+    else
+    {
+        Update-AppveyorTest -Name "PsScriptAnalyzer" -Outcome Passed
+    }
+
     # Gather test results. Store them in a variable and file
+    Add-AppveyorTest -Name "Pester" -Outcome Running -Framework NUnit
     $TestResults = Invoke-Pester -Path $ProjectRoot\Tests -PassThru -OutputFormat NUnitXml -OutputFile "$ProjectRoot\$TestFile"
 
     # In Appveyor?  Upload our tests! #Abstract this into a function?
@@ -45,7 +59,12 @@ Task Test -Depends Init {
     # Need to tell psake or it will proceed to the deployment. Danger!
     if ($TestResults.FailedCount -gt 0)
     {
+        Update-AppveyorTest -Name "Pester" -Outcome Failed
         Write-Error "Failed '$($TestResults.FailedCount)' tests, build failed"
+    }
+    else
+    {
+        Update-AppveyorTest -Name "PsScriptAnalyzer" -Outcome Passed
     }
     "`n"
 }

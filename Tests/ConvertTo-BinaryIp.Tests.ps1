@@ -24,7 +24,7 @@ InModuleScope -ModuleName $ENV:BHProjectName {
 
         Context "Invalid IP" {
             It "Should throw" {
-                {ConvertTo-BinaryIP -IPAddress $bad} | Should Throw
+                {ConvertTo-BinaryIP -IPAddress $badIp} | Should Throw
             }
         }
     }
