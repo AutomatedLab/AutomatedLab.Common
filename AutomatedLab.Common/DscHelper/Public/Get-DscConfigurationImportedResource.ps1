@@ -14,6 +14,11 @@ function Get-DscConfigurationImportedResource
     {
         $ast = (Get-Command -Name $Name).ScriptBlock.Ast
         $FilePath = $ast.FindAll( { $args[0] -is [System.Management.Automation.Language.ScriptBlockAst] }, $true)[0].Extent.File
+        if (-not $FilePath)
+        {
+            Write-Error "The configuration '$Name' could not be found in a file. Please put the configuration into a file and try again."
+            return
+        }
     }
     
     $ast = [scriptblock]::Create((Get-Content -Path $FilePath -Raw)).Ast
