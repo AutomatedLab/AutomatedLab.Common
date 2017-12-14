@@ -1,7 +1,7 @@
 @{
     RootModule             = 'AutomatedLab.Common.psm1'
 
-    ModuleVersion          = '1.0.5'
+    ModuleVersion          = '1.0.6'
     GUID                   = '554685d3-5c61-4080-afd6-1dd3d4d7a261'
 
     Author                 = 'Raimund Andree, Per Pedersen, Jan-Hendrik Peters'
@@ -19,7 +19,7 @@
     CLRVersion             = '4.0'
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    FunctionsToExport      = @('Add-AccountPrivilege','Add-CATemplateStandardPermission','Add-Certificate2','Add-FunctionToPSSession','Add-StringIncrement','Add-VariableToPSSession','ConvertTo-BinaryIP','ConvertTo-DecimalIP','ConvertTo-DottedDecimalIP','ConvertTo-Mask','ConvertTo-MaskLength','Enable-AutoEnrollment','Find-CertificateAuthority','Get-BroadcastAddress','Get-CATemplate','Get-Certificate2','Get-ConsoleText','Get-DscConfigurationImportedResource','Get-FullMesh','Get-NetworkAddress','Get-NetworkRange','Get-NetworkSummary','Get-NextOid','Get-PublicIpAddress','Get-StringSection','Get-Type','Invoke-Ternary','New-CATemplate','Publish-CATemplate','Request-Certificate','Send-ModuleToPSSession','Sync-Parameter','Test-CATemplate','Test-HashtableKeys','Test-IsAdministrator','Test-Port')
+    FunctionsToExport      = @('Add-AccountPrivilege', 'Add-CATemplateStandardPermission', 'Add-Certificate2', 'Add-FunctionToPSSession', 'Add-StringIncrement', 'Add-VariableToPSSession', 'ConvertTo-BinaryIP', 'ConvertTo-DecimalIP', 'ConvertTo-DottedDecimalIP', 'ConvertTo-Mask', 'ConvertTo-MaskLength', 'Enable-AutoEnrollment', 'Find-CertificateAuthority', 'Get-BroadcastAddress', 'Get-CATemplate', 'Get-Certificate2', 'Get-ConsoleText', 'Get-DscConfigurationImportedResource', 'Get-FullMesh', 'Get-NetworkAddress', 'Get-NetworkRange', 'Get-NetworkSummary', 'Get-NextOid', 'Get-PublicIpAddress', 'Get-StringSection', 'Get-Type', 'Invoke-Ternary', 'New-CATemplate', 'Publish-CATemplate', 'Request-Certificate', 'Send-ModuleToPSSession', 'Sync-Parameter', 'Test-CATemplate', 'Test-HashtableKeys', 'Test-IsAdministrator', 'Test-Port')
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     CmdletsToExport        = '*'
@@ -36,16 +36,23 @@
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            # Tags = @()
+            Tags       = @(
+                'Lab Automation'
+                'AutomatedLab'
+                'Networking'
+                'PKI'
+                'Desired State Configuration'
+                'DSC'
+            )
 
             # A URL to the license for this module.
-            # LicenseUri = ''
+            LicenseUri = 'https://github.com/AutomatedLab/AutomatedLab.Common/blob/master/LICENSE'
 
             # A URL to the main website for this project.
-            # ProjectUri = ''
+            ProjectUri = 'https://github.com/AutomatedLab/AutomatedLab.Common/'
 
             # A URL to an icon representing this module.
-            # IconUri = ''
+            IconUri    = 'https://raw.githubusercontent.com/AutomatedLab/AutomatedLab/develop/Automated-Lab_icon256.png'
 
             # ReleaseNotes of this module
             # ReleaseNotes = ''

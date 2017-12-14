@@ -1,9 +1,9 @@
 #Publish to PowerShell Gallery with this key (AutomatedLab account)
 environment:
   NuGetApiKey:
-    secure: OX4AxdrgR7cWD+b3x/ZcjN87ij7UM1+HYsd/L3CJKxAkJ2ZEX3lIgvWDuoTMcKNM
-  NuGetApiKey2:
-    secure: KNF+RWQMcVIHAZf+0sU6eq7I8pKbzgs8G/yQVcjgLtyQUQK1SostVCZTsIZA7C6b
+    secure: tAdUQmRiZ270LOPN8SwbjISLfu6ldDTw6LWvdtsk+pQR7r5bJnGrG8Ntyt87edJ/
+
+version: 1.1.{build}
 
 skip_tags: true
 skip_branch_with_pr: true
