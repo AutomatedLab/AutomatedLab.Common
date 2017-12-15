@@ -26,6 +26,7 @@ Our common cmdlets include adding modules, functions and variables to PowerShell
 - Get-FullMesh: Returns a mesh for a given list of items, e.g. to aid with DNS forwarder creation
 - Get-StringSection: Dissects a string into sections of a configurable size
 - Get-Type: Returns a generic type
+- Install-SoftwarePackage: Installs an EXE, MSI or MSU with support for moving the installation to a scheduled task to work with installers communicating to Windows Update
 - Invoke-Ternary: the ?? operator implementation
 - Send-ModuleToPSSession: Sends one or more modules to remote sessions
 - Sync-Parameter: Sync parameters for cmdlets, e.g. to sync PSBoundParameters with a cmdlet that might not take all PSBoundParameters thus throwing an error
