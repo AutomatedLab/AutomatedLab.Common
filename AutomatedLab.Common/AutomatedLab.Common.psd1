@@ -19,7 +19,45 @@
     CLRVersion             = '4.0'
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    FunctionsToExport      = @('Add-AccountPrivilege', 'Add-CATemplateStandardPermission', 'Add-Certificate2', 'Add-FunctionToPSSession', 'Add-StringIncrement', 'Add-VariableToPSSession', 'ConvertTo-BinaryIP', 'ConvertTo-DecimalIP', 'ConvertTo-DottedDecimalIP', 'ConvertTo-Mask', 'ConvertTo-MaskLength', 'Enable-AutoEnrollment', 'Find-CertificateAuthority', 'Get-BroadcastAddress', 'Get-CATemplate', 'Get-Certificate2', 'Get-ConsoleText', 'Get-DscConfigurationImportedResource', 'Get-FullMesh', 'Get-NetworkAddress', 'Get-NetworkRange', 'Get-NetworkSummary', 'Get-NextOid', 'Get-PublicIpAddress', 'Get-StringSection', 'Get-Type', 'Invoke-Ternary', 'New-CATemplate', 'Publish-CATemplate', 'Request-Certificate', 'Send-ModuleToPSSession', 'Sync-Parameter', 'Test-CATemplate', 'Test-HashtableKeys', 'Test-IsAdministrator', 'Test-Port')
+    FunctionsToExport      = @(
+        'Add-AccountPrivilege',
+        'Add-CATemplateStandardPermission',
+        'Add-Certificate2',
+        'Add-FunctionToPSSession',
+        'Add-StringIncrement',
+        'Add-VariableToPSSession',
+        'ConvertTo-BinaryIP',
+        'ConvertTo-DecimalIP',
+        'ConvertTo-DottedDecimalIP',
+        'ConvertTo-Mask',
+        'ConvertTo-MaskLength',
+        'Enable-AutoEnrollment',
+        'Find-CertificateAuthority',
+        'Get-BroadcastAddress',
+        'Get-CATemplate',
+        'Get-Certificate2',
+        'Get-ConsoleText',
+        'Get-DscConfigurationImportedResource',
+        'Get-FullMesh',
+        'Get-NetworkAddress',
+        'Get-NetworkRange',
+        'Get-NetworkSummary',
+        'Get-NextOid',
+        'Get-PublicIpAddress',
+        'Get-StringSection',
+        'Get-Type',
+        'Install-SoftwarePackage',
+        'Invoke-Ternary',
+        'New-CATemplate',
+        'Publish-CATemplate',
+        'Request-Certificate',
+        'Send-ModuleToPSSession',
+        'Sync-Parameter',
+        'Test-CATemplate',
+        'Test-HashtableKeys',
+        'Test-IsAdministrator',
+        'Test-Port'
+    )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     CmdletsToExport        = '*'
@@ -61,4 +99,3 @@
 
     } # End of PrivateData hashtable
 }
-
