@@ -121,6 +121,7 @@
             
         if ($PSVersionTable.PSVersion -lt '3.0')
         {
+            Write-Verbose "Running SCHTASKS.EXE as PowerShell Version is <2.0"
             $processName = [System.IO.Path]::GetFileNameWithoutExtension($Path)
             $d = "{0:HH:mm}" -f (Get-Date).AddMinutes(1)
 
@@ -134,9 +135,11 @@
             {
                 SCHTASKS /Create /SC ONCE /ST $d /TN $jobName /TR "C:\$jobName.cmd" /RU "SYSTEM" | Out-Null
             }
+
+            Start-Sleep -Seconds 5 #allow some time to let the scheduled task run
             while (-not ($p))
             {
-                Start-Sleep -Milliseconds 200
+                Start-Sleep -Milliseconds 500
                 $p = Get-Process -Name $processName -ErrorAction SilentlyContinue
             }
 
@@ -144,12 +147,14 @@
             Write-Verbose -Message 'Process exited. Reading output'
 
             $params = @{ Process = $p }
-            $params.Add('Output', "Output cannot be retrieved using this AsScheduledJob on PowerShell 2.0")
-            $params.Add('Error', "Errors cannot be retrieved using this AsScheduledJob on PowerShell 2.0")
+            $params.Add('Output', "Output cannot be retrieved using AsScheduledJob on PowerShell 2.0")
+            $params.Add('Error', "Errors cannot be retrieved using AsScheduledJob on PowerShell 2.0")
             New-Object -TypeName PSObject -Property $params
         }
         else
         {
+            Write-Verbose "Running Register-ScheduledJob as PowerShell Version is >=3.0"
+
             $scheduledJobParams = @{
                 Name = $jobName
                 ScriptBlock = (Get-Command -Name New-InstallProcess).ScriptBlock
@@ -158,11 +163,12 @@
             }
             if ($Credential) { $scheduledJobParams.Add('Credential', $Credential) }
             $scheduledJob = Register-ScheduledJob @scheduledJobParams
-
             Write-Verbose "ScheduledJob object registered with the ID $($scheduledJob.Id)"
+            Start-Sleep -Seconds 5 #allow some time to let the scheduled task run
             
             while (-not $job)
             {
+                Start-Sleep -Milliseconds 500
                 $job = Get-Job -Name $jobName -ErrorAction SilentlyContinue
             }        
             $job | Wait-Job | Out-Null
