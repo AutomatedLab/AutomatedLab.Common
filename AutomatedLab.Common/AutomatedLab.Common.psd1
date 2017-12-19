@@ -75,11 +75,11 @@
 
             # Tags applied to this module. These help with module discovery in online galleries.
             Tags       = @(
-                'Lab Automation'
+                'LabAutomation'
                 'AutomatedLab'
                 'Networking'
                 'PKI'
-                'Desired State Configuration'
+                'DesiredStateConfiguration'
                 'DSC'
             )
 
