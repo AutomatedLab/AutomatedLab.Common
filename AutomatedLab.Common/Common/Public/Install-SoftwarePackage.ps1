@@ -1,4 +1,4 @@
-﻿function Install-SoftwarePackage
+function Install-SoftwarePackage
 {
     param (
         [Parameter(Mandatory = $true)]
@@ -204,7 +204,7 @@
     Write-Verbose "Exit code of installation process is '$($result.Process.ExitCode)'"
     if ($result.Process.ExitCode -ne 0 -and $result.Process.ExitCode -ne 3010 -and $result.Process.ExitCode -ne $null)
     {
-        throw $result.Error
+        throw (New-Object System.ComponentModel.Win32Exception($result.Process.ExitCode))
     }
     else
     {
