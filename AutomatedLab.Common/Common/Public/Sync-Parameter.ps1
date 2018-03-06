@@ -4,7 +4,7 @@ function Sync-Parameter
     param (
         [Parameter(Mandatory = $true)]
         [ValidateScript( {
-                $_ -is [System.Management.Automation.FunctionInfo] -or $_ -is [System.Management.Automation.CmdletInfo]
+                $_ -is [System.Management.Automation.FunctionInfo] -or $_ -is [System.Management.Automation.CmdletInfo] -or $_ -is [System.Management.Automation.ExternalScriptInfo]
             })]
         [object]$Command,
         
