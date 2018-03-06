@@ -1,4 +1,4 @@
-﻿function Install-SoftwarePackage
+function Install-SoftwarePackage
 {
     param (
         [Parameter(Mandatory = $true)]
@@ -62,8 +62,8 @@
     }
         
     $start = Get-Date
-    Write-Verbose -Message "Starting setup of '$ProcessName' with the following command"
-    Write-Verbose -Message "`t$cmd"
+    Write-Verbose -Message "Starting setup of '$Path' with the following command"
+    Write-Verbose -Message "`t$CommandLine"
     Write-Verbose -Message "The timeout is $Timeout minutes, starting at '$start'"
     
     $installationMethod = [System.IO.Path]::GetExtension($Path)
@@ -204,7 +204,7 @@
     Write-Verbose "Exit code of installation process is '$($result.Process.ExitCode)'"
     if ($result.Process.ExitCode -ne 0 -and $result.Process.ExitCode -ne 3010 -and $result.Process.ExitCode -ne $null)
     {
-        throw $result.Error
+        throw (New-Object System.ComponentModel.Win32Exception($result.Process.ExitCode))
     }
     else
     {
