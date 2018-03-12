@@ -63,7 +63,7 @@ function New-TfsProject
     if ($PSCmdlet.ParameterSetName -eq 'ByName')
     {
         $parameters = Sync-Parameter -Command (Get-Command Get-TfsProjectTemplate) -Parameters $PSBoundParameters
-        $TemplateGuid = (Get-TfsProjectTemplate @parameters | Where-Object -Property name -eq $TemplateName).id
+        $TemplateGuid = (Get-TfsProcessTemplate @parameters | Where-Object -Property name -eq $TemplateName).id
         if (-not $TemplateGuid) {throw "Could not locate $TemplateName. Try Get-TfsProjectTemplate to see all available templates"}
     }
 
