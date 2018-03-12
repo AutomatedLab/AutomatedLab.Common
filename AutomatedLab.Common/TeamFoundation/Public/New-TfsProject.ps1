@@ -1,5 +1,6 @@
 function New-TfsProject
 {
+    [CmdletBinding(DefaultParameterSetName = 'NameCred')]
     param
     (
         [Parameter(Mandatory)]
@@ -28,26 +29,29 @@ function New-TfsProject
         [ValidateSet('Git', 'Tfvc')]
         $SourceControlType = 'Git',
 
-        [Parameter(ParameterSetName = 'ByGuid')]
+        [Parameter(Mandatory, ParameterSetName = 'GuidPat')]
+        [Parameter(Mandatory, ParameterSetName = 'GuidCred')]
         [guid]
         $TemplateGuid,
 
-        [Parameter(ParameterSetName = 'ByName')]
+        [Parameter(Mandatory, ParameterSetName = 'NamePat')]
+        [Parameter(Mandatory, ParameterSetName = 'NameCred')]
         [string]
         $TemplateName,
 
         [switch]
         $UseSsl,
 
-        [Parameter(ParameterSetName = 'Tfs')]
-        [Parameter(ParameterSetName = 'ByGuid')]
-        [Parameter(ParameterSetName = 'ByName')]
+        [Parameter(Mandatory, ParameterSetName = 'GuidCred')]
+        [Parameter(Mandatory, ParameterSetName = 'NameCred')]
         [pscredential]
         $Credential,
 
-        [Parameter(ParameterSetName = 'Vsts')]
-        [Parameter(ParameterSetName = 'ByGuid')]
-        [Parameter(ParameterSetName = 'ByName')]
+        [Parameter(Mandatory, ParameterSetName = 'GuidPat')]
+        [string]
+        $UserName,
+        
+        [Parameter(Mandatory, ParameterSetName = 'NamePat')]
         [string]
         $PersonalAccessToken
     )
@@ -60,7 +64,7 @@ function New-TfsProject
         $requestUrl += '{0}{1}/{2}/_apis/projects?api-version={3}' -f $InstanceName, ":$Port", $CollectionName, $ApiVersion.ToString(2)
     }
 
-    if ($PSCmdlet.ParameterSetName -eq 'ByName')
+    if ($PSCmdlet.ParameterSetName -like 'Name*')
     {
         $parameters = Sync-Parameter -Command (Get-Command Get-TfsProjectTemplate) -Parameters $PSBoundParameters
         $TemplateGuid = (Get-TfsProcessTemplate @parameters | Where-Object -Property name -eq $TemplateName).id

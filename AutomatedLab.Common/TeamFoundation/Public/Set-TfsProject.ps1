@@ -1,4 +1,4 @@
-function Get-TfsProject
+function Set-TfsProject
 {
     param
     (
@@ -16,10 +16,17 @@ function Get-TfsProject
 
         [ValidateSet('1.0', '2.0')]
         [Version]
-        $ApiVersion = '1.0',
+        $ApiVersion = '2.0',
+
+        [Parameter(Mandatory)]
+        [string]
+        $ProjectGuid,
 
         [string]
-        $Project,
+        $NewName,
+
+        [string]
+        $NewDescription,
 
         [switch]
         $UseSsl,
@@ -38,16 +45,23 @@ function Get-TfsProject
     )
 
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
-    $requestUrl += '{0}/{1}/_apis/projects{3}?api-version={2}' -f $InstanceName, $CollectionName, $ApiVersion.ToString(2), "/$Project"
+    $requestUrl += '{0}/{1}/_apis/projects/{3}?api-version={2}' -f $InstanceName, $CollectionName, $ApiVersion.ToString(2), $ProjectGuid
 
     if ( $Port )
     {
-        $requestUrl += '{0}{1}/{2}/_apis/projects{4}?api-version={3}' -f $InstanceName, ":$Port", $CollectionName, $ApiVersion.ToString(2), "/$Project"
+        $requestUrl += '{0}{1}/{2}/_apis/projects/{4}?api-version={3}' -f $InstanceName, ":$Port", $CollectionName, $ApiVersion.ToString(2), $ProjectGuid
+    }
+
+    $payload = @{
+        name         = $NewName
+        description  = $NewDescription
     }
 
     $requestParameters = @{
         Uri         = $requestUrl
-        Method      = 'Get'
+        Method      = 'Patch'
+        ContentType = 'application/json'
+        Body        = ($payload | ConvertTo-Json)
         ErrorAction = 'Stop'
     }
 
@@ -62,8 +76,6 @@ function Get-TfsProject
     }
     catch
     {
-        return $null
+        throw
     }
-    
-    return $result.Content | ConvertFrom-Json
 }

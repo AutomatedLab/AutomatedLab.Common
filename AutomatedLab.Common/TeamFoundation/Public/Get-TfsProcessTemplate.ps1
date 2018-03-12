@@ -21,8 +21,17 @@ function Get-TfsProcessTemplate
         [switch]
         $UseSsl,
 
+        [Parameter(Mandatory, ParameterSetName = 'Tfs')]
         [pscredential]
-        $Credential
+        $Credential,
+
+        [Parameter(Mandatory, ParameterSetName = 'Vsts')]
+        [string]
+        $UserName,
+        
+        [Parameter(Mandatory, ParameterSetName = 'Vsts')]
+        [string]
+        $PersonalAccessToken
     )
 
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
