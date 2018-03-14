@@ -29,10 +29,6 @@ function Get-TfsBuildDefinitionTemplate
         [Parameter(Mandatory, ParameterSetName = 'Cred')]
         [pscredential]
         $Credential,
-
-        [Parameter(Mandatory, ParameterSetName = 'Pat')]
-        [string]
-        $UserName,
         
         [Parameter(Mandatory, ParameterSetName = 'Pat')]
         [string]
@@ -60,7 +56,7 @@ function Get-TfsBuildDefinitionTemplate
     }
     else
     {
-        $requestParameters.Headers = @{ Authorization = Get-TfsAccessTokenString -UserName $UserName -PersonalAccessToken $PersonalAccessToken }
+        $requestParameters.Headers = @{ Authorization = Get-TfsAccessTokenString -PersonalAccessToken $PersonalAccessToken }
     }
 
     try
@@ -72,5 +68,12 @@ function Get-TfsBuildDefinitionTemplate
         return $null
     }
     
-    return $result.Content.value
+    if ($result.value)
+    {
+        return $result.value
+    }
+    elseif ($result)
+    {
+        return $result
+    }
 }

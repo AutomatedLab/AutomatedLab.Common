@@ -46,12 +46,9 @@ function New-TfsProject
         [Parameter(Mandatory, ParameterSetName = 'NameCred')]
         [pscredential]
         $Credential,
-
-        [Parameter(Mandatory, ParameterSetName = 'GuidPat')]
-        [string]
-        $UserName,
         
         [Parameter(Mandatory, ParameterSetName = 'NamePat')]
+        [Parameter(Mandatory, ParameterSetName = 'GuidPat')]
         [string]
         $PersonalAccessToken
     )
@@ -95,6 +92,10 @@ function New-TfsProject
     if ($Credential)
     {
         $requestParameters.Credential = $Credential
+    }
+    else
+    {
+        $requestParameters.Headers = @{ Authorization = Get-TfsAccessTokenString -PersonalAccessToken $PersonalAccessToken }
     }
 
     $result = Invoke-RestMethod @requestParameters

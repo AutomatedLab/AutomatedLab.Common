@@ -27,10 +27,6 @@ function New-TfsAgentQueue
         [Parameter(Mandatory, ParameterSetName = 'Cred')]
         [pscredential]
         $Credential,
-
-        [Parameter(Mandatory, ParameterSetName = 'Pat')]
-        [string]
-        $UserName,
         
         [Parameter(Mandatory, ParameterSetName = 'Pat')]
         [string]
@@ -72,6 +68,10 @@ function New-TfsAgentQueue
     if ($Credential)
     {
         $requestParameters.Credential = $Credential
+    }
+    else
+    {
+        $requestParameters.Headers = @{ Authorization = Get-TfsAccessTokenString -PersonalAccessToken $PersonalAccessToken }
     }
 
     $result = Invoke-RestMethod @requestParameters

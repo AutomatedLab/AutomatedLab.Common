@@ -20,10 +20,6 @@ function Get-TfsBuildStep
         [Parameter(ParameterSetName = 'Tfs')]
         [pscredential]
         $Credential,
-
-        [Parameter(ParameterSetName = 'Vsts')]
-        [string]
-        $UserName,
         
         [Parameter(ParameterSetName = 'Vsts')]
         [string]
@@ -48,6 +44,10 @@ function Get-TfsBuildStep
     {
         $requestParameters.Credential = $Credential
     }
+    else
+    {
+        $requestParameters.Headers = @{ Authorization = Get-TfsAccessTokenString -PersonalAccessToken $PersonalAccessToken }
+    }
 
     try
     {
@@ -58,5 +58,12 @@ function Get-TfsBuildStep
         return $null
     }
     
-    return $result.value
+    if ($result.value)
+    {
+        return $result.value
+    }
+    elseif ($result)
+    {
+        return $result
+    }
 }

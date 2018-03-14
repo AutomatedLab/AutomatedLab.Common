@@ -24,10 +24,6 @@ function Get-TfsProcessTemplate
         [Parameter(Mandatory, ParameterSetName = 'Tfs')]
         [pscredential]
         $Credential,
-
-        [Parameter(Mandatory, ParameterSetName = 'Vsts')]
-        [string]
-        $UserName,
         
         [Parameter(Mandatory, ParameterSetName = 'Vsts')]
         [string]
@@ -51,6 +47,19 @@ function Get-TfsProcessTemplate
     {
         $parameters.Credential = $Credential
     }
+    else
+    {
+        $requestParameters.Headers = @{ Authorization = Get-TfsAccessTokenString -PersonalAccessToken $PersonalAccessToken }
+    }
 
-    (Invoke-RestMethod @parameters).value
+    $result = Invoke-RestMethod @parameters
+
+    if ($result.value)
+    {
+        return $result.value
+    }
+    elseif ($result)
+    {
+        return $result
+    }
 }

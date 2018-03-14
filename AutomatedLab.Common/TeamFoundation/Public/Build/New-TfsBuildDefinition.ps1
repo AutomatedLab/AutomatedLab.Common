@@ -38,10 +38,6 @@ function New-TfsBuildDefinition
         [Parameter(Mandatory, ParameterSetName = 'Cred')]
         [pscredential]
         $Credential,
-
-        [Parameter(Mandatory, ParameterSetName = 'Pat')]
-        [string]
-        $UserName,
         
         [Parameter(Mandatory, ParameterSetName = 'Pat')]
         [string]
@@ -135,6 +131,10 @@ function New-TfsBuildDefinition
     if ($Credential)
     {
         $requestParameters.Credential = $Credential
+    }
+    else
+    {
+        $requestParameters.Headers = @{ Authorization = Get-TfsAccessTokenString -PersonalAccessToken $PersonalAccessToken }
     }
 
     $result = Invoke-RestMethod @requestParameters

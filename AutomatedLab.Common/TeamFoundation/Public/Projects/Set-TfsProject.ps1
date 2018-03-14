@@ -34,10 +34,6 @@ function Set-TfsProject
         [Parameter(ParameterSetName = 'Tfs')]
         [pscredential]
         $Credential,
-
-        [Parameter(ParameterSetName = 'Vsts')]
-        [string]
-        $UserName,
         
         [Parameter(ParameterSetName = 'Vsts')]
         [string]
@@ -68,6 +64,10 @@ function Set-TfsProject
     if ($Credential)
     {
         $requestParameters.Credential = $Credential
+    }
+    else
+    {
+        $requestParameters.Headers = @{ Authorization = Get-TfsAccessTokenString -PersonalAccessToken $PersonalAccessToken }
     }
 
     try

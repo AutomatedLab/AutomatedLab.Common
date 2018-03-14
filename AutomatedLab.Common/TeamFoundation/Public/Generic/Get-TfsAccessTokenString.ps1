@@ -5,12 +5,9 @@ function Get-TfsAccessTokenString
     param
     (
         [Parameter(Mandatory = $True)]
-        [String] $UserName,
-
-        [Parameter(Mandatory = $True)]
         [String] $PersonalAccessToken
     )
 
-    $tokenString = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $UserName,$PersonalAccessToken)))
+    $tokenString = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f '',$PersonalAccessToken)))
     return ("Basic {0}" -f $tokenString)
 }
