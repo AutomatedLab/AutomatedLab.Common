@@ -1,4 +1,4 @@
-function Set-TfsProject
+function Get-TfsBuildStep
 {
     param
     (
@@ -13,20 +13,6 @@ function Set-TfsProject
         [ValidateRange(1, 65535)]
         [uint32]
         $Port,
-
-        [ValidateSet('1.0', '2.0')]
-        [Version]
-        $ApiVersion = '2.0',
-
-        [Parameter(Mandatory)]
-        [string]
-        $ProjectGuid,
-
-        [string]
-        $NewName,
-
-        [string]
-        $NewDescription,
 
         [switch]
         $UseSsl,
@@ -45,23 +31,16 @@ function Set-TfsProject
     )
 
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
-    $requestUrl += '{0}/{1}/_apis/projects/{3}?api-version={2}' -f $InstanceName, $CollectionName, $ApiVersion.ToString(2), $ProjectGuid
+    $requestUrl += '{0}/{1}/_apis/distributedtask/tasks' -f $InstanceName, $CollectionName
 
     if ( $Port )
     {
-        $requestUrl += '{0}{1}/{2}/_apis/projects/{4}?api-version={3}' -f $InstanceName, ":$Port", $CollectionName, $ApiVersion.ToString(2), $ProjectGuid
-    }
-
-    $payload = @{
-        name         = $NewName
-        description  = $NewDescription
+        $requestUrl += '{0}{1}/{2}/_apis/distributedtask/tasks' -f $InstanceName, ":$Port", $CollectionName
     }
 
     $requestParameters = @{
         Uri         = $requestUrl
-        Method      = 'Patch'
-        ContentType = 'application/json'
-        Body        = ($payload | ConvertTo-Json)
+        Method      = 'Get'
         ErrorAction = 'Stop'
     }
 
@@ -76,6 +55,8 @@ function Set-TfsProject
     }
     catch
     {
-        throw
+        return $null
     }
+    
+    return $result.value
 }

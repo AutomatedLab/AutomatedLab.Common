@@ -15,8 +15,7 @@ function New-TfsBuildDefinition
         [uint32]
         $Port,
 
-        [ValidateSet('1.0', '2.0')]
-        [Version]
+        [string]
         $ApiVersion = '2.0',
 
         [Parameter(Mandatory)]
@@ -29,6 +28,9 @@ function New-TfsBuildDefinition
 
         [string]
         $QueueName,
+
+        [hashtable[]]
+        $BuildTasks, # Not very nice and needs to be replaced as soon as I find out how to retrieve all build step guids
 
         [switch]
         $UseSsl,
@@ -47,11 +49,11 @@ function New-TfsBuildDefinition
     )
 
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
-    $requestUrl += '{0}/{1}/_apis/build/definitions?api-version={2}' -f $InstanceName, $CollectionName, $ApiVersion.ToString(2)
+    $requestUrl += '{0}/{1}/{2}/_apis/build/definitions?api-version={3}' -f $InstanceName, $CollectionName, $ProjectName, $ApiVersion
 
     if ( $Port )
     {
-        $requestUrl += '{0}{1}/{2}/_apis/build/definitions?api-version={3}' -f $InstanceName, ":$Port", $CollectionName, $ApiVersion.ToString(2)
+        $requestUrl += '{0}{1}/{2}/{3}/_apis/build/definitions?api-version={4}' -f $InstanceName, ":$Port", $CollectionName, $ProjectName, $ApiVersion
     }
 
     if ( $QueueName )
@@ -72,6 +74,12 @@ function New-TfsBuildDefinition
         $queue = Get-TfsAgentQueue | Select-Object -First 1
     }
 
+    $projectParameters = Sync-Parameter -Command (Get-Command Get-TfsProject) -Parameters $PSBoundParameters
+    $project = Get-TfsProject @projectParameters
+
+    $repoParameters = Sync-Parameter -Command (Get-Command Get-TfsGitRepository) -Parameters $PSBoundParameters
+    $repo = Get-TfsGitRepository @repoParameters
+
     $buildDefinition = @{
         "name"       = $DefinitionName
         "type"       = "build"
@@ -79,88 +87,55 @@ function New-TfsBuildDefinition
         "queue"      = @{
             "id" = $queue.id
         }
-        "build"      = @(
-            @{
-                "enabled"         = true
-                "continueOnError" = false
-                "alwaysRun"       = false
-                "displayName"     = "Build solution **\\*.sln"
-                "task"            = @{
-                    "id"          = "71a9a2d3-a98a-4caa-96ab-affca411ecda"
-                    "versionSpec" = "*"
-                }
-                "inputs"          = @{
-                    "solution"              = "**\\*.sln"
-                    "msbuildArgs"           = ""
-                    "platform"              = "$(platform)"
-                    "configuration"         = "$(config)"
-                    "clean"                 = "false"
-                    "restoreNugetPackages"  = "true"
-                    "vsLocationMethod"      = "version"
-                    "vsVersion"             = "latest"
-                    "vsLocation"            = ""
-                    "msbuildLocationMethod" = "version"
-                    "msbuildVersion"        = "latest"
-                    "msbuildArchitecture"   = "x86"
-                    "msbuildLocation"       = ""
-                    "logProjectEvents"      = "true"
-                }
-            }
-            @{
-                "enabled"         = true
-                "continueOnError" = false
-                "alwaysRun"       = false
-                "displayName"     = "Test Assemblies **\\*test*.dll;-:**\\obj\\**"
-                "task"            = @{
-                    "id"          = "ef087383-ee5e-42c7-9a53-ab56c98420f9"
-                    "versionSpec" = "*"
-                }
-                "inputs"          = @{
-                    "testAssembly"             = "**\\*test*.dll;-:**\\obj\\**"
-                    "testFiltercriteria"       = ""
-                    "runSettingsFile"          = ""
-                    "codeCoverageEnabled"      = "true"
-                    "otherConsoleOptions"      = ""
-                    "vsTestVersion"            = "14.0"
-                    "pathtoCustomTestAdapters" = ""
-                }
-            }
-        )
+        "build"      = $BuildTasks
         "repository" = @{
-            "id"            = "278d5cd2-584d-4b63-824a-2ba458937249"
+            "id"            = $repo.id
             "type"          = "tfsgit"
-            "name"          = "Fabrikam-Fiber-Git"
-            "localPath"     = "$(sys.sourceFolder)/MyGitProject"
+            "name"          = $repo.name
             "defaultBranch" = "refs/heads/master"
-            "url"           = "https://fabrikam-fiber-inc.visualstudio.com/DefaultCollection/_git/Fabrikam-Fiber-Git"
-            "clean"         = "false"
+            "url"           = $repo.remoteUrl
+            "clean"         = $false
         }
         "options"    = @(
             @{
-                "enabled"    = true
+                "enabled"    = $true
                 "definition" = @{
-                    "id" = "7c555368-ca64-4199-add6-9ebaf0b0137d"
+                    "id" = (New-Guid).Guid
                 }
                 "inputs"     = @{
-                    "parallel" = "false"
+                    "parallel" = $false
                 }
             }
         )
         "variables"  = @{
             "forceClean" = @{
-                "value"         = "false"
-                "allowOverride" = true
+                "value"         = $false
+                "allowOverride" = $true
             }
             "config"     = @{
                 "value"         = "debug, release"
-                "allowOverride" = true
+                "allowOverride" = $true
             }
             "platform"   = @{
                 "value"         = "any cpu"
-                "allowOverride" = true
+                "allowOverride" = $true
             }
         }
         "triggers"   = @()
-        "comment"    = "my first definition"
     }
+
+    $requestParameters = @{
+        Uri         = $requestUrl
+        Method      = 'Post'
+        ContentType = 'application/json'
+        Body        = ($buildDefinition | ConvertTo-Json)
+        ErrorAction = 'Stop'
+    }
+
+    if ($Credential)
+    {
+        $requestParameters.Credential = $Credential
+    }
+
+    $result = Invoke-RestMethod @requestParameters
 }

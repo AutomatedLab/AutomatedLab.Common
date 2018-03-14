@@ -1,4 +1,4 @@
-function Get-TfsAgentQueue
+function Get-TfsAgentPool
 {
     param
     (
@@ -6,23 +6,15 @@ function Get-TfsAgentQueue
         [string]
         $InstanceName,
 
-        [Parameter(Mandatory)]
-        [string]
-        $CollectionName,
-
         [ValidateRange(1, 65535)]
         [uint32]
         $Port,
 
         [string]
-        $ApiVersion = '3.0-preview',
+        $ApiVersion = '2.3-preview.1',
 
-        [Parameter(Mandatory)]
-        [string]
-        $ProjectName,
-
-        [string]
-        $QueueName,
+        [switch]
+        $UseSsl,
 
         [Parameter(Mandatory, ParameterSetName = 'Cred')]
         [pscredential]
@@ -38,16 +30,11 @@ function Get-TfsAgentQueue
     )
 
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
-    $requestUrl += '{0}/{1}/{2}/_apis/distributedtask/queues?api-version={3}' -f $InstanceName, $CollectionName, $ProjectName, $ApiVersion
+    $requestUrl += '{0}/_apis/distributedtask/pools?api-version={1}' -f $InstanceName, $ApiVersion
 
     if ( $Port )
     {
-        $requestUrl += '{0}{1}/{2}/{3}/_apis/distributedtask/queues?api-version={4}' -f $InstanceName, ":$Port", $CollectionName, $ProjectName, $ApiVersion
-    }
-
-    if ($QueueName)
-    {
-        $requestUrl += '&queueName={0}' -f $QueueName
+        $requestUrl += '{0}{1}/_apis/distributedtask/pools?api-version={2}' -f $InstanceName, ":$Port", $ApiVersion
     }
 
     $requestParameters = @{

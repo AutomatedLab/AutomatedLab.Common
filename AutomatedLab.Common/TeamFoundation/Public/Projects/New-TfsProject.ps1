@@ -97,7 +97,7 @@ function New-TfsProject
         $requestParameters.Credential = $Credential
     }
 
-    $result = Invoke-WebRequest @requestParameters
+    $result = Invoke-RestMethod @requestParameters
 
     $projectParameters = Sync-Parameter -Command (Get-Command Get-TfsProject) -Parameters $PSBoundParameters
     $projectParameters.Project = $ProjectName

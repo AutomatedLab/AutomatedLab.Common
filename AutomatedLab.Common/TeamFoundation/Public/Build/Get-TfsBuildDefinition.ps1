@@ -1,4 +1,4 @@
-function Get-TfsBuildDefinitionTask
+function Get-TfsBuildDefinition
 {
     [CmdletBinding(DefaultParameterSetName = 'Cred')]
     param
@@ -15,13 +15,19 @@ function Get-TfsBuildDefinitionTask
         [uint32]
         $Port,
 
-        [ValidateSet('1.0', '2.0')]
-        [Version]
+        [string]
         $ApiVersion = '2.0',
 
         [Parameter(Mandatory)]
         [string]
         $ProjectName,
+
+        [Parameter(Mandatory)]
+        [string]
+        $DefinitionName,
+
+        [string]
+        $QueueName,
 
         [switch]
         $UseSsl,
@@ -38,13 +44,13 @@ function Get-TfsBuildDefinitionTask
         [string]
         $PersonalAccessToken
     )
-
+    
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
-    $requestUrl += '{0}/{1}/{2}/_apis/build/definitions/templates?api-version={3}' -f $InstanceName, $CollectionName, $ProjectName, $ApiVersion.ToString(2)
+    $requestUrl += '{0}/{1}/{2}/_apis/build/definitions?api-version={3}' -f $InstanceName, $CollectionName, $ProjectName, $ApiVersion
 
     if ( $Port )
     {
-        $requestUrl += '{0}{1}/{2}/{3}/_apis/build/definitions/templates?api-version={4}' -f $InstanceName, ":$Port", $CollectionName, $ProjectName, $ApiVersion.ToString(2)
+        $requestUrl += '{0}{1}/{2}/{3}/_apis/build/definitions?api-version={4}' -f $InstanceName, ":$Port", $CollectionName, $ProjectName, $ApiVersion
     }
 
     $requestParameters = @{
@@ -65,12 +71,12 @@ function Get-TfsBuildDefinitionTask
 
     try
     {
-        $result = Invoke-WebRequest @requestParameters
+        $result = Invoke-RestMethod @requestParameters
     }
     catch
     {
         return $null
     }
     
-    return $result.Content | ConvertFrom-Json
+    return $result.value
 }

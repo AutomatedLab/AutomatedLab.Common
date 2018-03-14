@@ -1,5 +1,6 @@
-function Set-TfsProject
+function Get-TfsBuildDefinitionTemplate
 {
+    [CmdletBinding(DefaultParameterSetName = 'Cred')]
     param
     (
         [Parameter(Mandatory)]
@@ -20,54 +21,46 @@ function Set-TfsProject
 
         [Parameter(Mandatory)]
         [string]
-        $ProjectGuid,
-
-        [string]
-        $NewName,
-
-        [string]
-        $NewDescription,
+        $ProjectName,
 
         [switch]
         $UseSsl,
 
-        [Parameter(ParameterSetName = 'Tfs')]
+        [Parameter(Mandatory, ParameterSetName = 'Cred')]
         [pscredential]
         $Credential,
 
-        [Parameter(ParameterSetName = 'Vsts')]
+        [Parameter(Mandatory, ParameterSetName = 'Pat')]
         [string]
         $UserName,
         
-        [Parameter(ParameterSetName = 'Vsts')]
+        [Parameter(Mandatory, ParameterSetName = 'Pat')]
         [string]
         $PersonalAccessToken
     )
 
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
-    $requestUrl += '{0}/{1}/_apis/projects/{3}?api-version={2}' -f $InstanceName, $CollectionName, $ApiVersion.ToString(2), $ProjectGuid
+    $requestUrl += '{0}/{1}/{2}/_apis/build/definitions/templates?api-version={3}' -f $InstanceName, $CollectionName, $ProjectName, $ApiVersion.ToString(2)
 
     if ( $Port )
     {
-        $requestUrl += '{0}{1}/{2}/_apis/projects/{4}?api-version={3}' -f $InstanceName, ":$Port", $CollectionName, $ApiVersion.ToString(2), $ProjectGuid
-    }
-
-    $payload = @{
-        name         = $NewName
-        description  = $NewDescription
+        $requestUrl += '{0}{1}/{2}/{3}/_apis/build/definitions/templates?api-version={4}' -f $InstanceName, ":$Port", $CollectionName, $ProjectName, $ApiVersion.ToString(2)
     }
 
     $requestParameters = @{
         Uri         = $requestUrl
-        Method      = 'Patch'
-        ContentType = 'application/json'
-        Body        = ($payload | ConvertTo-Json)
+        Method      = 'Get'
         ErrorAction = 'Stop'
+        UseBasicParsing = $true
     }
 
     if ($Credential)
     {
         $requestParameters.Credential = $Credential
+    }
+    else
+    {
+        $requestParameters.Headers = @{ Authorization = Get-TfsAccessTokenString -UserName $UserName -PersonalAccessToken $PersonalAccessToken }
     }
 
     try
@@ -76,6 +69,8 @@ function Set-TfsProject
     }
     catch
     {
-        throw
+        return $null
     }
+    
+    return $result.Content.value
 }

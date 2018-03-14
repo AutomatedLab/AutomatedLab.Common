@@ -1,4 +1,4 @@
-function Set-TfsProject
+function Get-TfsGitRepository
 {
     param
     (
@@ -14,19 +14,11 @@ function Set-TfsProject
         [uint32]
         $Port,
 
-        [ValidateSet('1.0', '2.0')]
-        [Version]
-        $ApiVersion = '2.0',
-
-        [Parameter(Mandatory)]
         [string]
-        $ProjectGuid,
+        $ApiVersion = '1.0',
 
         [string]
-        $NewName,
-
-        [string]
-        $NewDescription,
+        $ProjectName,
 
         [switch]
         $UseSsl,
@@ -45,23 +37,16 @@ function Set-TfsProject
     )
 
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
-    $requestUrl += '{0}/{1}/_apis/projects/{3}?api-version={2}' -f $InstanceName, $CollectionName, $ApiVersion.ToString(2), $ProjectGuid
+    $requestUrl += '{0}/{1}/{2}/_apis/git/repositories?api-version={3}' -f $InstanceName, $CollectionName, $ProjectName, $ApiVersion
 
     if ( $Port )
     {
-        $requestUrl += '{0}{1}/{2}/_apis/projects/{4}?api-version={3}' -f $InstanceName, ":$Port", $CollectionName, $ApiVersion.ToString(2), $ProjectGuid
-    }
-
-    $payload = @{
-        name         = $NewName
-        description  = $NewDescription
+        $requestUrl += '{0}{1}/{2}/{3}/_apis/git/repositories?api-version={4}' -f $InstanceName, ":$Port", $CollectionName, $ProjectName, $ApiVersion
     }
 
     $requestParameters = @{
         Uri         = $requestUrl
-        Method      = 'Patch'
-        ContentType = 'application/json'
-        Body        = ($payload | ConvertTo-Json)
+        Method      = 'Get'
         ErrorAction = 'Stop'
     }
 
@@ -76,6 +61,8 @@ function Set-TfsProject
     }
     catch
     {
-        throw
+        return $null
     }
+    
+    return $result.value
 }

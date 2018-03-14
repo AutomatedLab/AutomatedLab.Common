@@ -19,7 +19,7 @@ function Get-TfsProject
         $ApiVersion = '1.0',
 
         [string]
-        $Project,
+        $ProjectName,
 
         [switch]
         $UseSsl,
@@ -38,11 +38,11 @@ function Get-TfsProject
     )
 
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
-    $requestUrl += '{0}/{1}/_apis/projects{3}?api-version={2}' -f $InstanceName, $CollectionName, $ApiVersion.ToString(2), "/$Project"
+    $requestUrl += '{0}/{1}/_apis/projects{3}?api-version={2}' -f $InstanceName, $CollectionName, $ApiVersion.ToString(2), "/$ProjectName"
 
     if ( $Port )
     {
-        $requestUrl += '{0}{1}/{2}/_apis/projects{4}?api-version={3}' -f $InstanceName, ":$Port", $CollectionName, $ApiVersion.ToString(2), "/$Project"
+        $requestUrl += '{0}{1}/{2}/_apis/projects{4}?api-version={3}' -f $InstanceName, ":$Port", $CollectionName, $ApiVersion.ToString(2), "/$ProjectName"
     }
 
     $requestParameters = @{
@@ -58,12 +58,12 @@ function Get-TfsProject
 
     try
     {
-        $result = Invoke-WebRequest @requestParameters
+        $result = Invoke-RestMethod @requestParameters
     }
     catch
     {
         return $null
     }
     
-    return $result.Content | ConvertFrom-Json
+    return $result.Content.value
 }
