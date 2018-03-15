@@ -52,22 +52,15 @@ function New-TfsBuildDefinition
         $requestUrl += '{0}{1}/{2}/{3}/_apis/build/definitions?api-version={4}' -f $InstanceName, ":$Port", $CollectionName, $ProjectName, $ApiVersion
     }
 
-    if ( $QueueName )
-    {
-        $parameters = Sync-Parameter -Command (Get-Command Get-TfsAgentQueue) -Parameters $PSBoundParameters
-        $parameters.Remove('ApiVersion') # preview-API is called
-        $queue = Get-TfsAgentQueue @parameters
+    $parameters = Sync-Parameter -Command (Get-Command Get-TfsAgentQueue) -Parameters $PSBoundParameters
+    $parameters.Remove('ApiVersion') # preview-API is called
+    $queue = Get-TfsAgentQueue @parameters | Select-Object -First 1
 
-        if (-not $queue)
-        {
-            $parameters = Sync-Parameter -Command (Get-Command New-TfsAgentQueue) -Parameters $PSBoundParameters
-            $parameters.Remove('ApiVersion') # preview-API is called
-            New-TfsAgentQueue @parameters
-        }
-    }
-    else
+    if (-not $queue)
     {
-        $queue = Get-TfsAgentQueue | Select-Object -First 1
+        $parameters = Sync-Parameter -Command (Get-Command New-TfsAgentQueue) -Parameters $PSBoundParameters
+        $parameters.Remove('ApiVersion') # preview-API is called
+        New-TfsAgentQueue @parameters
     }
 
     $projectParameters = Sync-Parameter -Command (Get-Command Get-TfsProject) -Parameters $PSBoundParameters
@@ -100,6 +93,7 @@ function New-TfsBuildDefinition
                 }
                 "inputs"     = @{
                     "parallel" = $false
+                    multipliers = '["config","platform"]'
                 }
             }
         )
@@ -119,12 +113,12 @@ function New-TfsBuildDefinition
         }
         "triggers"   = @()
     }
-
+$buildDefinition
     $requestParameters = @{
         Uri         = $requestUrl
         Method      = 'Post'
         ContentType = 'application/json'
-        Body        = ($buildDefinition | ConvertTo-Json)
+        Body        = ($buildDefinition | ConvertTo-Json -Depth 42)
         ErrorAction = 'Stop'
     }
 
