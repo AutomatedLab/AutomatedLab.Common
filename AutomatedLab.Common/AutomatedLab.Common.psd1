@@ -58,7 +58,20 @@
         'Test-IsAdministrator',
         'Test-Port',
         'Read-Choice',
-        'Read-HashTable'
+        'Read-HashTable',
+        'Get-TfsBuildDefinition',
+        'Get-TfsBuildDefinitionTemplate',
+        'Get-TfsBuildStep',
+        'New-TfsBuildDefinition',
+        'Get-TfsAccessTokenString',
+        'Get-TfsAgentPool',
+        'Get-TfsProcessTemplate',
+        'Get-TfsProject',
+        'New-TfsProject',
+        'Set-TfsProject',
+        'Get-TfsAgentQueue',
+        'New-TfsAgentQueue',
+        'Get-TfsGitRepository'
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
