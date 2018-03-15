@@ -58,12 +58,38 @@ function Get-TfsBuildStep
         return $null
     }
     
-    if ($result.value)
+    $steps = if ($result.value)
     {
-        return $result.value
+        $result.value
     }
     elseif ($result)
     {
-        return $result
+        $result
     }
+
+    '@('
+    foreach ($step in $steps)
+    {
+        "
+        @{
+            enabled         = $true
+            continueOnError = $false
+            alwaysRun       = $false
+            displayName     = 'YOUR OWN DISPLAY NAME HERE'
+            task            = @{
+                id          = '$($step.id)'
+                versionSpec = '*'
+            }
+            inputs          = @{"
+        foreach ($input in $step.inputs)
+        {
+            $required = if ($input.required) {$true}else {$false}
+            "`t`t`t`t{0} = 'VALUE' # Type: {1}, Default: {2}, Mandatory: {3}" -f $input.name, $input.type, $input.defaultValue, $required
+        }
+        '
+            }
+        }
+        '
+    }
+    ')'
 }
