@@ -15,8 +15,7 @@ function New-TfsProject
         [uint32]
         $Port,
 
-        [ValidateSet('1.0', '2.0')]
-        [Version]
+        [string]
         $ApiVersion = '2.0',
 
         [Parameter(Mandatory)]
@@ -54,18 +53,26 @@ function New-TfsProject
     )
 
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
-    $requestUrl += '{0}/{1}/_apis/projects?api-version={2}' -f $InstanceName, $CollectionName, $ApiVersion.ToString(2)
-
-    if ( $Port )
+    $requestUrl += if ( $Port -gt 0)
     {
-        $requestUrl += '{0}{1}/{2}/_apis/projects?api-version={3}' -f $InstanceName, ":$Port", $CollectionName, $ApiVersion.ToString(2)
+        '{0}{1}/{2}/_apis/projects?api-version={3}' -f $InstanceName, ":$Port", $CollectionName, $ApiVersion
+    }
+    else
+    {
+        '{0}/{1}/_apis/projects?api-version={2}' -f $InstanceName, $CollectionName, $ApiVersion
     }
 
     if ($PSCmdlet.ParameterSetName -like 'Name*')
     {
-        $parameters = Sync-Parameter -Command (Get-Command Get-TfsProjectTemplate) -Parameters $PSBoundParameters
+        $parameters = Sync-Parameter -Command (Get-Command Get-TfsProcessTemplate) -Parameters $PSBoundParameters
         $TemplateGuid = (Get-TfsProcessTemplate @parameters | Where-Object -Property name -eq $TemplateName).id
-        if (-not $TemplateGuid) {throw "Could not locate $TemplateName. Try Get-TfsProjectTemplate to see all available templates"}
+        if (-not $TemplateGuid) {throw "Could not locate $TemplateName. Try Get-TfsProcessTemplate to see all available templates"}
+    }
+
+    $projectParameters = Sync-Parameter -Command (Get-Command Get-TfsProject) -Parameters $PSBoundParameters
+    if (Get-TfsProject @projectParameters)
+    {
+        return
     }
 
     $payload = @{
@@ -100,8 +107,6 @@ function New-TfsProject
 
     $result = Invoke-RestMethod @requestParameters
 
-    $projectParameters = Sync-Parameter -Command (Get-Command Get-TfsProject) -Parameters $PSBoundParameters
-    $projectParameters.Project = $ProjectName
     while ((Get-TfsProject @projectParameters).State -ne 'wellFormed')
     {
         Start-Sleep -Seconds 1

@@ -14,8 +14,7 @@ function Set-TfsProject
         [uint32]
         $Port,
 
-        [ValidateSet('1.0', '2.0')]
-        [Version]
+        [string]
         $ApiVersion = '2.0',
 
         [Parameter(Mandatory)]
@@ -41,16 +40,18 @@ function Set-TfsProject
     )
 
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
-    $requestUrl += '{0}/{1}/_apis/projects/{3}?api-version={2}' -f $InstanceName, $CollectionName, $ApiVersion.ToString(2), $ProjectGuid
-
-    if ( $Port )
+    $requestUrl += if ( $Port -gt 0)
     {
-        $requestUrl += '{0}{1}/{2}/_apis/projects/{4}?api-version={3}' -f $InstanceName, ":$Port", $CollectionName, $ApiVersion.ToString(2), $ProjectGuid
+        '{0}{1}/{2}/_apis/projects/{4}?api-version={3}' -f $InstanceName, ":$Port", $CollectionName, $ApiVersion, $ProjectGuid
+    }
+    else
+    {
+        '{0}/{1}/_apis/projects/{3}?api-version={2}' -f $InstanceName, $CollectionName, $ApiVersion, $ProjectGuid
     }
 
     $payload = @{
-        name         = $NewName
-        description  = $NewDescription
+        name        = $NewName
+        description = $NewDescription
     }
 
     $requestParameters = @{

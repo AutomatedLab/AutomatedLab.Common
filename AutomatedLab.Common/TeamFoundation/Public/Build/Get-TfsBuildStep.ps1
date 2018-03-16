@@ -27,11 +27,13 @@ function Get-TfsBuildStep
     )
 
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
-    $requestUrl += '{0}/{1}/_apis/distributedtask/tasks' -f $InstanceName, $CollectionName
-
-    if ( $Port )
+    $requestUrl += if ( $Port  -gt 0)
     {
-        $requestUrl += '{0}{1}/{2}/_apis/distributedtask/tasks' -f $InstanceName, ":$Port", $CollectionName
+        '{0}{1}/{2}/_apis/distributedtask/tasks' -f $InstanceName, ":$Port", $CollectionName
+    }
+    else
+    {
+        '{0}/{1}/_apis/distributedtask/tasks' -f $InstanceName, $CollectionName
     }
 
     $requestParameters = @{

@@ -45,11 +45,13 @@ function New-TfsBuildDefinition
     )
 
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
-    $requestUrl += '{0}/{1}/{2}/_apis/build/definitions?api-version={3}' -f $InstanceName, $CollectionName, $ProjectName, $ApiVersion
-
-    if ( $Port )
+    $requestUrl += if ( $Port  -gt 0)
     {
-        $requestUrl += '{0}{1}/{2}/{3}/_apis/build/definitions?api-version={4}' -f $InstanceName, ":$Port", $CollectionName, $ProjectName, $ApiVersion
+        '{0}{1}/{2}/{3}/_apis/build/definitions?api-version={4}' -f $InstanceName, ":$Port", $CollectionName, $ProjectName, $ApiVersion
+    }
+    else
+    {
+        '{0}/{1}/{2}/_apis/build/definitions?api-version={3}' -f $InstanceName, $CollectionName, $ProjectName, $ApiVersion
     }
 
     $parameters = Sync-Parameter -Command (Get-Command Get-TfsAgentQueue) -Parameters $PSBoundParameters
@@ -92,7 +94,7 @@ function New-TfsBuildDefinition
                     "id" = (New-Guid).Guid
                 }
                 "inputs"     = @{
-                    "parallel" = $false
+                    "parallel"  = $false
                     multipliers = '["config","platform"]'
                 }
             }
@@ -113,7 +115,7 @@ function New-TfsBuildDefinition
         }
         "triggers"   = @()
     }
-$buildDefinition
+
     $requestParameters = @{
         Uri         = $requestUrl
         Method      = 'Post'

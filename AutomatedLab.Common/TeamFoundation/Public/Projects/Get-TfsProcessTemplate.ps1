@@ -14,8 +14,7 @@ function Get-TfsProcessTemplate
         [uint32]
         $Port,
 
-        [ValidateSet('1.0', '2.0')]
-        [Version]
+        [string]
         $ApiVersion = '1.0',
 
         [switch]
@@ -31,11 +30,13 @@ function Get-TfsProcessTemplate
     )
 
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
-    $requestUrl += '{0}/{1}/_apis/process/processes?api-version={2}' -f $InstanceName, $CollectionName, $ApiVersion.ToString(2)
-
-    if ($Port -gt 0)
+    $requestUrl += if ($Port -gt 0)
     {
-        $requestUrl += '{0}{1}/{2}/_apis/process/processes?api-version={3}' -f $InstanceName, ":$Port", $CollectionName, $ApiVersion.ToString(2)
+        '{0}{1}/{2}/_apis/process/processes?api-version={3}' -f $InstanceName, ":$Port", $CollectionName, $ApiVersion
+    }
+    else
+    {
+        '{0}/{1}/_apis/process/processes?api-version={2}' -f $InstanceName, $CollectionName, $ApiVersion
     }
     
     $parameters = @{

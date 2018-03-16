@@ -26,17 +26,19 @@ function Get-TfsAgentPool
     )
 
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
-    $requestUrl += '{0}/_apis/distributedtask/pools?api-version={1}' -f $InstanceName, $ApiVersion
-
-    if ( $Port )
+    $requestUrl += if ( $Port  -gt 0)
     {
-        $requestUrl += '{0}{1}/_apis/distributedtask/pools?api-version={2}' -f $InstanceName, ":$Port", $ApiVersion
+        '{0}{1}/_apis/distributedtask/pools?api-version={2}' -f $InstanceName, ":$Port", $ApiVersion
+    }
+    else
+    {
+        '{0}/_apis/distributedtask/pools?api-version={1}' -f $InstanceName, $ApiVersion
     }
 
     $requestParameters = @{
-        Uri         = $requestUrl
-        Method      = 'Get'
-        ErrorAction = 'Stop'
+        Uri             = $requestUrl
+        Method          = 'Get'
+        ErrorAction     = 'Stop'
         UseBasicParsing = $true
     }
 

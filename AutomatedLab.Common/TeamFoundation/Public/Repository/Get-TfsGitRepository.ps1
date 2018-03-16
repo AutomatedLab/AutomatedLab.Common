@@ -33,11 +33,13 @@ function Get-TfsGitRepository
     )
 
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
-    $requestUrl += '{0}/{1}/{2}/_apis/git/repositories?api-version={3}' -f $InstanceName, $CollectionName, $ProjectName, $ApiVersion
-
-    if ( $Port )
+    $requestUrl += if ( $Port -gt 0)
     {
-        $requestUrl += '{0}{1}/{2}/{3}/_apis/git/repositories?api-version={4}' -f $InstanceName, ":$Port", $CollectionName, $ProjectName, $ApiVersion
+        '{0}{1}/{2}/{3}/_apis/git/repositories?api-version={4}' -f $InstanceName, ":$Port", $CollectionName, $ProjectName, $ApiVersion
+    }
+    else
+    {
+        '{0}/{1}/{2}/_apis/git/repositories?api-version={3}' -f $InstanceName, $CollectionName, $ProjectName, $ApiVersion
     }
 
     $requestParameters = @{
