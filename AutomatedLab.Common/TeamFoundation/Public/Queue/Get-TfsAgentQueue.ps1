@@ -70,7 +70,7 @@ function Get-TfsAgentQueue
     }
     catch
     {
-        return $null
+        $PSCmdlet.ThrowTerminatingError($_)
     }
     
     if ($result.value)

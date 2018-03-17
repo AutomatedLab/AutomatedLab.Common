@@ -57,7 +57,7 @@ function Get-TfsBuildStep
     }
     catch
     {
-        return $null
+        $PSCmdlet.ThrowTerminatingError($_)
     }
     
     $steps = if ($result.value)

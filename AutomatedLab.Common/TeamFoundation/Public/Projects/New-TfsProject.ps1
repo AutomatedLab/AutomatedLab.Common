@@ -49,7 +49,10 @@ function New-TfsProject
         [Parameter(Mandatory, ParameterSetName = 'NamePat')]
         [Parameter(Mandatory, ParameterSetName = 'GuidPat')]
         [string]
-        $PersonalAccessToken
+        $PersonalAccessToken,
+
+        [timespan]
+        $Timeout = (New-TimeSpan -Seconds 30)
     )
 
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
@@ -66,10 +69,11 @@ function New-TfsProject
     {
         $parameters = Sync-Parameter -Command (Get-Command Get-TfsProcessTemplate) -Parameters $PSBoundParameters
         $TemplateGuid = (Get-TfsProcessTemplate @parameters | Where-Object -Property name -eq $TemplateName).id
-        if (-not $TemplateGuid) {throw "Could not locate $TemplateName. Try Get-TfsProcessTemplate to see all available templates"}
+        if (-not $TemplateGuid) {Write-Error -Message "Could not locate $TemplateName. Try Get-TfsProcessTemplate to see all available templates"; return}
     }
 
     $projectParameters = Sync-Parameter -Command (Get-Command Get-TfsProject) -Parameters $PSBoundParameters
+    $projectParameters.ErrorAction = 'SilentlyContinue'
     if (Get-TfsProject @projectParameters)
     {
         return
@@ -105,10 +109,22 @@ function New-TfsProject
         $requestParameters.Headers = @{ Authorization = Get-TfsAccessTokenString -PersonalAccessToken $PersonalAccessToken }
     }
 
-    $result = Invoke-RestMethod @requestParameters
+    try
+    {
+        $result = Invoke-RestMethod @requestParameters
+    }
+    catch
+    {
+        $PSCmdlet.ThrowTerminatingError($_)
+    }
 
+    $start = Get-Date
     while ((Get-TfsProject @projectParameters).State -ne 'wellFormed')
     {
         Start-Sleep -Seconds 1
+        if ((Get-Date) - $start -gt $Timeout)
+        {
+            Write-Error -Message ('Unable to create new project in {0}' -f $Timeout) -TargetObject $ProjectName
+        }
     }
 }

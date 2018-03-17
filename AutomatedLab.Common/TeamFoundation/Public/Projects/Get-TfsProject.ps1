@@ -63,7 +63,7 @@ function Get-TfsProject
     }
     catch
     {
-        return $null
+        $PSCmdlet.ThrowTerminatingError($_)
     }
      
     if ($result.value)

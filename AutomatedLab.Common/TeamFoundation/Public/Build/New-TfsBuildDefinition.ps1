@@ -45,7 +45,7 @@ function New-TfsBuildDefinition
     )
 
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
-    $requestUrl += if ( $Port  -gt 0)
+    $requestUrl += if ( $Port -gt 0)
     {
         '{0}{1}/{2}/{3}/_apis/build/definitions?api-version={4}' -f $InstanceName, ":$Port", $CollectionName, $ProjectName, $ApiVersion
     }
@@ -54,22 +54,51 @@ function New-TfsBuildDefinition
         '{0}/{1}/{2}/_apis/build/definitions?api-version={3}' -f $InstanceName, $CollectionName, $ProjectName, $ApiVersion
     }
 
-    $parameters = Sync-Parameter -Command (Get-Command Get-TfsAgentQueue) -Parameters $PSBoundParameters
-    $parameters.Remove('ApiVersion') # preview-API is called
-    $queue = Get-TfsAgentQueue @parameters | Select-Object -First 1
+    $qparameters = Sync-Parameter -Command (Get-Command Get-TfsAgentQueue) -Parameters $PSBoundParameters
+    $qparameters.Remove('ApiVersion') # preview-API is called
+    $qparameters.ErrorAction = 'SilentlyContinue'
+    $queue = Get-TfsAgentQueue @qparameters | Select-Object -First 1
 
     if (-not $queue)
     {
         $parameters = Sync-Parameter -Command (Get-Command New-TfsAgentQueue) -Parameters $PSBoundParameters
         $parameters.Remove('ApiVersion') # preview-API is called
-        New-TfsAgentQueue @parameters
+        $parameters.ErrorAction = 'Stop'
+        $qparameters.ErrorAction = 'Stop'
+        try
+        {
+            New-TfsAgentQueue @parameters
+            $queue = Get-TfsAgentQueue @qparameters | Select-Object -First 1
+        }
+        catch
+        {
+            $PSCmdlet.ThrowTerminatingError($_)
+        }
     }
 
     $projectParameters = Sync-Parameter -Command (Get-Command Get-TfsProject) -Parameters $PSBoundParameters
-    $project = Get-TfsProject @projectParameters
+    $projectParameters.ErrorAction = 'Stop'
+    
+    try
+    {
+        $project = Get-TfsProject @projectParameters
+    }
+    catch
+    {
+        $PSCmdlet.ThrowTerminatingError($_)
+    }
 
     $repoParameters = Sync-Parameter -Command (Get-Command Get-TfsGitRepository) -Parameters $PSBoundParameters
-    $repo = Get-TfsGitRepository @repoParameters
+    $repoParameters.ErrorAction = 'Stop'
+
+    try
+    {
+        $repo = Get-TfsGitRepository @repoParameters
+    }
+    catch
+    {
+        $PSCmdlet.ThrowTerminatingError($_)
+    }
 
     $buildDefinition = @{
         "name"       = $DefinitionName
@@ -133,5 +162,12 @@ function New-TfsBuildDefinition
         $requestParameters.Headers = @{ Authorization = Get-TfsAccessTokenString -PersonalAccessToken $PersonalAccessToken }
     }
 
-    $result = Invoke-RestMethod @requestParameters
+    try
+    {
+        $result = Invoke-RestMethod @requestParameters
+    }
+    catch
+    {
+        $PSCmdlet.ThrowTerminatingError($_)
+    }
 }

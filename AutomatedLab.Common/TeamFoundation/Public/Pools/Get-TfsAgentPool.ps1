@@ -57,7 +57,7 @@ function Get-TfsAgentPool
     }
     catch
     {
-        return $null
+        $PSCmdlet.ThrowTerminatingError($_)
     }
     
     if ($result.value)

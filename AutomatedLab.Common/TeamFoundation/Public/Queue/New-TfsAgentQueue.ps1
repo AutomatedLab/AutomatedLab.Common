@@ -51,6 +51,7 @@ function New-TfsAgentQueue
 
     $useablePool = $pools | Where-Object -Property size -gt 0 | Select-Object -First 1
     if (-not $useablePool) { $useablePool = $pools | Select-Object -First 1}
+    if (-not $useablePool) { Write-Error -Message 'No agent pools available to form queue'; return}
 
     $payload = [ordered]@{
         "name" = $QueueName
@@ -76,5 +77,12 @@ function New-TfsAgentQueue
         $requestParameters.Headers = @{ Authorization = Get-TfsAccessTokenString -PersonalAccessToken $PersonalAccessToken }
     }
 
-    $result = Invoke-RestMethod @requestParameters
+    try
+    {
+        $result = Invoke-RestMethod @requestParameters
+    }
+    catch
+    {
+        $PSCmdlet.ThrowTerminatingError($_)
+    }
 }

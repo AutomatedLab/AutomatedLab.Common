@@ -66,7 +66,7 @@ function Get-TfsBuildDefinitionTemplate
     }
     catch
     {
-        return $null
+        $PSCmdlet.ThrowTerminatingError($_)
     }
     
     if ($result.value)

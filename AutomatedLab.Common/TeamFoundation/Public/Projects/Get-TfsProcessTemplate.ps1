@@ -53,7 +53,14 @@ function Get-TfsProcessTemplate
         $requestParameters.Headers = @{ Authorization = Get-TfsAccessTokenString -PersonalAccessToken $PersonalAccessToken }
     }
 
-    $result = Invoke-RestMethod @parameters
+    try
+    {
+        $result = Invoke-RestMethod @requestParameters
+    }
+    catch
+    {
+        $PSCmdlet.ThrowTerminatingError($_)
+    }
 
     if ($result.value)
     {

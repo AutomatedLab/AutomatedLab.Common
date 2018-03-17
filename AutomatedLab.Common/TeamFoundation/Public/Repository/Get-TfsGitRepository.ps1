@@ -63,7 +63,7 @@ function Get-TfsGitRepository
     }
     catch
     {
-        return $null
+        $PSCmdlet.ThrowTerminatingError($_)
     }
     
     if ($result.value)
