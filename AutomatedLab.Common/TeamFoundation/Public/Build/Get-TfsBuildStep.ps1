@@ -1,33 +1,56 @@
 function Get-TfsBuildStep
 {
+    [CmdletBinding(DefaultParameterSetName = 'Tfs')]
     param
     (
         [Parameter(Mandatory)]
         [string]
         $InstanceName,
 
-        [Parameter(Mandatory)]
+        [Parameter()]
         [string]
-        $CollectionName,
+        $CollectionName = 'DefaultCollection',
 
         [ValidateRange(1, 65535)]
         [uint32]
         $Port,
 
+        [Parameter(Mandatory, ParameterSetName = 'TfsName')]
+        [Parameter(Mandatory, ParameterSetName = 'VstsName')]
+        [SupportsWildcards()]
+        [string]
+        $FriendlyName,
+
+        [Parameter(Mandatory, ParameterSetName = 'TfsHashtable')]
+        [Parameter(Mandatory, ParameterSetName = 'VstsHashtable')]
+        [hashtable]
+        $FilterHashtable,
+
+        [Parameter(Mandatory, ParameterSetName = 'TfsScript')]
+        [Parameter(Mandatory, ParameterSetName = 'VstsScript')]
+        [scriptblock]
+        $FilterScript,
+
         [switch]
         $UseSsl,
 
-        [Parameter(ParameterSetName = 'Tfs')]
+        [Parameter(Mandatory, ParameterSetName = 'Tfs')]
+        [Parameter(Mandatory, ParameterSetName = 'TfsName')]
+        [Parameter(Mandatory, ParameterSetName = 'TfsHashtable')]
+        [Parameter(Mandatory, ParameterSetName = 'TfsScript')]
         [pscredential]
         $Credential,
         
-        [Parameter(ParameterSetName = 'Vsts')]
+        [Parameter(Mandatory, ParameterSetName = 'Vsts')]
+        [Parameter(Mandatory, ParameterSetName = 'VstsName')]
+        [Parameter(Mandatory, ParameterSetName = 'VstsHashtable')]
+        [Parameter(Mandatory, ParameterSetName = 'VstsScript')]
         [string]
         $PersonalAccessToken
     )
 
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
-    $requestUrl += if ( $Port  -gt 0)
+    $requestUrl += if ( $Port -gt 0)
     {
         '{0}{1}/{2}/_apis/distributedtask/tasks' -f $InstanceName, ":$Port", $CollectionName
     }
@@ -69,6 +92,38 @@ function Get-TfsBuildStep
         $result
     }
 
+    if ($FriendlyName)
+    {
+        $steps = if ($FriendlyName -match '(\?|\*)')
+        {
+            $steps | Where-Object -Property friendlyName -like $FriendlyName
+        }
+        else
+        {
+            $steps | Where-Object -Property friendlyName -eq $FriendlyName
+        }
+    }
+
+    if ($FilterHashtable)
+    {
+        $steps = foreach ( $kvp in $FilterHashtable.GetEnumerator())
+        {
+            if ($kvp.Value -match '(\?|\*)')
+            {
+                $steps | Where-Object -Property $kvp.Key -like $kvp.Value
+            }
+            else
+            {
+                $steps | Where-Object -Property $kvp.Key -eq $kvp.Value    
+            }            
+        }
+    }
+
+    if ($FilterScript)
+    {
+        $steps = $steps | Where-Object -FilterScript $FilterScript
+    }
+
     '@('
     foreach ($step in $steps)
     {
@@ -77,7 +132,7 @@ function Get-TfsBuildStep
             enabled         = $true
             continueOnError = $false
             alwaysRun       = $false
-            displayName     = 'YOUR OWN DISPLAY NAME HERE'
+            displayName     = 'YOUR OWN DISPLAY NAME HERE' # e.g. $($step.instanceNameFormat) or $($step.friendlyName)
             task            = @{
                 id          = '$($step.id)'
                 versionSpec = '*'
