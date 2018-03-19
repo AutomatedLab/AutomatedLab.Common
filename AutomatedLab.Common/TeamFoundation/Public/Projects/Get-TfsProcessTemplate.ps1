@@ -39,14 +39,14 @@ function Get-TfsProcessTemplate
         '{0}/{1}/_apis/process/processes?api-version={2}' -f $InstanceName, $CollectionName, $ApiVersion
     }
     
-    $parameters = @{
+    $requestParameters = @{
         Uri    = $requestUrl
         Method = 'Get'
     }
 
     if ( $Credential)
     {
-        $parameters.Credential = $Credential
+        $requestParameters.Credential = $Credential
     }
     else
     {
