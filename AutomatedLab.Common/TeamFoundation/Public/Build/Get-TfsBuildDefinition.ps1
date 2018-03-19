@@ -73,7 +73,7 @@ function Get-TfsBuildDefinition
     }
     catch
     {
-        $PSCmdlet.ThrowTerminatingError($_)
+        Write-Error -ErrorRecord $_
     }
     
     if ($result.value)

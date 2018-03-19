@@ -72,7 +72,7 @@ function New-TfsBuildDefinition
         }
         catch
         {
-            $PSCmdlet.ThrowTerminatingError($_)
+            Write-Error -ErrorRecord $_
         }
     }
 
@@ -85,7 +85,7 @@ function New-TfsBuildDefinition
     }
     catch
     {
-        $PSCmdlet.ThrowTerminatingError($_)
+        Write-Error -ErrorRecord $_
     }
 
     $repoParameters = Sync-Parameter -Command (Get-Command Get-TfsGitRepository) -Parameters $PSBoundParameters
@@ -97,7 +97,7 @@ function New-TfsBuildDefinition
     }
     catch
     {
-        $PSCmdlet.ThrowTerminatingError($_)
+        Write-Error -ErrorRecord $_
     }
 
     $buildDefinition = @{
@@ -168,6 +168,6 @@ function New-TfsBuildDefinition
     }
     catch
     {
-        $PSCmdlet.ThrowTerminatingError($_)
+        Write-Error -ErrorRecord $_
     }
 }

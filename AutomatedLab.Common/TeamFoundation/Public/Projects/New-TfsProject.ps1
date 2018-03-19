@@ -115,7 +115,7 @@ function New-TfsProject
     }
     catch
     {
-        $PSCmdlet.ThrowTerminatingError($_)
+        Write-Error -ErrorRecord $_
     }
 
     $start = Get-Date

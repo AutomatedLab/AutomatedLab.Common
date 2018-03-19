@@ -77,6 +77,6 @@ function Set-TfsProject
     }
     catch
     {
-        $PSCmdlet.ThrowTerminatingError($_)
+        Write-Error -ErrorRecord $_
     }
 }

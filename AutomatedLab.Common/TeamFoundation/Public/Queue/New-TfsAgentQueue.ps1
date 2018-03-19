@@ -83,6 +83,6 @@ function New-TfsAgentQueue
     }
     catch
     {
-        $PSCmdlet.ThrowTerminatingError($_)
+        Write-Error -ErrorRecord $_
     }
 }
