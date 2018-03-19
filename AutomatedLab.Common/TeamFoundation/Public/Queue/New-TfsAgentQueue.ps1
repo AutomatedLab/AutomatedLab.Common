@@ -1,14 +1,15 @@
 function New-TfsAgentQueue
 {
+    
     param
     (
         [Parameter(Mandatory)]
         [string]
         $InstanceName,
 
-        [Parameter(Mandatory)]
+        [Parameter()]
         [string]
-        $CollectionName,
+        $CollectionName = 'DefaultCollection',
 
         [ValidateRange(1, 65535)]
         [uint32]
@@ -20,6 +21,9 @@ function New-TfsAgentQueue
         [Parameter(Mandatory)]
         [string]
         $ProjectName,
+
+        [switch]
+        $UseSsl,
 
         [string]
         $QueueName,

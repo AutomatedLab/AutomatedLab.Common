@@ -1,5 +1,6 @@
 function Get-TfsBuildDefinitionTemplate
 {
+    
     [CmdletBinding(DefaultParameterSetName = 'Cred')]
     param
     (
@@ -7,9 +8,9 @@ function Get-TfsBuildDefinitionTemplate
         [string]
         $InstanceName,
 
-        [Parameter(Mandatory)]
+        [Parameter()]
         [string]
-        $CollectionName,
+        $CollectionName = 'DefaultCollection',
 
         [ValidateRange(1, 65535)]
         [uint32]
