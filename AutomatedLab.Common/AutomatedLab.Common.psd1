@@ -1,7 +1,7 @@
 @{
     RootModule             = 'AutomatedLab.Common.psm1'
 
-    ModuleVersion          = '1.0.6'
+    ModuleVersion          = '1.1.34'
     GUID                   = '554685d3-5c61-4080-afd6-1dd3d4d7a261'
 
     Author                 = 'Raimund Andree, Per Pedersen, Jan-Hendrik Peters'
