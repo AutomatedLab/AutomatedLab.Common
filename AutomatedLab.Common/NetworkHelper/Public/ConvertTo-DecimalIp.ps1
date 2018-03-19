@@ -1,13 +1,6 @@
 Function ConvertTo-DecimalIP
 {
-    <#
-    .Synopsis
-    Converts a Decimal IP address into a 32-bit unsigned integer.
-    .Description
-    ConvertTo-DecimalIP takes a decimal IP, uses a shift-like operation on each octet and returns a single UInt32 value.
-    .Parameter IPAddress
-    An IP Address to convert.
-  #>
+    
 	
     [CmdLetBinding()]
     Param (
