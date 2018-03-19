@@ -12,15 +12,15 @@ foreach ($folder in $importFolders)
     {
         'Types'
         {
-            $types += Get-ChildItem -Path $folder.FullName
+            $types += Get-ChildItem -Path $folder.FullName -Filter *.ps1 -Recurse -File
         }
         'Public'
         {
-            $public += Get-ChildItem -Path  $folder.FullName
+            $public += Get-ChildItem -Path  $folder.FullName -Filter *.ps1 -Recurse -File
         }
         'Private'
         {
-            $private += Get-ChildItem -Path  $folder.FullName
+            $private += Get-ChildItem -Path  $folder.FullName -Filter *.ps1 -Recurse -File
         }
     }
 }
