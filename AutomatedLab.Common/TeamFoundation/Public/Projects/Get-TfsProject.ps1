@@ -1,14 +1,15 @@
 function Get-TfsProject
 {
+    
     param
     (
         [Parameter(Mandatory)]
         [string]
         $InstanceName,
  
-        [Parameter(Mandatory)]
+        [Parameter()]
         [string]
-        $CollectionName,
+        $CollectionName = 'DefaultCollection',
  
         [ValidateRange(1, 65535)]
         [uint32]

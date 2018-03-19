@@ -1,13 +1,6 @@
 Function ConvertTo-DottedDecimalIP
 {
-    <#
-    .Synopsis
-    Returns a dotted decimal IP address from either an unsigned 32-bit integer or a dotted binary string.
-    .Description
-    ConvertTo-DottedDecimalIP uses a regular expression match on the input string to convert to an IP address.
-    .Parameter IPAddress
-    A string representation of an IP address from either UInt32 or dotted binary.
-  #>
+    
 	
     [CmdLetBinding()]
     Param (

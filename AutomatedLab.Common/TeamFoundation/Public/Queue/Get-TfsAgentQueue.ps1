@@ -1,14 +1,15 @@
 function Get-TfsAgentQueue
 {
+    
     param
     (
         [Parameter(Mandatory)]
         [string]
         $InstanceName,
 
-        [Parameter(Mandatory)]
+        [Parameter()]
         [string]
-        $CollectionName,
+        $CollectionName = 'DefaultCollection',
 
         [ValidateRange(1, 65535)]
         [uint32]
@@ -23,6 +24,9 @@ function Get-TfsAgentQueue
 
         [string]
         $QueueName,
+
+        [switch]
+        $UseSsl,
 
         [Parameter(Mandatory, ParameterSetName = 'Cred')]
         [pscredential]

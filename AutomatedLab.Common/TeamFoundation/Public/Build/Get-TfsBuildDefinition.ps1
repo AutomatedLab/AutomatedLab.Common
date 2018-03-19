@@ -1,5 +1,6 @@
 function Get-TfsBuildDefinition
 {
+    
     [CmdletBinding(DefaultParameterSetName = 'Cred')]
     param
     (
@@ -7,9 +8,9 @@ function Get-TfsBuildDefinition
         [string]
         $InstanceName,
 
-        [Parameter(Mandatory)]
+        [Parameter()]
         [string]
-        $CollectionName,
+        $CollectionName = 'DefaultCollection',
 
         [ValidateRange(1, 65535)]
         [uint32]
@@ -21,10 +22,6 @@ function Get-TfsBuildDefinition
         [Parameter(Mandatory)]
         [string]
         $ProjectName,
-
-        [Parameter(Mandatory)]
-        [string]
-        $DefinitionName,
 
         [string]
         $QueueName,
