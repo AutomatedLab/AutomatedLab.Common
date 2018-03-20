@@ -71,15 +71,17 @@ function Get-TfsReleaseDefinition
     }
     catch
     {
+        if ($_.ErrorDetails.Message)
+        {
+            $errorDetails = $_.ErrorDetails.Message | ConvertFrom-Json
+            if ($errorDetails.typeKey -eq 'ProjectDoesNotExistWithNameException')
+            {
+                return $null
+            }
+        }
+        
         Write-Error -ErrorRecord $_
     }
     
-    if ($result.value)
-    {
-        return $result.value
-    }
-    elseif ($result)
-    {
-        return $result
-    }
+    return $result.value
 }

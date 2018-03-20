@@ -136,7 +136,7 @@ function New-TfsReleaseDefinition
                         "workflowTasks"   = $ReleaseTasks
                         "deploymentInput" = @{
                             "demands"               = @() 
-                            "queueId"               = 1 
+                            "queueId"               = $queue.id 
                             "enableAccessToken"     = $false 
                             "skipArtifactsDownload" = $false 
                             "timeoutInMinutes"      = 0

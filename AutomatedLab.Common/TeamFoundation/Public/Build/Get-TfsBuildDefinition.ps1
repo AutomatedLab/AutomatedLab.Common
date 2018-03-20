@@ -39,7 +39,7 @@ function Get-TfsBuildDefinition
     )
     
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
-    $requestUrl += if ( $Port  -gt 0)
+    $requestUrl += if ( $Port -gt 0)
     {
         '{0}{1}/{2}/{3}/_apis/build/definitions' -f $InstanceName, ":$Port", $CollectionName, $ProjectName
     }
@@ -75,15 +75,17 @@ function Get-TfsBuildDefinition
     }
     catch
     {
+        if ($_.ErrorDetails.Message)
+        {
+            $errorDetails = $_.ErrorDetails.Message | ConvertFrom-Json
+            if ($errorDetails.typeKey -eq 'ProjectDoesNotExistWithNameException')
+            {
+                return $null
+            }
+        }
+        
         Write-Error -ErrorRecord $_
     }
     
-    if ($result.value)
-    {
-        return $result.value
-    }
-    elseif ($result)
-    {
-        return $result
-    }
+    return $result.value
 }

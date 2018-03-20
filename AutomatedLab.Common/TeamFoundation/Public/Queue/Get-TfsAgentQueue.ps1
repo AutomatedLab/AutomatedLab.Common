@@ -82,12 +82,5 @@ function Get-TfsAgentQueue
         Write-Error -ErrorRecord $_
     }
     
-    if ($result.value)
-    {
-        return $result.value
-    }
-    elseif ($result)
-    {
-        return $result
-    }
+    return $result.value
 }

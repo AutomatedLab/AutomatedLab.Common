@@ -69,6 +69,14 @@ function Get-TfsProject
     }
     catch
     {
+        if ($_.ErrorDetails.Message)
+        {
+            $errorDetails = $_.ErrorDetails.Message | ConvertFrom-Json
+            if ($errorDetails.typeKey -eq 'ProjectDoesNotExistWithNameException')
+            {
+                return $null
+            }
+        }
         Write-Error -ErrorRecord $_
     }
      
