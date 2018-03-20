@@ -60,6 +60,15 @@ function New-TfsBuildDefinition
         $requestUrl += '?api-version={0}' -f $ApiVersion
     }
 
+    $exBuildParam = Sync-Parameter -Command (Get-Command Get-TfsBuildDefinition) -Parameters $PSBoundParameters
+    $exBuildParam.Remove('Version')
+    $existingBuild = Get-TfsBuildDefinition @exBuildParam
+    if ($existingBuild)
+    { 
+        Write-Verbose -Message ('Build definition {0} in {1} already exists.' -f $DefinitionName, $ProjectName);
+        return 
+    }
+
     $qparameters = Sync-Parameter -Command (Get-Command Get-TfsAgentQueue) -Parameters $PSBoundParameters
     $qparameters.Remove('ApiVersion') # preview-API is called
     $qparameters.ErrorAction = 'SilentlyContinue'
@@ -67,6 +76,7 @@ function New-TfsBuildDefinition
 
     if (-not $queue)
     {
+        Write-Verbose -Message ('No existing queue found for project {0}. Creating new queue.' -f $ProjectName)
         $parameters = Sync-Parameter -Command (Get-Command New-TfsAgentQueue) -Parameters $PSBoundParameters
         $parameters.Remove('ApiVersion') # preview-API is called
         $parameters.ErrorAction = 'Stop'
@@ -171,6 +181,7 @@ function New-TfsBuildDefinition
     try
     {
         $result = Invoke-RestMethod @requestParameters
+        Write-Verbose -Message ('New build definition {0} created for project {1}' -f $DefinitionName, $ProjectName)
     }
     catch
     {

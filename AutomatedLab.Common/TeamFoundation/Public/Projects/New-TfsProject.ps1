@@ -82,6 +82,7 @@ function New-TfsProject
     $projectParameters.ErrorAction = 'SilentlyContinue'
     if (Get-TfsProject @projectParameters)
     {
+        Write-Verbose -Message ('Project {0} already exists' -f $ProjectName)
         return
     }
 

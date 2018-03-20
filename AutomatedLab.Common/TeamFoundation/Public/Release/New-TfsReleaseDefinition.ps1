@@ -59,7 +59,11 @@ function New-TfsReleaseDefinition
     $exReleaseParam = Sync-Parameter -Command (Get-Command Get-TfsReleaseDefinition) -Parameters $PSBoundParameters
     $exReleaseParam.Remove('Version')
     $existingRelease = Get-TfsReleaseDefinition @exReleaseParam
-    if ($existingRelease) { return }
+    if ($existingRelease)
+    {
+        Write-Verbose -Message ('Release definition {0} in {1} already exists.' -f $ReleaseName, $ProjectName);
+        return 
+    }
 
     $qparameters = Sync-Parameter -Command (Get-Command Get-TfsAgentQueue) -Parameters $PSBoundParameters
     $qparameters.Remove('ApiVersion') # preview-API is called
@@ -245,6 +249,7 @@ function New-TfsReleaseDefinition
     try
     {
         $result = Invoke-RestMethod @requestParameters
+        Write-Verbose -Message ('New release definition {0} created for project {1}' -f $ReleaseName, $ProjectName)
     }
     catch
     {

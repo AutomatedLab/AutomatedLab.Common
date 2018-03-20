@@ -80,6 +80,7 @@ function Set-TfsProject
     try
     {
         $result = Invoke-RestMethod @requestParameters
+        Write-Verbose ('Project {0} renamed to {1}' -f $ProjectGuid, $NewName)
     }
     catch
     {
