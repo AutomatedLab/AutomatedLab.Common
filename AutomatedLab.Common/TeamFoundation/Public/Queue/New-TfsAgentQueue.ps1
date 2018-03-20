@@ -1,14 +1,15 @@
 function New-TfsAgentQueue
 {
+    
     param
     (
         [Parameter(Mandatory)]
         [string]
         $InstanceName,
 
-        [Parameter(Mandatory)]
+        [Parameter()]
         [string]
-        $CollectionName,
+        $CollectionName = 'DefaultCollection',
 
         [ValidateRange(1, 65535)]
         [uint32]
@@ -20,6 +21,9 @@ function New-TfsAgentQueue
         [Parameter(Mandatory)]
         [string]
         $ProjectName,
+
+        [switch]
+        $UseSsl,
 
         [string]
         $QueueName,
@@ -39,11 +43,16 @@ function New-TfsAgentQueue
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
     $requestUrl += if ( $Port -gt 0)
     {
-        '{0}{1}/{2}/{3}/_apis/distributedTask/queues?api-version={4}' -f $InstanceName, ":$Port", $CollectionName, $ProjectName, $ApiVersion
+        '{0}{1}/{2}/{3}/_apis/distributedTask/queues' -f $InstanceName, ":$Port", $CollectionName, $ProjectName
     }
     else
     {
-        '{0}/{1}/{2}/_apis/distributedTask/queues?api-version={3}' -f $InstanceName, $CollectionName, $ProjectName, $ApiVersion
+        '{0}/{1}/{2}/_apis/distributedTask/queues' -f $InstanceName, $CollectionName, $ProjectName
+    }
+    
+    if ($ApiVersion)
+    {
+        $requestUrl += '?api-version={0}' -f $ApiVersion
     }
 
     $poolParameter = Sync-Parameter -Command (Get-Command Get-TfsAgentPool) -Parameters $PSBoundParameters

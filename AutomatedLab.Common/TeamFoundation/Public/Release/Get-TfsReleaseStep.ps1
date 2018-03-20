@@ -1,4 +1,4 @@
-function Get-TfsBuildStep
+function Get-TfsReleaseStep
 {
     [CmdletBinding(DefaultParameterSetName = 'Tfs')]
     param
@@ -85,11 +85,11 @@ function Get-TfsBuildStep
     
     $steps = if ($result.value)
     {
-        $result.value
+        $result.value | Where-Object -Property visibility -Contains 'Release'
     }
     elseif ($result)
     {
-        $result
+        $result | Where-Object -Property visibility -Contains 'Release'
     }
 
     if ($FriendlyName)
@@ -129,15 +129,15 @@ function Get-TfsBuildStep
     {
         "
         @{
-            enabled         = $true
-            continueOnError = $false
-            alwaysRun       = $false
-            displayName     = 'YOUR OWN DISPLAY NAME HERE' # e.g. $($step.instanceNameFormat) or $($step.friendlyName)
-            task            = @{
-                id          = '$($step.id)'
-                versionSpec = '*'
-            }
-            inputs          = @{"
+            enabled          = `$true
+            continueOnError  = `$false
+            alwaysRun        = `$false
+            timeoutInMinutes = 0
+            definitionType   = 'task'
+            version          = '*'
+            name             = 'YOUR OWN DISPLAY NAME HERE' # e.g. $($step.instanceNameFormat) or $($step.friendlyName)
+            taskid           = '$($step.id)'
+            inputs           = @{"
         foreach ($input in $step.inputs)
         {
             $required = if ($input.required) {$true}else {$false}

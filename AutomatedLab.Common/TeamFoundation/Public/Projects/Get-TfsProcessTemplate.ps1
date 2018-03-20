@@ -1,14 +1,15 @@
 function Get-TfsProcessTemplate
 {
+    
     param
     (
         [Parameter(Mandatory)]
         [string]
         $InstanceName,
 
-        [Parameter(Mandatory)]
+        [Parameter()]
         [string]
-        $CollectionName,
+        $CollectionName = 'DefaultCollection',
 
         [ValidateRange(1, 65535)]
         [uint32]
@@ -32,21 +33,26 @@ function Get-TfsProcessTemplate
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
     $requestUrl += if ($Port -gt 0)
     {
-        '{0}{1}/{2}/_apis/process/processes?api-version={3}' -f $InstanceName, ":$Port", $CollectionName, $ApiVersion
+        '{0}{1}/{2}/_apis/process/processes' -f $InstanceName, ":$Port", $CollectionName
     }
     else
     {
-        '{0}/{1}/_apis/process/processes?api-version={2}' -f $InstanceName, $CollectionName, $ApiVersion
+        '{0}/{1}/_apis/process/processes' -f $InstanceName, $CollectionName
     }
     
-    $parameters = @{
+    if ($ApiVersion)
+    {
+        $requestUrl += '?api-version={0}' -f $ApiVersion
+    }
+    
+    $requestParameters = @{
         Uri    = $requestUrl
         Method = 'Get'
     }
 
     if ( $Credential)
     {
-        $parameters.Credential = $Credential
+        $requestParameters.Credential = $Credential
     }
     else
     {

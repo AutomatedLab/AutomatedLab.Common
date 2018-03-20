@@ -1,5 +1,7 @@
 function Test-IsAdministrator
 {
+    
+    [CmdletBinding()]
     param ()
     
     $currentUser = [Security.Principal.WindowsIdentity]::GetCurrent()

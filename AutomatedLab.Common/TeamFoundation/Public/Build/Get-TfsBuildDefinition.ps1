@@ -1,5 +1,6 @@
 function Get-TfsBuildDefinition
 {
+    
     [CmdletBinding(DefaultParameterSetName = 'Cred')]
     param
     (
@@ -7,9 +8,9 @@ function Get-TfsBuildDefinition
         [string]
         $InstanceName,
 
-        [Parameter(Mandatory)]
+        [Parameter()]
         [string]
-        $CollectionName,
+        $CollectionName = 'DefaultCollection',
 
         [ValidateRange(1, 65535)]
         [uint32]
@@ -21,10 +22,6 @@ function Get-TfsBuildDefinition
         [Parameter(Mandatory)]
         [string]
         $ProjectName,
-
-        [Parameter(Mandatory)]
-        [string]
-        $DefinitionName,
 
         [string]
         $QueueName,
@@ -42,13 +39,18 @@ function Get-TfsBuildDefinition
     )
     
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
-    $requestUrl += if ( $Port  -gt 0)
+    $requestUrl += if ( $Port -gt 0)
     {
-        '{0}{1}/{2}/{3}/_apis/build/definitions?api-version={4}' -f $InstanceName, ":$Port", $CollectionName, $ProjectName, $ApiVersion
+        '{0}{1}/{2}/{3}/_apis/build/definitions' -f $InstanceName, ":$Port", $CollectionName, $ProjectName
     }
     else
     {
-        '{0}/{1}/{2}/_apis/build/definitions?api-version={3}' -f $InstanceName, $CollectionName, $ProjectName, $ApiVersion
+        '{0}/{1}/{2}/_apis/build/definitions' -f $InstanceName, $CollectionName, $ProjectName
+    }
+    
+    if ($ApiVersion)
+    {
+        $requestUrl += '?api-version={0}' -f $ApiVersion
     }
 
     $requestParameters = @{
@@ -73,15 +75,17 @@ function Get-TfsBuildDefinition
     }
     catch
     {
+        if ($_.ErrorDetails.Message)
+        {
+            $errorDetails = $_.ErrorDetails.Message | ConvertFrom-Json
+            if ($errorDetails.typeKey -eq 'ProjectDoesNotExistWithNameException')
+            {
+                return $null
+            }
+        }
+        
         Write-Error -ErrorRecord $_
     }
     
-    if ($result.value)
-    {
-        return $result.value
-    }
-    elseif ($result)
-    {
-        return $result
-    }
+    return $result.value
 }

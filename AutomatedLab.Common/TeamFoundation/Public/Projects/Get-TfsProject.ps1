@@ -1,14 +1,15 @@
 function Get-TfsProject
 {
+    
     param
     (
         [Parameter(Mandatory)]
         [string]
         $InstanceName,
  
-        [Parameter(Mandatory)]
+        [Parameter()]
         [string]
-        $CollectionName,
+        $CollectionName = 'DefaultCollection',
  
         [ValidateRange(1, 65535)]
         [uint32]
@@ -35,11 +36,16 @@ function Get-TfsProject
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
     $requestUrl += if ( $Port -gt 0)
     {
-        '{0}{1}/{2}/_apis/projects{4}?api-version={3}' -f $InstanceName, ":$Port", $CollectionName, $ApiVersion, "/$ProjectName"
+        '{0}{1}/{2}/_apis/projects{3}' -f $InstanceName, ":$Port", $CollectionName, "/$ProjectName"
     }
     else
     {
-        '{0}/{1}/_apis/projects{3}?api-version={2}' -f $InstanceName, $CollectionName, $ApiVersion, "/$ProjectName"
+        '{0}/{1}/_apis/projects{2}' -f $InstanceName, $CollectionName, "/$ProjectName"
+    }
+    
+    if ($ApiVersion)
+    {
+        $requestUrl += '?api-version={0}' -f $ApiVersion
     }
  
     $requestParameters = @{
@@ -63,6 +69,14 @@ function Get-TfsProject
     }
     catch
     {
+        if ($_.ErrorDetails.Message)
+        {
+            $errorDetails = $_.ErrorDetails.Message | ConvertFrom-Json
+            if ($errorDetails.typeKey -eq 'ProjectDoesNotExistWithNameException')
+            {
+                return $null
+            }
+        }
         Write-Error -ErrorRecord $_
     }
      

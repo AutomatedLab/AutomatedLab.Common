@@ -1,6 +1,5 @@
-function Get-TfsBuildDefinitionTemplate
+function Get-TfsReleaseDefinition
 {
-    
     [CmdletBinding(DefaultParameterSetName = 'Cred')]
     param
     (
@@ -17,7 +16,7 @@ function Get-TfsBuildDefinitionTemplate
         $Port,
 
         [string]
-        $ApiVersion = '2.0',
+        $ApiVersion,
 
         [Parameter(Mandatory)]
         [string]
@@ -36,15 +35,15 @@ function Get-TfsBuildDefinitionTemplate
     )
 
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
-    $requestUrl += if ( $Port  -gt 0)
+    $requestUrl += if ( $Port -gt 0)
     {
-        '{0}{1}/{2}/{3}/_apis/build/definitions/templates' -f $InstanceName, ":$Port", $CollectionName, $ProjectName
+        '{0}{1}/{2}/{3}/_apis/release/definitions' -f $InstanceName, ":$Port", $CollectionName, $ProjectName
     }
     else
     {
-        '{0}/{1}/{2}/_apis/build/definitions/templates' -f $InstanceName, $CollectionName, $ProjectName
+        '{0}/{1}/{2}/_apis/release/definitions' -f $InstanceName, $CollectionName, $ProjectName
     }
-    
+
     if ($ApiVersion)
     {
         $requestUrl += '?api-version={0}' -f $ApiVersion
@@ -72,15 +71,17 @@ function Get-TfsBuildDefinitionTemplate
     }
     catch
     {
+        if ($_.ErrorDetails.Message)
+        {
+            $errorDetails = $_.ErrorDetails.Message | ConvertFrom-Json
+            if ($errorDetails.typeKey -eq 'ProjectDoesNotExistWithNameException')
+            {
+                return $null
+            }
+        }
+        
         Write-Error -ErrorRecord $_
     }
     
-    if ($result.value)
-    {
-        return $result.value
-    }
-    elseif ($result)
-    {
-        return $result
-    }
+    return $result.value
 }
