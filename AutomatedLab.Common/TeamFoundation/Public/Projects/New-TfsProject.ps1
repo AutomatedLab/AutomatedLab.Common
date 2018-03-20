@@ -59,11 +59,16 @@ function New-TfsProject
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
     $requestUrl += if ( $Port -gt 0)
     {
-        '{0}{1}/{2}/_apis/projects?api-version={3}' -f $InstanceName, ":$Port", $CollectionName, $ApiVersion
+        '{0}{1}/{2}/_apis/projects' -f $InstanceName, ":$Port", $CollectionName
     }
     else
     {
-        '{0}/{1}/_apis/projects?api-version={2}' -f $InstanceName, $CollectionName, $ApiVersion
+        '{0}/{1}/_apis/projects' -f $InstanceName, $CollectionName
+    }
+    
+    if ($ApiVersion)
+    {
+        $requestUrl += '?api-version={0}' -f $ApiVersion
     }
 
     if ($PSCmdlet.ParameterSetName -like 'Name*')

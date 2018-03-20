@@ -1,33 +1,35 @@
-function Get-TfsGitRepository
+function Get-TfsReleaseDefinition
 {
+    [CmdletBinding(DefaultParameterSetName = 'Cred')]
     param
     (
         [Parameter(Mandatory)]
         [string]
         $InstanceName,
 
-        [Parameter(Mandatory)]
+        [Parameter()]
         [string]
-        $CollectionName,
+        $CollectionName = 'DefaultCollection',
 
         [ValidateRange(1, 65535)]
         [uint32]
         $Port,
 
         [string]
-        $ApiVersion = '1.0',
+        $ApiVersion,
 
+        [Parameter(Mandatory)]
         [string]
         $ProjectName,
 
         [switch]
         $UseSsl,
 
-        [Parameter(ParameterSetName = 'Tfs')]
+        [Parameter(Mandatory, ParameterSetName = 'Cred')]
         [pscredential]
         $Credential,
         
-        [Parameter(ParameterSetName = 'Vsts')]
+        [Parameter(Mandatory, ParameterSetName = 'Pat')]
         [string]
         $PersonalAccessToken
     )
@@ -35,22 +37,23 @@ function Get-TfsGitRepository
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
     $requestUrl += if ( $Port -gt 0)
     {
-        '{0}{1}/{2}/{3}/_apis/git/repositories' -f $InstanceName, ":$Port", $CollectionName, $ProjectName, $ApiVersion
+        '{0}{1}/{2}/{3}/_apis/release/definitions' -f $InstanceName, ":$Port", $CollectionName, $ProjectName
     }
     else
     {
-        '{0}/{1}/{2}/_apis/git/repositories' -f $InstanceName, $CollectionName, $ProjectName, $ApiVersion
+        '{0}/{1}/{2}/_apis/release/definitions' -f $InstanceName, $CollectionName, $ProjectName
     }
-    
+
     if ($ApiVersion)
     {
         $requestUrl += '?api-version={0}' -f $ApiVersion
     }
 
     $requestParameters = @{
-        Uri         = $requestUrl
-        Method      = 'Get'
-        ErrorAction = 'Stop'
+        Uri             = $requestUrl
+        Method          = 'Get'
+        ErrorAction     = 'Stop'
+        UseBasicParsing = $true
     }
 
     if ($Credential)

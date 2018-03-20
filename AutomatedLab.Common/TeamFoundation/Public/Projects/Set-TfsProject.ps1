@@ -43,11 +43,16 @@ function Set-TfsProject
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
     $requestUrl += if ( $Port -gt 0)
     {
-        '{0}{1}/{2}/_apis/projects/{4}?api-version={3}' -f $InstanceName, ":$Port", $CollectionName, $ApiVersion, $ProjectGuid
+        '{0}{1}/{2}/_apis/projects/{3}' -f $InstanceName, ":$Port", $CollectionName, $ProjectGuid
     }
     else
     {
-        '{0}/{1}/_apis/projects/{3}?api-version={2}' -f $InstanceName, $CollectionName, $ApiVersion, $ProjectGuid
+        '{0}/{1}/_apis/projects/{2}' -f $InstanceName, $CollectionName, $ProjectGuid
+    }
+    
+    if ($ApiVersion)
+    {
+        $requestUrl += '?api-version={0}' -f $ApiVersion
     }
 
     $payload = @{

@@ -33,11 +33,16 @@ function Get-TfsProcessTemplate
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
     $requestUrl += if ($Port -gt 0)
     {
-        '{0}{1}/{2}/_apis/process/processes?api-version={3}' -f $InstanceName, ":$Port", $CollectionName, $ApiVersion
+        '{0}{1}/{2}/_apis/process/processes' -f $InstanceName, ":$Port", $CollectionName
     }
     else
     {
-        '{0}/{1}/_apis/process/processes?api-version={2}' -f $InstanceName, $CollectionName, $ApiVersion
+        '{0}/{1}/_apis/process/processes' -f $InstanceName, $CollectionName
+    }
+    
+    if ($ApiVersion)
+    {
+        $requestUrl += '?api-version={0}' -f $ApiVersion
     }
     
     $requestParameters = @{

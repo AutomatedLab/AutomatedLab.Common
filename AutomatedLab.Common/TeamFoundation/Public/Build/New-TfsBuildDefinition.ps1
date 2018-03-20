@@ -48,11 +48,16 @@ function New-TfsBuildDefinition
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
     $requestUrl += if ( $Port -gt 0)
     {
-        '{0}{1}/{2}/{3}/_apis/build/definitions?api-version={4}' -f $InstanceName, ":$Port", $CollectionName, $ProjectName, $ApiVersion
+        '{0}{1}/{2}/{3}/_apis/build/definitions' -f $InstanceName, ":$Port", $CollectionName, $ProjectName
     }
     else
     {
-        '{0}/{1}/{2}/_apis/build/definitions?api-version={3}' -f $InstanceName, $CollectionName, $ProjectName, $ApiVersion
+        '{0}/{1}/{2}/_apis/build/definitions' -f $InstanceName, $CollectionName, $ProjectName
+    }
+    
+    if ($ApiVersion)
+    {
+        $requestUrl += '?api-version={0}' -f $ApiVersion
     }
 
     $qparameters = Sync-Parameter -Command (Get-Command Get-TfsAgentQueue) -Parameters $PSBoundParameters
