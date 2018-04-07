@@ -11,6 +11,8 @@ function Install-SoftwarePackage
         
         [bool]$UseShellExecute,
 
+        [int[]]$ExpectedReturnCodes,
+
         [pscredential]$Credential
     )
     
@@ -202,7 +204,10 @@ function Install-SoftwarePackage
     }
         
     Write-Verbose "Exit code of installation process is '$($result.Process.ExitCode)'"
-    if ($result.Process.ExitCode -ne 0 -and $result.Process.ExitCode -ne 3010 -and $result.Process.ExitCode -ne $null)
+    if ($result.Process.ExitCode -ne 0 `
+    -and $result.Process.ExitCode -ne 3010 `
+    -and $result.Process.ExitCode -ne $null `
+    -and $result.Process.ExitCode -notin $ExpectedReturnCodes)
     {
         throw (New-Object System.ComponentModel.Win32Exception($result.Process.ExitCode))
     }
