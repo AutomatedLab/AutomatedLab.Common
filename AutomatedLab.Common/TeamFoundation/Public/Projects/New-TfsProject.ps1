@@ -126,25 +126,20 @@ function New-TfsProject
     }
 
     $start = Get-Date
-    while (-not $projectStatus -and ((Get-Date) - $start -gt $Timeout))
+    $projectStatus = Get-TfsProject @projectParameters
+
+    while ($projectStatus.State -ne 'wellFormed' -and ((Get-Date) - $start -lt $Timeout))
     {
         Write-Verbose -Message ('Waiting {0} for {1} to enter status wellFormed' -f $Timeout, $ProjectName)
         Start-Sleep -Seconds 1
-        $projectStatus = (Get-TfsProject @projectParameters).State -eq 'wellFormed'
+        $projectStatus = Get-TfsProject @projectParameters
     }
 
-    if (-not $projectStatus)
+    if (-not $projectStatus.State -eq 'wellFormed')
     {
         Write-Error -Message ('Unable to create new project in {0}' -f $Timeout) -TargetObject $ProjectName
         return
     }
 
-    if ($result.value)
-    {
-        return $result.value
-    }
-    elseif ($result)
-    {
-        return $result
-    }
+    return $projectStatus
 }
