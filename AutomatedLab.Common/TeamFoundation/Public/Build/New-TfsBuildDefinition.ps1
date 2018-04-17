@@ -126,7 +126,7 @@ function New-TfsBuildDefinition
         "build"      = $BuildTasks
         "repository" = @{
             "id"            = $repo.id
-            "type"          = "tfsgit"
+            "type"          = "TfsGit"
             "name"          = $repo.name
             "defaultBranch" = "refs/heads/master"
             "url"           = $repo.remoteUrl
@@ -158,7 +158,7 @@ function New-TfsBuildDefinition
                 "allowOverride" = $true
             }
         }
-        "triggers"   = @()
+        #"triggers"   = @()
     }
 
     $requestParameters = @{
