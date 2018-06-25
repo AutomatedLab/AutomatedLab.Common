@@ -23,13 +23,14 @@ function Get-DotNetFrameworkVersion
         '393297' = @{ Version = [System.Version]'4.6'     ; Comment = '(NON Windows 10)'                  }
         '394254' = @{ Version = [System.Version]'4.6.1'   ; Comment = '(Windows 10)'                      }
         '394271' = @{ Version = [System.Version]'4.6.1'   ; Comment = '(NON Windows 10)'                  }
-        '394802' = @{ Version = [System.Version]'4.6.2'   ; Comment = '(Windows 10 Anniversary Update)'   }
+        '394802' = @{ Version = [System.Version]'4.6.2'   ; Comment = '(Windows 10 1607)'                 }
         '394806' = @{ Version = [System.Version]'4.6.2'   ; Comment = '(NON Windows 10)'                  }
-        '460798' = @{ Version = [System.Version]'4.7'     ; Comment = '(Windows 10 Creators Update)'      }
+        '460798' = @{ Version = [System.Version]'4.7'     ; Comment = '(Windows 10 1703)'                 }
         '460805' = @{ Version = [System.Version]'4.7'     ; Comment = '(NON Windows 10)'                  }
-        '461308' = @{ Version = [System.Version]'4.7.1'   ; Comment = '(Windows 10 Fall Creators Update)' }
+        '461308' = @{ Version = [System.Version]'4.7.1'   ; Comment = '(Windows 10 1709)'                 }
         '461310' = @{ Version = [System.Version]'4.7.1'   ; Comment = '(NON Windows 10)'                  }
-        '461808' = @{ Version = [System.Version]'4.7.0356';                                               }
+        '461808' = @{ Version = [System.Version]'4.7.2'   ; Comment = '(Windows 10 1803)'                 }
+        '461814' = @{ Version = [System.Version]'4.7.2'   ; Comment = '(NON Windows 10)'                  }
     }
 
     foreach($computer in $ComputerName)
