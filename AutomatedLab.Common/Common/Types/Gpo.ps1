@@ -209,6 +209,16 @@ namespace GPO
         RegSAM samDesired,
         UInt32 Reserved);
 
+        /// <summary>
+        /// Removes the specified value from the specified registry key and subkey.
+        /// </summary>
+        /// See https://msdn.microsoft.com/en-us/library/windows/desktop/ms724848(v=vs.85).aspx for more info about the parameters and return value.<br/>
+        [DllImport("advapi32.dll", EntryPoint = "RegDeleteKeyValue", SetLastError = true)]
+        public static extern Int32 RegDeleteKeyValue(
+        UInt32 hKey,
+        String lpSubKey,
+        string lpValueName);
+
         #endregion
 
         /// <summary>
@@ -471,12 +481,11 @@ namespace GPO
                     if (RegOpenKeyEx((UIntPtr)gphKey, subKey, 0, RegSAM.QueryValue, out hKey) == 0)
                     {
                         RegCloseKey((UInt32)hKey);
-                        // delete the GPO
-                        Int32 hr = RegDeleteKeyEx(
-                        gphKey,
-                        subKey,
-                        RegSAM.Write,
-                        0);
+                        // delete the GPO                        
+                        Int32 hr = RegDeleteKeyValue(
+                            gphKey,
+                            subKey,
+                            valueName);
                         if (0 != hr)
                         {
                             RegCloseKey(gphKey);
