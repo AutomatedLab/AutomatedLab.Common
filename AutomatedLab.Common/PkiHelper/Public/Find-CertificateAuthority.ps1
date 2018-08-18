@@ -4,19 +4,28 @@ function Find-CertificateAuthority
     param(
         [string]$DomainName
     )
+
+    Add-Type -AssemblyName System.DirectoryServices.AccountManagement
+
+    try
+    {
+        $ctx = New-Object System.DirectoryServices.AccountManagement.PrincipalContext('Domain', $DomainName)
+    }
+    catch
+    {
+        Write-Error "The domain '$DomainName' could not be contacted"
+        return
+    }
     
     try
     {
-        if (-not $DomainName)
+        $configDn = ([ADSI]'LDAP://RootDSE').configurationNamingContext
+        $cdpContainer = [ADSI]"LDAP://CN=CDP,CN=Public Key Services,CN=Services,$configDn"
+
+        if (-not $cdpContainer)
         {
-            $DomainName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().GetDirectoryEntry().distinguishedName
+            Write-Error 'Could not connect to CDP container' -ErrorAction Stop
         }
-        else
-        {
-            $ctx = New-Object System.DirectoryServices.ActiveDirectory.DirectoryContext('Domain', $DomainName)
-            $DomainName = [System.DirectoryServices.ActiveDirectory.Domain]::GetDomain($ctx).GetDirectoryEntry().distinguishedName
-        }
-        $cdpContainer = [ADSI]"LDAP://CN=CDP,CN=Public Key Services,CN=Services,CN=Configuration,$DomainName"
     }
     catch
     {
@@ -31,6 +40,16 @@ function Find-CertificateAuthority
         {
             $machine = ($item.distinguishedName -split '=|,')[1]
             $caName = ($item.Children.distinguishedName -split '=|,')[1]
+
+            if ($DomainName)
+            {
+                $group = [System.DirectoryServices.AccountManagement.GroupPrincipal]::FindByIdentity($ctx, 'Cert Publishers')
+                $machine = $group.Members | Where-Object Name -eq $machine
+                if ($machine.Context.Name -ne $DomainName)
+                {
+                    continue
+                }
+            }
                         
             $certificateAuthority = "$machine\$caName"
                         
