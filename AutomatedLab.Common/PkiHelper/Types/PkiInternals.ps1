@@ -73,21 +73,22 @@ namespace Pki.CATemplate
     [Flags]
     public enum EnrollmentFlags
     {
-        IncludeSymmetricAlgorithms = 1,//This flag instructs the client and server to include a Secure/Multipurpose Internet Mail Extensions (S/MIME) certificate extension, as specified in RFC4262, in the request and in the issued certificate.  
-        CAManagerApproval = 2,// This flag instructs the CA to put all requests in a pending state.  
-        KraPublish = 4,// This flag instructs the CA to publish the issued certificate to the key recovery agent (KRA) container in Active Directory.  
-        DsPublish = 8,// This flag instructs clients and CA servers to append the issued certificate to the userCertificate attribute, as specified in RFC4523, on the user object in Active Directory.  
-        AutoenrollmentCheckDsCert = 16,// This flag instructs clients not to do autoenrollment for a certificate based on this template if the user's userCertificate attribute (specified in RFC4523) in Active Directory has a valid certificate based on the same template.  
-        Autoenrollment = 32,//This flag instructs clients to perform autoenrollment for the specified template.  
-        ReenrollExistingCert = 64,//This flag instructs clients to sign the renewal request using the private key of the existing certificate.
-        RequireUserInteraction = 256,// This flag instructs the client to obtain user consent before attempting to enroll for a certificate that is based on the specified template.
-        RemoveInvalidFromStore = 1024,// This flag instructs the autoenrollment client to delete any certificates that are no longer needed based on the specific template from the local certificate storage.
-        AllowEnrollOnBehalfOf = 2048,//This flag instructs the server to allow enroll on behalf of(EOBO) functionality.
-        IncludeOcspRevNoCheck = 4096,// This flag instructs the server to not include revocation information and add the id-pkix-ocsp-nocheck extension, as specified in RFC2560 section �4.2.2.2.1, to the certificate that is issued.    Windows Server 2003 - this flag is not supported.
-        ReuseKeyTokenFull = 8192,//This flag instructs the client to reuse the private key for a smart card-based certificate renewal if it is unable to create a new private key on the card.Windows XP, Windows Server 2003 - this flag is not supported. NoRevocationInformation 16384 This flag instructs the server to not include revocation information in the issued certificate. Windows Server 2003, Windows Server 2008 - this flag is not supported.
-        BasicConstraintsInEndEntityCerts = 32768,//This flag instructs the server to include Basic Constraints extension in the end entity certificates. Windows Server 2003, Windows Server 2008 - this flag is not supported.
-        IgnoreEnrollOnReenrollment = 65536,//This flag instructs the CA to ignore the requirement for Enroll permissions on the template when processing renewal requests. Windows Server 2003, Windows Server 2008, Windows Server 2008 R2 - this flag is not supported.
-        IssuancePoliciesFromRequest = 131072,//This flag indicates that the certificate issuance policies to be included in the issued certificate come from the request rather than from the template. The template contains a list of all of the issuance policies that the request is allowed to specify; if the request contains policies that are not listed in the template, then the request is rejected. Windows Server 2003, Windows Server 2008, Windows Server 2008 R2 - this flag is not supported.
+        None = 0,
+        IncludeSymmetricAlgorithms = 1, //This flag instructs the client and server to include a Secure/Multipurpose Internet Mail Extensions (S/MIME) certificate extension, as specified in RFC4262, in the request and in the issued certificate.  
+        CAManagerApproval = 2, // This flag instructs the CA to put all requests in a pending state.  
+        KraPublish = 4, // This flag instructs the CA to publish the issued certificate to the key recovery agent (KRA) container in Active Directory.  
+        DsPublish = 8, // This flag instructs clients and CA servers to append the issued certificate to the userCertificate attribute, as specified in RFC4523, on the user object in Active Directory.  
+        AutoenrollmentCheckDsCert = 16, // This flag instructs clients not to do autoenrollment for a certificate based on this template if the user's userCertificate attribute (specified in RFC4523) in Active Directory has a valid certificate based on the same template.  
+        Autoenrollment = 32, //This flag instructs clients to perform autoenrollment for the specified template.  
+        ReenrollExistingCert = 64, //This flag instructs clients to sign the renewal request using the private key of the existing certificate.
+        RequireUserInteraction = 256, // This flag instructs the client to obtain user consent before attempting to enroll for a certificate that is based on the specified template.
+        RemoveInvalidFromStore = 1024, // This flag instructs the autoenrollment client to delete any certificates that are no longer needed based on the specific template from the local certificate storage.
+        AllowEnrollOnBehalfOf = 2048, //This flag instructs the server to allow enroll on behalf of(EOBO) functionality.
+        IncludeOcspRevNoCheck = 4096, // This flag instructs the server to not include revocation information and add the id-pkix-ocsp-nocheck extension, as specified in RFC2560 section ï¿½4.2.2.2.1, to the certificate that is issued.    Windows Server 2003 - this flag is not supported.
+        ReuseKeyTokenFull = 8192, //This flag instructs the client to reuse the private key for a smart card-based certificate renewal if it is unable to create a new private key on the card.Windows XP, Windows Server 2003 - this flag is not supported. NoRevocationInformation 16384 This flag instructs the server to not include revocation information in the issued certificate. Windows Server 2003, Windows Server 2008 - this flag is not supported.
+        BasicConstraintsInEndEntityCerts = 32768, //This flag instructs the server to include Basic Constraints extension in the end entity certificates. Windows Server 2003, Windows Server 2008 - this flag is not supported.
+        IgnoreEnrollOnReenrollment = 65536, //This flag instructs the CA to ignore the requirement for Enroll permissions on the template when processing renewal requests. Windows Server 2003, Windows Server 2008, Windows Server 2008 R2 - this flag is not supported.
+        IssuancePoliciesFromRequest = 131072 //This flag indicates that the certificate issuance policies to be included in the issued certificate come from the request rather than from the template. The template contains a list of all of the issuance policies that the request is allowed to specify; if the request contains policies that are not listed in the template, then the request is rejected. Windows Server 2003, Windows Server 2008, Windows Server 2008 R2 - this flag is not supported.
     }
 
     /// <summary>
