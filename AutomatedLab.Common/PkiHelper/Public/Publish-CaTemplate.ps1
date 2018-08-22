@@ -7,15 +7,10 @@ function Publish-CaTemplate
     )
     
     $ca = Find-CertificateAuthority
-    if (-not $ca)
-    {
-        Write-Error 'No issuing CA found in the machines domain'
-        return
-    }
     $caInfo = certutil.exe -CAInfo -Config $ca
     if ($caInfo -like '*No local Certification Authority*')
     {
-        Write-Error "Could not retrieve CAInfo from computer '$ca'"
+        Write-Error 'No issuing CA found in the machines domain'
         return
     }
     $computerName = $ca.Split('\')[0]
@@ -25,8 +20,8 @@ function Publish-CaTemplate
     $i = 0
     do
     {
-        Write-Verbose -Message "Trying to publish '$TemplateName' at ($(Get-Date)), retry count $i"
-        $result = certutil.exe -SetCAtemplates "+$TemplateName" | Out-Null
+        Write-Verbose -Message "Trying to publish '$TemplateName' on '$ca' at ($(Get-Date)), retry count $i"
+        certutil.exe -Config $ca -SetCAtemplates "+$TemplateName" | Out-Null
         if (-not $LASTEXITCODE)
         {
             $done = $true
