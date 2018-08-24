@@ -1,4 +1,4 @@
-function Publish-CATemplate
+function Publish-CaTemplate
 {
     [cmdletBinding()]
     param(
@@ -6,20 +6,22 @@ function Publish-CATemplate
         [string]$TemplateName
     )
     
-    $caInfo = certutil.exe -CAInfo
+    $ca = Find-CertificateAuthority
+    $caInfo = certutil.exe -CAInfo -Config $ca
     if ($caInfo -like '*No local Certification Authority*')
     {
-        Write-Error 'This command needs to run on a CA'
+        Write-Error 'No issuing CA found in the machines domain'
         return
     }
+    $computerName = $ca.Split('\')[0]
 
     $start = Get-Date
     $done = $false
     $i = 0
     do
     {
-        Write-Verbose -Message "Trying to publish '$TemplateName' at ($(Get-Date)), retry count $i"
-        $result = certutil.exe -SetCAtemplates "+$TemplateName" | Out-Null
+        Write-Verbose -Message "Trying to publish '$TemplateName' on '$ca' at ($(Get-Date)), retry count $i"
+        certutil.exe -Config $ca -SetCAtemplates "+$TemplateName" | Out-Null
         if (-not $LASTEXITCODE)
         {
             $done = $true
@@ -28,7 +30,7 @@ function Publish-CATemplate
         {
             if ($i % 5 -eq 0)
             {
-                Restart-Service -Name CertSvc
+                Get-Service -Name CertSvc -ComputerName $computerName | Restart-Service
             }
 
             $ex = New-Object System.ComponentModel.Win32Exception($LASTEXITCODE)

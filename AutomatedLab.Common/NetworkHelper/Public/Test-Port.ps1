@@ -1,12 +1,11 @@
 function Test-Port
 {  
-    [cmdletbinding()]
-
+    [Cmdletbinding()]
     Param(  
-        [Parameter(Mandatory, Position = 0)]  
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [string[]]$ComputerName,
 
-        [Parameter(Mandatory, Position = 1)]
+        [Parameter(Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
         [int]$Port,
 
         [int]$Count = 1,
