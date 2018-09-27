@@ -18,24 +18,20 @@
 
     CLRVersion             = '4.0'
 
-    # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport      = '*'
 
-    # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
+    RequiredModules        = @('newtonsoft.json')
+
     CmdletsToExport        = '*'
 
-    # Variables to export from this module
     VariablesToExport      = @()
 
-    # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
     AliasesToExport        = '??'
 
-    # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
     PrivateData            = @{
 
         PSData = @{
 
-            # Tags applied to this module. These help with module discovery in online galleries.
             Tags       = @(
                 'LabAutomation'
                 'AutomatedLab'
@@ -45,19 +41,13 @@
                 'DSC'
             )
 
-            # A URL to the license for this module.
             LicenseUri = 'https://github.com/AutomatedLab/AutomatedLab.Common/blob/master/LICENSE'
 
-            # A URL to the main website for this project.
             ProjectUri = 'https://github.com/AutomatedLab/AutomatedLab.Common/'
 
-            # A URL to an icon representing this module.
             IconUri    = 'https://raw.githubusercontent.com/AutomatedLab/AutomatedLab/develop/Automated-Lab_icon256.png'
 
-            # ReleaseNotes of this module
-            # ReleaseNotes = ''
+        }
 
-        } # End of PSData hashtable
-
-    } # End of PrivateData hashtable
+    }
 }
