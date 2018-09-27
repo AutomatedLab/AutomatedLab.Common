@@ -52,11 +52,11 @@ function Get-TfsBuildStep
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
     $requestUrl += if ( $Port -gt 0)
     {
-        '{0}{1}/{2}/_apis/distributedtask/tasks' -f $InstanceName, ":$Port", $CollectionName
+        '{0}{1}/_apis/distributedtask/tasks' -f $InstanceName, ":$Port", $CollectionName
     }
     else
     {
-        '{0}/{1}/_apis/distributedtask/tasks' -f $InstanceName, $CollectionName
+        '{0}/_apis/distributedtask/tasks' -f $InstanceName, $CollectionName
     }
 
     $requestParameters = @{
@@ -76,7 +76,7 @@ function Get-TfsBuildStep
 
     try
     {
-        $result = Invoke-RestMethod @requestParameters
+        $result = Invoke-RestMethod @requestParameters -UseBasicParsing
     }
     catch
     {
@@ -89,7 +89,7 @@ function Get-TfsBuildStep
     }
     elseif ($result)
     {
-        $result
+        ($result | ConvertFrom-JsonNewtonsoft).Value
     }
 
     if ($FriendlyName)
