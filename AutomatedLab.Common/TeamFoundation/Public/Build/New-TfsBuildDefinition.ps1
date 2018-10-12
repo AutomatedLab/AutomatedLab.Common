@@ -66,7 +66,7 @@ function New-TfsBuildDefinition
     $exBuildParam = Sync-Parameter -Command (Get-Command Get-TfsBuildDefinition) -Parameters $PSBoundParameters
     $exBuildParam.Remove('Version')
     $existingBuild = Get-TfsBuildDefinition @exBuildParam
-    if ($existingBuild)
+    if ($existingBuild | Where-Object name -eq $DefinitionName)
     { 
         Write-Verbose -Message ('Build definition {0} in {1} already exists.' -f $DefinitionName, $ProjectName);
         return 
