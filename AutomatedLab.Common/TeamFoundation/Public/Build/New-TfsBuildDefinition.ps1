@@ -33,6 +33,9 @@ function New-TfsBuildDefinition
         [hashtable[]]
         $BuildTasks, # Not very nice and needs to be replaced as soon as I find out how to retrieve all build step guids
 
+        [string[]]
+        $CiTriggerRefs,
+
         [switch]
         $UseSsl,
 
@@ -158,7 +161,23 @@ function New-TfsBuildDefinition
                 "allowOverride" = $true
             }
         }
-        #"triggers"   = @()
+    }
+
+    $refs = @()
+    if ($CiTriggerRefs)
+    {
+        foreach ($ref in $CiTriggerRefs)
+        {
+            $refs += "+$ref"
+        }
+        $trigger = @{
+            branchFilters = $refs
+            maxConcurrentBuildsPerBranch = 1
+            pollingInterval = 0
+            triggerType = 2
+        }
+
+        $buildDefinition.triggers = @($trigger)
     }
 
     $requestParameters = @{
