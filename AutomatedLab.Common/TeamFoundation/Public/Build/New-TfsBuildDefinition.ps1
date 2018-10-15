@@ -33,6 +33,15 @@ function New-TfsBuildDefinition
         [hashtable[]]
         $BuildTasks, # Not very nice and needs to be replaced as soon as I find out how to retrieve all build step guids
 
+        [hashtable[]]
+        $Phases,
+
+        [string[]]
+        $CiTriggerRefs,
+
+        [hashtable]
+        $Variables,
+
         [switch]
         $UseSsl,
 
@@ -46,7 +55,7 @@ function New-TfsBuildDefinition
     )
 
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
-    $requestUrl += if ( $Port -gt 0)
+    $requestUrl += if ($Port -gt 0)
     {
         '{0}{1}/{2}/{3}/_apis/build/definitions' -f $InstanceName, ":$Port", $CollectionName, $ProjectName
     }
@@ -63,7 +72,7 @@ function New-TfsBuildDefinition
     $exBuildParam = Sync-Parameter -Command (Get-Command Get-TfsBuildDefinition) -Parameters $PSBoundParameters
     $exBuildParam.Remove('Version')
     $existingBuild = Get-TfsBuildDefinition @exBuildParam
-    if ($existingBuild)
+    if ($existingBuild | Where-Object name -eq $DefinitionName)
     { 
         Write-Verbose -Message ('Build definition {0} in {1} already exists.' -f $DefinitionName, $ProjectName);
         return 
@@ -116,49 +125,142 @@ function New-TfsBuildDefinition
         Write-Error -ErrorRecord $_
     }
 
-    $buildDefinition = @{
-        "name"       = $DefinitionName
-        "type"       = "build"
-        "quality"    = "definition"
-        "queue"      = @{
-            "id" = $queue.id
+    $buildDefinition = if ($ApiVersion -gt '4.0')
+    {
+        @{
+            name       = $DefinitionName
+            type       = "build"
+            quality    = "definition"
+            queue      = @{
+                id = $queue.id
+            }
+            process      = @{ }
+            repository = @{
+                id            = $repo.id
+                type          = "TfsGit"
+                name          = $repo.name
+                defaultBranch = "refs/heads/master"
+                url           = $repo.remoteUrl
+                clean         = $false
+            }
+            options    = @(
+                @{
+                    enabled    = $true
+                    definition = @{
+                        id = (New-Guid).Guid
+                    }
+                    inputs     = @{
+                        parallel  = $false
+                        multipliers = '["config","platform"]'
+                    }
+                }
+            )
+            variables  = @{
+                forceClean = @{
+                    value         = $false
+                    allowOverride = $true
+                }
+                config     = @{
+                    value         = "debug, release"
+                    allowOverride = $true
+                }
+                platform   = @{
+                    value         = "any cpu"
+                    allowOverride = $true
+                }
+            }
         }
-        "build"      = $BuildTasks
-        "repository" = @{
-            "id"            = $repo.id
-            "type"          = "TfsGit"
-            "name"          = $repo.name
-            "defaultBranch" = "refs/heads/master"
-            "url"           = $repo.remoteUrl
-            "clean"         = $false
+    }
+    else
+    {
+        @{
+            name       = $DefinitionName
+            type       = "build"
+            quality    = "definition"
+            queue      = @{
+                id = $queue.id
+            }
+            build      = $BuildTasks
+            repository = @{
+                id            = $repo.id
+                type          = "TfsGit"
+                name          = $repo.name
+                defaultBranch = "refs/heads/master"
+                url           = $repo.remoteUrl
+                clean         = $false
+            }
+            options    = @(
+                @{
+                    enabled    = $true
+                    definition = @{
+                        id = (New-Guid).Guid
+                    }
+                    inputs     = @{
+                        parallel  = $false
+                        multipliers = '["config","platform"]'
+                    }
+                }
+            )
+            variables  = @{
+                forceClean = @{
+                    value         = $false
+                    allowOverride = $true
+                }
+                config     = @{
+                    value         = "debug, release"
+                    allowOverride = $true
+                }
+                platform   = @{
+                    value         = "any cpu"
+                    allowOverride = $true
+                }
+            }
         }
-        "options"    = @(
+    }
+
+    if (-not $Phases -and $ApiVersion -ge '4.0')
+    {
+        $Phases =  @(
             @{
-                "enabled"    = $true
-                "definition" = @{
-                    "id" = (New-Guid).Guid
-                }
-                "inputs"     = @{
-                    "parallel"  = $false
-                    multipliers = '["config","platform"]'
-                }
+                name = 'Phase 1'
+                condition = 'succeeded()'
             }
         )
-        "variables"  = @{
-            "forceClean" = @{
-                "value"         = $false
-                "allowOverride" = $true
-            }
-            "config"     = @{
-                "value"         = "debug, release"
-                "allowOverride" = $true
-            }
-            "platform"   = @{
-                "value"         = "any cpu"
-                "allowOverride" = $true
-            }
+        $buildDefinition.process.Add('phases', $Phases)
+
+        if ($BuildTasks)
+        {
+            $buildDefinition.process.phases[0].Add('steps', $BuildTasks)
         }
-        #"triggers"   = @()
+    }
+
+    $refs = @()
+    if ($CiTriggerRefs)
+    {
+        foreach ($ref in $CiTriggerRefs)
+        {
+            $refs += "+$ref"
+        }
+        $trigger = @{
+            branchFilters = $refs
+            maxConcurrentBuildsPerBranch = 1
+            pollingInterval = 0
+            triggerType = 2
+        }
+
+        $buildDefinition.triggers = @($trigger)
+    }
+
+    if ($Variables)
+    {
+        foreach ($variable in $Variables.GetEnumerator())
+        {
+            $variableContent = @{
+                value = $variable.Value
+                allowOverrise = $true
+            }
+            $buildDefinition.variables.Add($variable.Key, $variableContent)
+        }
     }
 
     $requestParameters = @{

@@ -29,6 +29,9 @@ function New-TfsReleaseDefinition
         [hashtable[]]
         $ReleaseTasks,
 
+        [hashtable[]]
+        $Environments,
+
         [switch]
         $UseSsl,
 
@@ -57,9 +60,9 @@ function New-TfsReleaseDefinition
     }
 
     $exReleaseParam = Sync-Parameter -Command (Get-Command Get-TfsReleaseDefinition) -Parameters $PSBoundParameters
-    $exReleaseParam.Remove('Version')
+    $exReleaseParam.Remove('ApiVersion')
     $existingRelease = Get-TfsReleaseDefinition @exReleaseParam
-    if ($existingRelease)
+    if ($existingRelease | Where-Object name -eq $ReleaseName)
     {
         Write-Verbose -Message ('Release definition {0} in {1} already exists.' -f $ReleaseName, $ProjectName);
         return 
@@ -111,17 +114,11 @@ function New-TfsReleaseDefinition
         Write-Error -ErrorRecord $_
     }
 
-    $payload = @{
-        "id"                = 0 
-        "name"              = $ReleaseName
-        "comment"           = $null 
-        "createdOn"         = "2018-03-20T09:10:08.964Z" 
-        "createdBy"         = $null 
-        "modifiedBy"        = $null 
-        "modifiedOn"        = $null 
-        "environments"      = @(
+    if (-not $Environments)
+    {
+        $Environments = @(
             @{
-                "id"                      = -656 
+                "id"                      = 1 
                 "name"                    = "Environment" 
                 "rank"                    = 1 
                 "deployStep"              = @{
@@ -199,7 +196,18 @@ function New-TfsReleaseDefinition
                     "retainBuild"    = $true
                 }
             }
-        ) 
+        )
+    }
+
+    $payload = @{
+        "id"                = 0 
+        "name"              = $ReleaseName
+        "comment"           = $null 
+        "createdOn"         = (Get-Date).ToString('yyyy-MM-ddThh:mm:ss.fffZ')
+        "createdBy"         = $null 
+        "modifiedBy"        = $null 
+        "modifiedOn"        = $null 
+        "environments"      = $Environments
         "artifacts"         = @(
             @{
                 "id"                  = 0 
