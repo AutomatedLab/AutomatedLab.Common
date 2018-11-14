@@ -13,7 +13,7 @@ function Install-SoftwarePackage
 
         [int[]]$ExpectedReturnCodes,
 
-        [pscredential]$Credential
+        [system.management.automation.pscredential]$Credential
     )
     
     #region New-InstallProcess
