@@ -207,7 +207,7 @@ function Install-SoftwarePackage
     if ($result.Process.ExitCode -ne 0 `
     -and $result.Process.ExitCode -ne 3010 `
     -and $result.Process.ExitCode -ne $null `
-    -and $result.Process.ExitCode -notin $ExpectedReturnCodes)
+    -and $ExpectedReturnCodes -notcontains $result.Process.ExitCode )
     {
         throw (New-Object System.ComponentModel.Win32Exception($result.Process.ExitCode))
     }
