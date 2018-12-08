@@ -75,4 +75,12 @@ namespace System.Security.Cryptography.X509Certificates
     }
 }
 '@
-Add-Type -TypeDefinition $certStoreTypes
+
+try
+{
+    [System.Security.Cryptography.X509Certificates.Win32]$temp = $null
+}
+catch
+{
+    Add-Type -TypeDefinition $certStoreTypes    
+}
