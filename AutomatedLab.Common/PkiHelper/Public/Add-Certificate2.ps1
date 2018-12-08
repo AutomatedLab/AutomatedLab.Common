@@ -1,12 +1,12 @@
 function Add-Certificate2
 {
-    [cmdletBinding(DefaultParameterSetName = 'File')]
+    [cmdletBinding(DefaultParameterSetName = 'ByteArray')]
     param(
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'File')]
         [string]$Path,
         
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'ByteArray')]
-        [byte[]]$Cert,
+        [byte[]]$RawContentBytes,
         
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [System.Security.Cryptography.X509Certificates.StoreName]$Store,
@@ -21,9 +21,8 @@ function Add-Certificate2
         [ValidateSet('CER', 'PFX')]
         [string]$CertificateType = 'CER',
         
-        [Parameter(Mandatory = $true)]
-        [securestring]
-        $Password
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
+        [string]$Password
     )
     
     process
@@ -65,39 +64,37 @@ function Add-Certificate2
             Write-Error "Store '$Store' in location '$Location' could not be opened."
             return
         }
-    
         $s = New-Object System.Security.Cryptography.X509Certificates.X509Store($storePtr)
-        $newCert = if ($Path)
+        
+        if ($Path)
         {
-            if ($CertificateType -eq 'CER')
-            {
-                New-Object System.Security.Cryptography.X509Certificates.X509Certificate2($Path) -ErrorAction Stop
-            }
-            else
-            {
-                New-Object System.Security.Cryptography.X509Certificates.X509Certificate2($Path, $password, ('Exportable', 'PersistKeySet')) -ErrorAction Stop
-            }
-        }
-        else
-        {
-            if ($CertificateType -eq 'CER')
-            {
-                New-Object System.Security.Cryptography.X509Certificates.X509Certificate2(, $Cert) -ErrorAction Stop
-            }
-            else
-            {
-                New-Object System.Security.Cryptography.X509Certificates.X509Certificate2($Cert, $password, ('Exportable', 'PersistKeySet')) -ErrorAction Stop
-            }
+            $RawContentBytes = [System.IO.File]::ReadAllBytes($Path)
         }
         
-        if (-not $newCert)
+        try
         {
+            if ($Password)
+            {
+                $securePassword = $Password | ConvertTo-SecureString -AsPlainText -Force
+            }
+            $certInfo = if ([System.Security.Cryptography.X509Certificates.X509Certificate2]::GetCertContentType($RawContentBytes) -eq 'Pfx')
+            {
+                New-Object Pki.Certificates.CertificateInfo($RawContentBytes, $securePassword)
+            }
+            else
+            {
+                New-Object Pki.Certificates.CertificateInfo(,$RawContentBytes)
+            }
+        }
+        catch
+        {
+            Write-Error -ErrorRecord $_
             return
         }
-    
+
         Write-Verbose "Store '$Store' in location '$Location' knowns about $($s.Certificates.Count) certificates before import."
         
-        $s.Add($newCert)
+        $s.Add($certInfo.Certificate)
         
         Write-Verbose "Store '$Store' in location '$Location' knowns about $($s.Certificates.Count) certificates after import."
 
