@@ -1,28 +1,48 @@
 function Get-Certificate2
 {
-    [cmdletBinding(DefaultParameterSetName = 'Find')]
+    [cmdletBinding(DefaultParameterSetName = 'FindCer')]
     param (
-        [Parameter(Mandatory = $true, ParameterSetName = 'Find')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'FindCer')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'FindPfx')]
         [string]$SearchString,
 
-        [Parameter(Mandatory = $true, ParameterSetName = 'Find')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'FindCer')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'FindPfx')]        
         [System.Security.Cryptography.X509Certificates.X509FindType]$FindType,
         
+        [Parameter(ParameterSetName = 'AllCer')]
+        [Parameter(ParameterSetName = 'AllPfx')]
+        [Parameter(ParameterSetName = 'FindCer')]
+        [Parameter(ParameterSetName = 'FindPfx')]
         [System.Security.Cryptography.X509Certificates.CertStoreLocation]$Location,
         
+        [Parameter(ParameterSetName = 'AllCer')]
+        [Parameter(ParameterSetName = 'AllPfx')]
+        [Parameter(ParameterSetName = 'FindCer')]
+        [Parameter(ParameterSetName = 'FindPfx')]
         [System.Security.Cryptography.X509Certificates.StoreName]$Store,
         
+        [Parameter(ParameterSetName = 'AllCer')]
+        [Parameter(ParameterSetName = 'AllPfx')]
+        [Parameter(ParameterSetName = 'FindCer')]
+        [Parameter(ParameterSetName = 'FindPfx')]
         [string]$ServiceName,
 
-        [Parameter(Mandatory = $true, ParameterSetName = 'All')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'AllCer')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'AllPfx')]
         [switch]$All,
 
-        [Parameter(ParameterSetName = 'All')]
+        [Parameter(ParameterSetName = 'AllCer')]
+        [Parameter(ParameterSetName = 'AllPfx')]
         [switch]$IncludeServices,
         
-        [Parameter(Mandatory = $true)]
-        [securestring]
-        $Password
+        [Parameter(Mandatory = $true, ParameterSetName = 'FindPfx')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'AllPfx')]
+        [securestring]$Password,
+        
+        [Parameter(ParameterSetName = 'FindPfx')]
+        [Parameter(ParameterSetName = 'AllPfx')]
+        [switch]$ExportPrivateKey
     )
     
     if ($Location -eq 'CERT_SYSTEM_STORE_SERVICES' -and (-not $ServiceName))
@@ -94,7 +114,7 @@ function Get-Certificate2
                 {
                     $item | Add-Member -MemberType NoteProperty -Name Location -Value $currentLocation
                     $item | Add-Member -MemberType NoteProperty -Name Store -Value $storePath
-                    $item | Add-Member -MemberType NoteProperty -Name Password -Value $Password
+                    $item | Add-Member -MemberType NoteProperty -Name Password -Value $plainPassword
                     
                     if ($Location -eq 'CERT_SYSTEM_STORE_SERVICES')
                     {
@@ -127,7 +147,7 @@ function Get-Certificate2
 
         try
         {
-            if ($cert.HasPrivateKey)
+            if ($cert.HasPrivateKey -and $ExportPrivateKey)
             {
                 Write-Verbose 'Calling Export-PfxCertificate'
                 Export-PfxCertificate -Cert $cert -FilePath $tempFile -Password $Password -ErrorAction Stop | Out-Null
@@ -148,19 +168,21 @@ function Get-Certificate2
             continue
         }
 
-        $bytes = [System.IO.File]::ReadAllBytes($tempFile)
-        Remove-Item -Path $tempFile
-
-        New-Object -TypeName PSObject -Property @{
-            Thumbprint      = $cert.Thumbprint
-            DnsNameList     = $cert.DnsNameList
-            Location        = $cert.Location
-            Store           = $cert.Store
-            Computer        = $env:COMPUTERNAME
-            Cert            = $bytes
-            CertificateType = if ($cert.HasPrivateKey) { 'PFX' } else { 'CER' }
-            ServiceName     = $cert.ServiceName
-            Password        = $Password
+        $certInfo = if ($ExportPrivateKey)
+        {
+            New-Object Pki.Certificates.CertificateInfo($tempFile, $Password)
         }
+        else
+        {
+            New-Object Pki.Certificates.CertificateInfo($tempFile)
+        }
+        Remove-Item -Path $tempFile
+        
+        $certInfo.ComputerName = $env:COMPUTERNAME
+        $certInfo.Location = $cert.Location
+        $certInfo.Store = $cert.Store
+        $certInfo.ServiceName = $cert.ServiceName
+        
+        $certInfo
     }
 }
