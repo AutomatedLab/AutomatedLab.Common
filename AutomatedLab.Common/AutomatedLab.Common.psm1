@@ -1,38 +1,16 @@
-Write-Verbose "hello"
 # Get public and private function definition files.
-$importFolders = Get-ChildItem $PSScriptRoot -Include Types, Public, Private -Recurse -Directory -ErrorAction SilentlyContinue
-$types = @()
-$private = @()
-$public = @()
+$importFolders = Get-ChildItem $PSScriptRoot -File -Recurse -ErrorAction SilentlyContinue | Group-Object {$_.Directory.Name} -AsHashTable -AsString
 
-Write-Verbose -Message "Importing from $($importFolders.Count) folders"
-foreach ($folder in $importFolders)
-{
-    switch ( $folder.Name)
-    {
-        'Types'
-        {
-            $types += Get-ChildItem -Path $folder.FullName -Filter *.ps1 -Recurse -File
-        }
-        'Public'
-        {
-            $public += Get-ChildItem -Path  $folder.FullName -Filter *.ps1 -Recurse -File
-        }
-        'Private'
-        {
-            $private += Get-ChildItem -Path  $folder.FullName -Filter *.ps1 -Recurse -File
-        }
-    }
-}
 # Types first
-foreach ( $type in $types)
+foreach ( $type in $importFolders.Types)
 {
     . $type.FullName
 }
 
 # Dot source the files
-foreach ($import in @($public + $private))
+foreach ($import in @($importFolders.Public + $importFolders.Private))
 {
+    if ($null -eq $import) { continue }
     Try
     {
         . $import.FullName
@@ -43,4 +21,4 @@ foreach ($import in @($public + $private))
     }
 }
 
-Export-ModuleMember -Function $public.Basename
+Export-ModuleMember -Function $importFolders.Public.Basename

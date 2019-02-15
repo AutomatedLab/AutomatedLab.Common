@@ -12,16 +12,23 @@ function Wait-RunspaceJob
         $PassThru
     )
 
+    begin
+    {
+        $jobs = @()
+    }
+
     process
     {
-        while ($RunspaceJob.Handle.IsCompleted -contains $false)
-        {
-            Start-Sleep -Milliseconds 100
-        }
+        $jobs += $RunspaceJob
     }
 
     end
     {
-        if ($PassThru) { $RunspaceJob }
+        while ($jobs.Handle.IsCompleted -contains $false)
+        {
+            Start-Sleep -Milliseconds 100
+        }
+
+        if ($PassThru) { $jobs }
     }
 }
