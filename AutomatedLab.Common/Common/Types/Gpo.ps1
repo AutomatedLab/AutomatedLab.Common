@@ -738,4 +738,10 @@ namespace GPO
 }
 '@
 
+if ($PSVersionTable.PSEdition -eq 'Core') 
+{ 
+    Write-Verbose -Message 'Skipping import of GPO type on PS Core'
+    return 
+}
+
 Add-Type -TypeDefinition $gpoType -IgnoreWarnings

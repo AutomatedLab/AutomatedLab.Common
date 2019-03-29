@@ -7,7 +7,13 @@ function Enable-AutoEnrollment
     )
     
     Write-Verbose -Message "Computer: '$Computer'"
-    Write-Verbose -Message "Computer: '$UserOrCodeSigning'"    
+    Write-Verbose -Message "Computer: '$UserOrCodeSigning'"
+
+    if ($PSVersionTable.PSEdition -eq 'Core') 
+    { 
+        Write-Warning -Message 'Cannot execute Enable-AutoEnrollment on PowerShell Core!'
+        return 
+    }
     
     if ($Computer)
     {

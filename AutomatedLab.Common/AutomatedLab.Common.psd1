@@ -18,6 +18,8 @@
 
     CLRVersion             = '4.0'
 
+    CompatiblePSEditions   = @('Desktop','Core')
+
     FunctionsToExport      = '*'
 
     RequiredModules        = @('newtonsoft.json')
