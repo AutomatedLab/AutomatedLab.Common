@@ -31,7 +31,11 @@ function New-RunspacePool
         Write-Verbose -Message "Creating new runspace pool. Maximum Runspaces: $ThrottleLimit, ApartmentState: $ApartmentState, Variables: $($Variable.Count)"
         $pool = New-Variable -Name "ALCommonRunspacePool_$($ThrottleLimit)_$($ApartmentState)" -Scope Global -Value $([runspacefactory]::CreateRunspacePool($InitialSessionState)) -PassThru
         [void] $($pool.Value.SetMaxRunspaces($ThrottleLimit))
-        $pool.Value.ApartmentState = $ApartmentState
+
+        if ($PSEdition -eq 'Desktop')
+        {
+            $pool.Value.ApartmentState = $ApartmentState
+        }
     }
         
     $pool.Value

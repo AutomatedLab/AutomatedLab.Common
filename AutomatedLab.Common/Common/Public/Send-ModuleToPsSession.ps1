@@ -59,7 +59,6 @@ function Send-ModuleToPSSession
 
     begin
     {
-        Write-LogFunctionEntry
         $isCalledRecursivly = (Get-PSCallStack | Where-Object Command -eq $MyInvocation.InvocationName | Measure-Object | Select-Object -ExpandProperty Count) -gt 1
     }
     
@@ -186,6 +185,5 @@ function Send-ModuleToPSSession
     
     end
     {
-        Write-LogFunctionExit
     }
 }
