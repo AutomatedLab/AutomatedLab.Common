@@ -7,6 +7,12 @@ function Get-DscConfigurationImportedResource
         [Parameter(Mandatory, ParameterSetName = 'ByName')]
         [string]$Name
     )
+
+    if ($PSEdition -eq 'Core')
+    {
+        Write-Warning -Message 'Get-DscConfigurationImportedResource is not compatible with PowerShell Core.'
+        return
+    }
     
     $modules = New-Object System.Collections.ArrayList
 
