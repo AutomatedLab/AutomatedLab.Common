@@ -1,11 +1,4 @@
-$meshType = @"
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Mesh
+﻿namespace Mesh
 {
     public class Item<T> where T : class
     {
@@ -73,6 +66,3 @@ namespace Mesh
         }
     }
 }
-"@
-
-Add-Type -TypeDefinition $meshType
