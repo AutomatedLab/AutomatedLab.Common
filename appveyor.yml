@@ -16,7 +16,7 @@ skip_commits:
   message: /updated readme.*|update readme.*s/
 
 build:
-  project: ALCommon/ALCommon.sln
+  project: ALCommon.sln
 
 dotnet_csproj:
   patch: true
