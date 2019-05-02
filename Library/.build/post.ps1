@@ -4,11 +4,11 @@ param
 	$SolutionDir
 )
 
-$path = Join-Path -Path $SolutionDir -ChildPath Library
+$path = Join-Path -Path $SolutionDir -ChildPath Library\bin\debug
 $destination = Join-Path -Path $SolutionDir -ChildPath AutomatedLab.Common
 
-$coreClr = Get-ChildItem -Recurse -Filter *.dll -Path $path | Where {$_.FullName -match 'coreapp' }
-$fullClr = Get-ChildItem -Recurse -Filter *.dll -Path $path | Where {$_.FullName -notmatch 'coreapp|standard' }
+$coreClr = Join-Path -Path $path -ChildPath netcoreapp2.2
+$fullClr = Join-Path -Path $path -ChildPath net462
 
 if (-not (Test-Path $destination\lib\core))
 {
@@ -20,5 +20,5 @@ if (-not (Test-Path $destination\lib\full))
 	$null = mkdir $destination\lib\full-Force
 }
 
-$coreClr | Copy-Item -Destination $destination\lib\core
-$fullClr | Copy-Item -Destination $destination\lib\full
+robocopy $coreClr $destination\lib\core *.dll /R:15 /W:5
+robocopy $fullClr $destination\lib\full *.dll /R:15 /W:5
