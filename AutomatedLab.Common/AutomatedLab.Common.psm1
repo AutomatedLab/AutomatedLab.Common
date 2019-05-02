@@ -15,7 +15,7 @@ try
 }
 catch
 {
-    Write-Warning -Message "Unable to add AutomatedLab.Common.dll - GPO and PKI functionality might be impaired."
+    Write-Warning -Message "Unable to add AutomatedLab.Common.dll - GPO and PKI functionality might be impaired.`r`nException was: $($_.Exception.LoaderExceptions)"
 }
 
 # Dot source the files
