@@ -4,7 +4,7 @@ if (-not $ENV:BHModulePath)
 }
 
 Remove-Module $ENV:BHProjectName -ErrorAction SilentlyContinue -Force
-Import-Module $ENV:BHModulePath -Force -Verbose
+Import-Module $ENV:BHModulePath -Force
 
 InModuleScope -ModuleName $ENV:BHProjectName {
     Describe "Get-NetworkAddress" {

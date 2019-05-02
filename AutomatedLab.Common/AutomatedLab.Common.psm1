@@ -2,20 +2,24 @@
 $importFolders = Get-ChildItem $PSScriptRoot -File -Recurse -ErrorAction SilentlyContinue | Group-Object { $_.Directory.Name } -AsHashTable -AsString
 
 # Types first
-try
+$typeExists = try { [AutomatedLab.Common.Win32Exception] }catch { }
+if (-not $typeExists)
 {
-    if ($PSEdition -eq 'Core')
+    try
     {
-        Add-Type -Path $PSScriptRoot\lib\core\AutomatedLab.Common.dll -ErrorAction Stop
+        if ($PSEdition -eq 'Core')
+        {
+            Add-Type -Path $PSScriptRoot\lib\core\AutomatedLab.Common.dll -ErrorAction Stop
+        }
+        else
+        {
+            Add-Type -Path $PSScriptRoot\lib\full\AutomatedLab.Common.dll -ErrorAction Stop
+        }
     }
-    else
+    catch
     {
-        Add-Type -Path $PSScriptRoot\lib\full\AutomatedLab.Common.dll -ErrorAction Stop
+        Write-Warning -Message "Unable to add AutomatedLab.Common.dll - GPO and PKI functionality might be impaired.`r`nException was: $($_.Exception.LoaderExceptions)"
     }
-}
-catch
-{
-    Write-Warning -Message "Unable to add AutomatedLab.Common.dll - GPO and PKI functionality might be impaired.`r`nException was: $($_.Exception.LoaderExceptions)"
 }
 
 # Dot source the files
