@@ -1,10 +1,10 @@
-if (-not $ENV:BHProjectPath)
+if (-not $ENV:BHModulePath)
 {
     Set-BuildEnvironment -Path $PSScriptRoot\..
 }
 
 Remove-Module $ENV:BHProjectName -ErrorAction SilentlyContinue -Force
-Import-Module (Join-Path $ENV:BHProjectPath $ENV:BHProjectName) -Force
+Import-Module $ENV:BHModulePath -Force -Verbose
 
 InModuleScope -ModuleName $ENV:BHProjectName {
     Describe "Sync-Parameter" {
