@@ -8,11 +8,11 @@
 
     CompanyName            = 'AutomatedLab Team'
 
-    Copyright              = '2017'
+    Copyright              = '2019'
 
     Description            = 'The module collects all helper functions used in but not limited to AutomatedLab'
 
-    PowerShellVersion      = '5.0'
+    PowerShellVersion      = '5.1'
 
     DotNetFrameworkVersion = '4.0'
 
