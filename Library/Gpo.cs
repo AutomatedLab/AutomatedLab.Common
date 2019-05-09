@@ -1,5 +1,4 @@
-$gpoType = @'
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -736,12 +735,3 @@ namespace GPO
         }
     }
 }
-'@
-
-if ($PSEdition -eq 'Core') 
-{ 
-    Write-Verbose -Message 'Skipping import of GPO type on PS Core'
-    return 
-}
-
-Add-Type -TypeDefinition $gpoType -IgnoreWarnings

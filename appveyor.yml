@@ -3,7 +3,7 @@ environment:
   NuGetApiKey:
     secure: tAdUQmRiZ270LOPN8SwbjISLfu6ldDTw6LWvdtsk+pQR7r5bJnGrG8Ntyt87edJ/
 
-version: 1.1.{build}
+version: 2.0.{build}
 
 skip_tags: true
 skip_branch_with_pr: true
@@ -15,7 +15,27 @@ image: Visual Studio 2017
 skip_commits:
   message: /updated readme.*|update readme.*s/
 
-build: false
+build:
+  project: ALCommon.sln
+
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
+
+before_build:
+  - nuget restore
+  - ps: |
+        Write-Host "'before_build' block"
+
+        Write-Host "Setting version number in files"
+        Add-AppveyorMessage -Message "Setting version number in files" -Category Information
+        gci -Filter *.psd1 -Recurse | foreach {(Get-Content $_.FullName -Raw) -replace "ModuleVersion += '\d\.\d\.\d'", "ModuleVersion = '$env:APPVEYOR_BUILD_VERSION'" | Out-File $_.FullName}
+
 
 #Kick off the CI/CD pipeline
 test_script:

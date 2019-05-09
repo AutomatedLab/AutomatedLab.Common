@@ -1,10 +1,26 @@
 # Get public and private function definition files.
-$importFolders = Get-ChildItem $PSScriptRoot -File -Recurse -ErrorAction SilentlyContinue | Group-Object {$_.Directory.Name} -AsHashTable -AsString
+$modulebase =  $PSScriptRoot
+$importFolders = Get-ChildItem $modulebase -File -Recurse -ErrorAction SilentlyContinue | Group-Object { $_.Directory.Name } -AsHashTable -AsString
 
 # Types first
-foreach ( $type in $importFolders.Types)
+$typeExists = try { [AutomatedLab.Common.Win32Exception] }catch { }
+if (-not $typeExists)
 {
-    . $type.FullName
+    try
+    {
+        if ($PSEdition -eq 'Core')
+        {
+            Add-Type -Path $modulebase\lib\core\AutomatedLab.Common.dll -ErrorAction Stop
+        }
+        else
+        {
+            Add-Type -Path $modulebase\lib\full\AutomatedLab.Common.dll -ErrorAction Stop
+        }
+    }
+    catch
+    {
+        Write-Warning -Message "Unable to add AutomatedLab.Common.dll - GPO and PKI functionality might be impaired.`r`nException was: $($_.Exception.Message), $($_.Exception.LoaderExceptions)"
+    }
 }
 
 # Dot source the files
