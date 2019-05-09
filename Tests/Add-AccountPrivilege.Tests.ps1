@@ -1,11 +1,10 @@
-if (-not $ENV:BHProjectPath)
+if (-not $ENV:BHModulePath)
 {
     Set-BuildEnvironment -Path $PSScriptRoot\..
 }
 
 Remove-Module $ENV:BHProjectName -ErrorAction SilentlyContinue -Force
-Import-Module (Join-Path $ENV:BHProjectPath $ENV:BHProjectName) -Force
-
+Import-Module $ENV:BHModulePath -Force
 
 InModuleScope 'AutomatedLab.Common' {
     Describe Add-AccountPrivilege {

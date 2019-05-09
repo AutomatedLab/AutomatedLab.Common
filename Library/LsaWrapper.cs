@@ -1,15 +1,10 @@
-Add-Type @'
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using System.Runtime.InteropServices;
+using System.Security;
+using System.ComponentModel;
 
 namespace MyLsaWrapper
 {
-    using System.Runtime.InteropServices;
-    using System.Security;
-    using System.Management;
-    using System.Runtime.CompilerServices;
-    using System.ComponentModel;
 
     using LSA_HANDLE = IntPtr;
 
@@ -112,7 +107,7 @@ namespace MyLsaWrapper
             Unknown = 8,
             Computer = 9
         }
-        
+
         enum Access : int
         {
             POLICY_READ = 0x20006,
@@ -238,4 +233,3 @@ namespace MyLsaWrapper
         }
     }
 }
-'@
