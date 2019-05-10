@@ -17,7 +17,7 @@ if (-not (Test-Path $destination\lib\core))
 
 if (-not (Test-Path $destination\lib\full))
 {
-	$null = mkdir $destination\lib\full-Force
+	$null = mkdir $destination\lib\full -Force
 }
 
 robocopy $coreClr $destination\lib\core *.dll /R:15 /W:5

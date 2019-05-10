@@ -23,6 +23,12 @@ if (-not $typeExists)
     }
 }
 
+try
+{
+    [ServerCertificateValidationCallback]::Ignore()
+}
+catch { }
+
 # Dot source the files
 foreach ($import in @($importFolders.Public + $importFolders.Private))
 {
