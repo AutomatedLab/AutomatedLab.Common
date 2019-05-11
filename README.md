@@ -72,3 +72,25 @@ Our PKI cmdlets make configurations, certificate requests and duplicating templa
 - Publish-CaTemplate: Publish a template
 - Request-Certificate: Request a new certificate from the CA
 - Test-CaTemplate: Uses certutil to check if a template exists
+
+## CI/CD (Team Foundation Server, Azure DevOps (Server))
+
+Our CI/CD cmdlets make interaction with Team Foundation Server starting with 2015 a breeze. Just be sure
+to select the API version matching your edition of TFS or Azure DevOps.
+
+- Get-TfsAccessTokenString: Get the Authorization header string for your PAT
+- Get-TfsAgentPool: Retrieve TFS/Azure DevOps agent pools for an instance
+- Get-TfsAgentQueue: Retrieve a TFS/Azure DevOps Project's agent queue
+- Get-TfsBuildDefinition: Retrieve a build definition
+- Get-TfsBuildDefinitionTemplate: Retrieve the available build templates of a project
+- Get-TfsBuildStep: List all possible build steps to use in a build definition
+- Get-TfsGitRepository: Get the GIT repo of a project
+- Get-TfsProcessTemplate: Get all possible process templates
+- Get-TfsProject: Get a list of Projects or an individual project
+- Get-TfsReleaseDefinition: Retrieve a release definition
+- Get-TfsReleaseStep: Get a list of possible release steps
+- New-TfsAgentQueue: Create a new agent queue from a pool of agents
+- New-TfsBuildDefinition: Create a new build pipeline
+- New-TfsProject: Create a new team project
+- New-TfsReleaseDefinition: Create a new release pipeline
+- Set-TfsProject: Modify a project configuration
