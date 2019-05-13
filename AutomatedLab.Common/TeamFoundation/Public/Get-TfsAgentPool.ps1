@@ -6,6 +6,14 @@ function Get-TfsAgentPool
         [string]
         $InstanceName,
 
+        [Parameter()]
+        [string]
+        $CollectionName = 'DefaultCollection',
+
+        [Parameter()]
+        [string]
+        $PoolName = '*',
+
         [ValidateRange(1, 65535)]
         [uint32]
         $Port,
@@ -28,11 +36,11 @@ function Get-TfsAgentPool
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
     $requestUrl += if ( $Port  -gt 0)
     {
-        '{0}{1}/_apis/distributedtask/pools' -f $InstanceName, ":$Port"
+        '{0}{1}/{2}/_apis/distributedtask/pools' -f $InstanceName, ":$Port", $CollectionName
     }
     else
     {
-        '{0}/_apis/distributedtask/pools' -f $InstanceName
+        '{0}/{1}/_apis/distributedtask/pools' -f $InstanceName, $CollectionName
     }
     
     if ($ApiVersion)
@@ -67,10 +75,10 @@ function Get-TfsAgentPool
     
     if ($result.value)
     {
-        return $result.value
+        return $result.value | Where-Object -Property Name -like $PoolName
     }
     elseif ($result)
     {
-        return $result
+        return $result | Where-Object -Property Name -like $PoolName
     }
 }
