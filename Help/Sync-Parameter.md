@@ -9,9 +9,9 @@ schema: 2.0.0
 
 ## SYNOPSIS
 
-## SYNTAX
-
 Synchronise cmdlet parameters with a hashtable
+
+## SYNTAX
 
 ```
 Sync-Parameter [-Command] <Object> [[-Parameters] <Hashtable>] [<CommonParameters>]

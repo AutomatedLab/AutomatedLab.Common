@@ -24,7 +24,13 @@ Task Init {
     "`n"
 }
 
-Task Test -Depends Init {
+Task CompileHelp -Depends Init {
+    $lines
+    "`n`tSTATUS: Compiling help content from markdown"
+    New-ExternalHelp -Path (Join-Path $ProjectRoot -ChildPath Help) -OutputPath (Join-Path $ProjectRoot -ChildPath $ENV:BHProjectName)
+}
+
+Task Test -Depends CompileHelp {
     $lines
     "`n`tSTATUS: Testing with PowerShell $PSVersion"
 

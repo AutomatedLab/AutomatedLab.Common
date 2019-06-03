@@ -48,7 +48,7 @@
 # Grab nuget bits, install modules, set build variables, start build.
 Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
 
-Resolve-Module Psake, PSDeploy, Pester, BuildHelpers, PSScriptAnalyzer, newtonsoft.json
+Resolve-Module PlatyPS, Psake, PSDeploy, Pester, BuildHelpers, PSScriptAnalyzer, newtonsoft.json
 
 Set-BuildEnvironment
 
