@@ -27,7 +27,13 @@ Task Init {
 Task CompileHelp -Depends Init {
     $lines
     "`n`tSTATUS: Compiling help content from markdown"
-    New-ExternalHelp -Path (Join-Path $ProjectRoot -ChildPath Help) -OutputPath (Join-Path $ProjectRoot -ChildPath $ENV:BHProjectName)
+    foreach ($language in (Get-ChildItem -Path (Join-Path $ProjectRoot -ChildPath Help) -Directory))
+    {
+        $ci = try { [cultureinfo]$language.BaseName} catch { }
+        if (-not $ci) {continue}
+
+        New-ExternalHelp -Path $language.FullName -OutputPath (Join-Path $ProjectRoot -ChildPath "$ENV:BHProjectName\$($language.BaseName)")
+    }
 }
 
 Task Test -Depends CompileHelp {
