@@ -490,7 +490,16 @@ namespace GPO
                             RegCloseKey(gphKey);
                             return ResultCode.CreateOrOpenFailed;
                         }
-                        Save(isMachine, false);
+
+                        try
+                        {
+                            Save(isMachine, false);
+                        }
+                        catch (COMException e)
+                        {
+                            RegCloseKey(gphKey);
+                            return ResultCode.SaveFailed;
+                        }
                     }
                     else
                     {
@@ -556,6 +565,7 @@ namespace GPO
                         RegCloseKey(gphKey);
                         return ResultCode.SaveFailed;
                     }
+
                     RegCloseKey(gphSubKey);
                     RegCloseKey(gphKey);
                 }
