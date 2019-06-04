@@ -445,14 +445,7 @@ namespace GPO
             /// <exception cref="System.Runtime.InteropServices.COMException">Throw when com execution throws exceptions</exception>
             public void Save(bool isMachine, bool isAdd)
             {
-                try
-                {
-                    iGroupPolicyObject.Save(isMachine, isAdd, REGISTRY_EXTENSION_GUID, CLSID_GPESnapIn);
-                }
-                catch (COMException e)
-                {
-                    throw e;
-                }
+                iGroupPolicyObject.Save(isMachine, isAdd, REGISTRY_EXTENSION_GUID, CLSID_GPESnapIn);
             }
 
             #endregion
@@ -494,6 +487,11 @@ namespace GPO
                         try
                         {
                             Save(isMachine, false);
+                        }
+                        catch (System.IO.FileLoadException fili)
+                        {
+                            RegCloseKey(gphKey);
+                            return ResultCode.SaveFailed;
                         }
                         catch (COMException e)
                         {
@@ -558,6 +556,12 @@ namespace GPO
                     try
                     {
                         Save(isMachine, true);
+                    }
+                    catch (System.IO.FileLoadException fili)
+                    {
+                        RegCloseKey(gphSubKey);
+                        RegCloseKey(gphKey);
+                        return ResultCode.SaveFailed;
                     }
                     catch (COMException e)
                     {
