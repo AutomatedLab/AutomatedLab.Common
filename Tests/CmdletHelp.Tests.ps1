@@ -3,9 +3,6 @@ if (-not $ENV:BHModulePath)
     Set-BuildEnvironment -Path $PSScriptRoot\..
 }
 
-Write-Host "Generating temporary help XML"
-$herupu = New-ExternalHelp -Path (Join-Path $ENV:BHMOdulePath ..\Help\en-us) -OutputPath $ENV:BHModulePath
-
 Remove-Module $ENV:BHProjectName -ErrorAction SilentlyContinue -Force
 Import-Module $ENV:BHModulePath -Force
 
@@ -177,5 +174,3 @@ foreach ($command in $commands)
         }
     }
 }
-
-$herupu | Remove-Item
