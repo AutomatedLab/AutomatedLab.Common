@@ -45,10 +45,9 @@ Create a new team project
 
 ## EXAMPLES
 
-### --------------------------  1  --------------------------
-@{paragraph=PS C:\\\>}
+### Example 1
 
-```
+```powershell
 New-TfsProject -InstanceName DSCTFS -Port 443 -CollectionName 'AutomatedLab' -ProjectName 'DSC' -Credential $credential -UseSsl -SourceControlType Git -TemplateName 'Agile'
 ```
 

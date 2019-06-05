@@ -30,11 +30,12 @@ Gets all build definition templates
 ## EXAMPLES
 
 ### List all build definition templates
-@{paragraph=PS C:\\\>}
 
-```
+```powershell
 Get-TfsBuildDefinitionTemplate -InstanceName 'dsc1tfs1' -CollectionName automatedlab -ProjectName someNewname -Credential $cred
 ```
+
+Gets all possible build definition templates
 
 id          : vsBuild
 name        : Visual Studio

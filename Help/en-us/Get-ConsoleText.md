@@ -14,7 +14,7 @@ Get the current console text buffer
 ## SYNTAX
 
 ```
-Get-ConsoleText
+Get-ConsoleText [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -38,6 +38,9 @@ PS C:\> Get-ConsoleText | Set-Clipboard
 Copies the console text to the clipboard
 
 ## PARAMETERS
+
+### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 

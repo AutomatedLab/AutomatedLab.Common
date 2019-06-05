@@ -67,18 +67,20 @@ Since there are a mulitude of available steps, you can filter on their names, ap
 ## EXAMPLES
 
 ### Get all build steps
-@{paragraph=PS C:\\\>}
 
-```
+```powershell
 Get-TfsBuildStep -InstanceName 'dsc1tfs1' -CollectionName AutomatedLab -Credential (Get-Credential)
 ```
 
-### Filter build steps
-@{paragraph=PS C:\\\>}
+Gets all possible build steps
 
-```
+### Filter build steps
+
+```powershell
 Get-TfsBuildStep -InstanceName 'dsc1tfs1' -CollectionName AutomatedLab -FriendlyName *copy* -Credential (Get-Credential)
 ```
+
+Filters the build steps by their friendly name
 
 ## PARAMETERS
 

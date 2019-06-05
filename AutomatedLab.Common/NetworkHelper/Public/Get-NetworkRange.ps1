@@ -1,6 +1,8 @@
 function Get-NetworkRange
 {
-    param (
+    [CmdletBinding()]
+    param 
+    (
         [string]$IPAddress,
         [string]$SubnetMask
     )

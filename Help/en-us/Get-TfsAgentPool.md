@@ -30,11 +30,12 @@ Gets the agent pool for a TFS/VSTS instance
 ## EXAMPLES
 
 ### Example 1
-@{paragraph=PS C:\\\>}
 
-```
+```powershell
 Get-TfsAgentPool -InstanceName 'dsc1tfs1' -Credential (Get-Credential)
 ```
+
+Returns the agent pools
 
 size          : 0
 createdOn     : 2018-03-06T20:26:31.593Z

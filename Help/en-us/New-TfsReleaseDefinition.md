@@ -56,6 +56,8 @@ New-TfsProject -InstanceName DSCTFS -Port 443 -CollectionName 'AutomatedLab' -Pr
 New-TfsReleaseDefinition -InstanceName DSCTFS -Port 443 -CollectionName 'AutomatedLab' -ProjectName 'DSC' -Credential $credential -DefinitionName ALBuild -BuildTasks $buildSteps -UseSsl
 ```
 
+This extensive example shows you how to create a new code project and add a release definition that consists of a large hashtable.
+
 ## PARAMETERS
 
 ### -ApiVersion

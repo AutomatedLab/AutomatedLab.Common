@@ -1,5 +1,5 @@
 ---
-external help file: AutomatedLab.Common-help.xml
+external help file: AutomatedLab.Common-Help.xml
 Module Name: AutomatedLab.Common
 online version:
 schema: 2.0.0
@@ -14,7 +14,7 @@ Get the .NET framework version info from Windows Registry
 ## SYNTAX
 
 ```
-Get-DotNetFrameworkVersion [[-ComputerName] <String>]
+Get-DotNetFrameworkVersion [[-ComputerName] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -55,6 +55,9 @@ Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
+
+### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
