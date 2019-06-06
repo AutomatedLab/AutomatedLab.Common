@@ -15,7 +15,7 @@ function Remove-RunspacePool
             if ($PSCmdlet.ShouldProcess($pool.InstanceId, 'Closing runspace pool'))
             {
                 $max = $pool.GetMaxRunspaces()
-                $state = $pool.ApartmentState
+                $state = if ($pool.ApartmentState) { $pool.ApartmentState } else {'Unknown'}
 
                 $pool.Close()
                 $pool.Dispose()

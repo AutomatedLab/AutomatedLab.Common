@@ -7,6 +7,8 @@
 *.userosscache
 *.sln.docstates
 AutomatedLab.Common/lib/
+AutomatedLab.Common-Help.xml
+about_AutomatedLab.Common.help.txt
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

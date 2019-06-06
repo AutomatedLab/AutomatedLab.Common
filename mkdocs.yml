@@ -1,0 +1,80 @@
+site_name: AutomatedLab.Common - the only library you need.
+repo_url: https://github.com/AutomatedLab/AutomatedLab.Common
+site_author: Jan-Hendrik Peters, Raimund Andree
+docs_dir: Help
+edit_uri: edit/master/Help/
+theme: readthedocs
+copyright: "AutomatedLab.Common is licensed under the <a href='https://github.com/AutomatedLab/AutomatedLab.Common/raw/master/LICENSE'>MIT license"
+nav:
+  - Home: index.md
+  - Functions:
+    - Add-AccountPrivilege : en-us/Add-AccountPrivilege.md
+    - Add-CATemplateStandardPermission : en-us/Add-CATemplateStandardPermission.md
+    - Add-Certificate2 : en-us/Add-Certificate2.md
+    - Add-FunctionToPSSession : en-us/Add-FunctionToPSSession.md
+    - Add-StringIncrement : en-us/Add-StringIncrement.md
+    - Add-VariableToPSSession : en-us/Add-VariableToPSSession.md
+    - ConvertTo-BinaryIP : en-us/ConvertTo-BinaryIP.md
+    - ConvertTo-DecimalIP : en-us/ConvertTo-DecimalIP.md
+    - ConvertTo-DottedDecimalIP : en-us/ConvertTo-DottedDecimalIP.md
+    - ConvertTo-Mask : en-us/ConvertTo-Mask.md
+    - ConvertTo-MaskLength : en-us/ConvertTo-MaskLength.md
+    - Enable-AutoEnrollment : en-us/Enable-AutoEnrollment.md
+    - Find-CertificateAuthority : en-us/Find-CertificateAuthority.md
+    - Get-BroadcastAddress : en-us/Get-BroadcastAddress.md
+    - Get-CATemplate : en-us/Get-CATemplate.md
+    - Get-Certificate2 : en-us/Get-Certificate2.md
+    - Get-ConsoleText : en-us/Get-ConsoleText.md
+    - Get-DotNetFrameworkVersion : en-us/Get-DotNetFrameworkVersion.md
+    - Get-DscConfigurationImportedResource : en-us/Get-DscConfigurationImportedResource.md
+    - Get-FullMesh : en-us/Get-FullMesh.md
+    - Get-NetworkAddress : en-us/Get-NetworkAddress.md
+    - Get-NetworkRange : en-us/Get-NetworkRange.md
+    - Get-NetworkSummary : en-us/Get-NetworkSummary.md
+    - Get-NextOid : en-us/Get-NextOid.md
+    - Get-PerformanceCounterID : en-us/Get-PerformanceCounterID.md
+    - Get-PerformanceCounterLocalName : en-us/Get-PerformanceCounterLocalName.md
+    - Get-PerformanceDataCollectorSet : en-us/Get-PerformanceDataCollectorSet.md
+    - Get-PublicIpAddress : en-us/Get-PublicIpAddress.md
+    - Get-RunspacePool : en-us/Get-RunspacePool.md
+    - Get-StringSection : en-us/Get-StringSection.md
+    - Get-TfsAccessTokenString : en-us/Get-TfsAccessTokenString.md
+    - Get-TfsAgentPool : en-us/Get-TfsAgentPool.md
+    - Get-TfsAgentQueue : en-us/Get-TfsAgentQueue.md
+    - Get-TfsBuildDefinition : en-us/Get-TfsBuildDefinition.md
+    - Get-TfsBuildDefinitionTemplate : en-us/Get-TfsBuildDefinitionTemplate.md
+    - Get-TfsBuildStep : en-us/Get-TfsBuildStep.md
+    - Get-TfsGitRepository : en-us/Get-TfsGitRepository.md
+    - Get-TfsProcessTemplate : en-us/Get-TfsProcessTemplate.md
+    - Get-TfsProject : en-us/Get-TfsProject.md
+    - Get-TfsReleaseDefinition : en-us/Get-TfsReleaseDefinition.md
+    - Get-TfsReleaseStep : en-us/Get-TfsReleaseStep.md
+    - Get-Type : en-us/Get-Type.md
+    - Install-SoftwarePackage : en-us/Install-SoftwarePackage.md
+    - Invoke-Ternary : en-us/Invoke-Ternary.md
+    - New-CATemplate : en-us/New-CATemplate.md
+    - New-PerformanceDataCollectorSet : en-us/New-PerformanceDataCollectorSet.md
+    - New-RunspacePool : en-us/New-RunspacePool.md
+    - New-TfsAgentQueue : en-us/New-TfsAgentQueue.md
+    - New-TfsBuildDefinition : en-us/New-TfsBuildDefinition.md
+    - New-TfsProject : en-us/New-TfsProject.md
+    - New-TfsReleaseDefinition : en-us/New-TfsReleaseDefinition.md
+    - Publish-CaTemplate : en-us/Publish-CaTemplate.md
+    - Read-Choice : en-us/Read-Choice.md
+    - Read-HashTable : en-us/Read-HashTable.md
+    - Receive-RunspaceJob : en-us/Receive-RunspaceJob.md
+    - Remove-PerformanceDataCollectorSet : en-us/Remove-PerformanceDataCollectorSet.md
+    - Remove-RunspacePool : en-us/Remove-RunspacePool.md
+    - Request-Certificate : en-us/Request-Certificate.md
+    - Send-ModuleToPSSession : en-us/Send-ModuleToPSSession.md
+    - Set-TfsProject : en-us/Set-TfsProject.md
+    - Split-Array : en-us/Split-Array.md
+    - Start-PerformanceDataCollectorSet : en-us/Start-PerformanceDataCollectorSet.md
+    - Start-RunspaceJob : en-us/Start-RunspaceJob.md
+    - Stop-PerformanceDataCollectorSet : en-us/Stop-PerformanceDataCollectorSet.md
+    - Sync-Parameter : en-us/Sync-Parameter.md
+    - Test-CATemplate : en-us/Test-CATemplate.md
+    - Test-HashtableKeys : en-us/Test-HashtableKeys.md
+    - Test-IsAdministrator : en-us/Test-IsAdministrator.md
+    - Test-Port : en-us/Test-Port.md
+    - Wait-RunspaceJob : en-us/Wait-RunspaceJob.md

@@ -5,18 +5,18 @@ function Get-PublicIpAddress
     ()
 
     $ipProviderUris = @(
-        'http://myip.dnsomatic.com/'
-        'http://ip4.host/'
-        'http://www.whatismypublicip.com'
+        'https://api.ipify.org?format=json'
+        'https://ip.seeip.org/jsonip?'
+        'https://api.myip.com'
     )
 
     foreach ($uri in $ipProviderUris)
     {
-        $Matches = $null
+        $ip = (Invoke-RestMethod -Method Get -UseBasicParsing -Uri $uri -ErrorAction SilentlyContinue).Ip
 
-        if ((Invoke-WebRequest -URI $uri).Content -match '\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}')
+        if ($ip)
         {
-            return $Matches[0]
+            return $ip
         }
     }
 }
