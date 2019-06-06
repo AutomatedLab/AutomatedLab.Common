@@ -445,14 +445,7 @@ namespace GPO
             /// <exception cref="System.Runtime.InteropServices.COMException">Throw when com execution throws exceptions</exception>
             public void Save(bool isMachine, bool isAdd)
             {
-                try
-                {
-                    iGroupPolicyObject.Save(isMachine, isAdd, REGISTRY_EXTENSION_GUID, CLSID_GPESnapIn);
-                }
-                catch (COMException e)
-                {
-                    throw e;
-                }
+                iGroupPolicyObject.Save(isMachine, isAdd, REGISTRY_EXTENSION_GUID, CLSID_GPESnapIn);
             }
 
             #endregion
@@ -490,7 +483,21 @@ namespace GPO
                             RegCloseKey(gphKey);
                             return ResultCode.CreateOrOpenFailed;
                         }
-                        Save(isMachine, false);
+
+                        try
+                        {
+                            Save(isMachine, false);
+                        }
+                        catch (System.IO.FileLoadException fili)
+                        {
+                            RegCloseKey(gphKey);
+                            return ResultCode.SaveFailed;
+                        }
+                        catch (COMException e)
+                        {
+                            RegCloseKey(gphKey);
+                            return ResultCode.SaveFailed;
+                        }
                     }
                     else
                     {
@@ -550,12 +557,19 @@ namespace GPO
                     {
                         Save(isMachine, true);
                     }
+                    catch (System.IO.FileLoadException fili)
+                    {
+                        RegCloseKey(gphSubKey);
+                        RegCloseKey(gphKey);
+                        return ResultCode.SaveFailed;
+                    }
                     catch (COMException e)
                     {
                         RegCloseKey(gphSubKey);
                         RegCloseKey(gphKey);
                         return ResultCode.SaveFailed;
                     }
+
                     RegCloseKey(gphSubKey);
                     RegCloseKey(gphKey);
                 }
