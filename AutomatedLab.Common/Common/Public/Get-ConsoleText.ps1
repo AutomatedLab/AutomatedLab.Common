@@ -1,5 +1,8 @@
 function Get-ConsoleText
 {
+    [CmdletBinding()]
+    param()
+    
     # Check the host name and exit if the host is not the Windows PowerShell console host. 
     if ($host.Name -eq 'Windows PowerShell ISE Host')
     { 
