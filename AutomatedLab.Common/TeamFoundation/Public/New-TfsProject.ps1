@@ -53,8 +53,16 @@ function New-TfsProject
         $PersonalAccessToken,
 
         [timespan]
-        $Timeout = (New-TimeSpan -Seconds 30)
+        $Timeout = (New-TimeSpan -Seconds 30),
+
+        [switch]
+        $SkipCertificateCheck
     )
+
+    if ($SkipCertificateCheck.IsPresent)
+    {
+        $null = [ServerCertificateValidationCallback]::Ignore()
+    }
 
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
     $requestUrl += if ( $Port -gt 0)
@@ -105,6 +113,11 @@ function New-TfsProject
         ContentType = 'application/json'
         Body        = ($payload | ConvertTo-Json)
         ErrorAction = 'Stop'
+    }
+
+    if ($PSEdition -eq 'Core' -and (Get-Command -Name Invoke-RestMethod).Parameters.ContainsKey('SkipCertificateCheck'))
+    {
+        $requestParameters.SkipCertificateCheck = $SkipCertificateCheck.IsPresent
     }
 
     if ($Credential)

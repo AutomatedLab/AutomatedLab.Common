@@ -46,8 +46,16 @@ function Get-TfsBuildStep
         [Parameter(Mandatory, ParameterSetName = 'VstsHashtable')]
         [Parameter(Mandatory, ParameterSetName = 'VstsScript')]
         [string]
-        $PersonalAccessToken
+        $PersonalAccessToken,
+
+        [switch]
+        $SkipCertificateCheck
     )
+
+    if ($SkipCertificateCheck.IsPresent)
+    {
+        $null = [ServerCertificateValidationCallback]::Ignore()
+    }
 
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
     $requestUrl += if ( $Port -gt 0)
@@ -63,6 +71,11 @@ function Get-TfsBuildStep
         Uri         = $requestUrl
         Method      = 'Get'
         ErrorAction = 'Stop'
+    }
+
+    if ($PSEdition -eq 'Core' -and (Get-Command -Name Invoke-RestMethod).Parameters.ContainsKey('SkipCertificateCheck'))
+    {
+        $requestParameters.SkipCertificateCheck = $SkipCertificateCheck.IsPresent
     }
 
     if ($Credential)
