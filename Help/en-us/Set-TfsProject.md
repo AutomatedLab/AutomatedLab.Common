@@ -1,5 +1,5 @@
 ---
-external help file: AutomatedLab.Common-Help.xml
+external help file: AutomatedLab.Common-help.xml
 Module Name: AutomatedLab.Common
 online version:
 schema: 2.0.0
@@ -16,14 +16,14 @@ Change an existing team project's name and description
 ```
 Set-TfsProject -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] [-ApiVersion <String>]
  -ProjectGuid <String> [-NewName <String>] [-NewDescription <String>] [-UseSsl] [-Credential <PSCredential>]
- [<CommonParameters>]
+ [-SkipCertificateCheck] [<CommonParameters>]
 ```
 
 ### Vsts
 ```
 Set-TfsProject -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] [-ApiVersion <String>]
  -ProjectGuid <String> [-NewName <String>] [-NewDescription <String>] [-UseSsl] [-PersonalAccessToken <String>]
- [<CommonParameters>]
+ [-SkipCertificateCheck] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -183,6 +183,21 @@ The VSTS access token as returned by Get-TfsAccessTokenString
 ```yaml
 Type: String
 Parameter Sets: Vsts
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SkipCertificateCheck
+Skip certificate validation
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
 Aliases:
 
 Required: False

@@ -16,13 +16,15 @@ Get one or more TFS/Azure DevOps Release Definitions
 ### Cred (Default)
 ```
 Get-TfsReleaseDefinition -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>]
- [-ApiVersion <String>] -ProjectName <String> [-UseSsl] -Credential <PSCredential> [<CommonParameters>]
+ [-ApiVersion <String>] -ProjectName <String> [-UseSsl] -Credential <PSCredential> [-SkipCertificateCheck]
+ [<CommonParameters>]
 ```
 
 ### Pat
 ```
 Get-TfsReleaseDefinition -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>]
- [-ApiVersion <String>] -ProjectName <String> [-UseSsl] -PersonalAccessToken <String> [<CommonParameters>]
+ [-ApiVersion <String>] -ProjectName <String> [-UseSsl] -PersonalAccessToken <String> [-SkipCertificateCheck]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -148,6 +150,21 @@ Accept wildcard characters: False
 
 ### -UseSsl
 Indicates if SSL should be used to connect
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SkipCertificateCheck
+Skip certificate validation
 
 ```yaml
 Type: SwitchParameter

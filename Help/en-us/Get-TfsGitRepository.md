@@ -1,5 +1,5 @@
 ---
-external help file: AutomatedLab.Common-Help.xml
+external help file: AutomatedLab.Common-help.xml
 Module Name: AutomatedLab.Common
 online version:
 schema: 2.0.0
@@ -15,13 +15,13 @@ Gets a project's repository
 ### Tfs
 ```
 Get-TfsGitRepository -InstanceName <String> -CollectionName <String> [-Port <UInt32>] [-ApiVersion <String>]
- [-ProjectName <String>] [-UseSsl] [-Credential <PSCredential>] [<CommonParameters>]
+ [-ProjectName <String>] [-UseSsl] [-Credential <PSCredential>] [-SkipCertificateCheck] [<CommonParameters>]
 ```
 
 ### Vsts
 ```
 Get-TfsGitRepository -InstanceName <String> -CollectionName <String> [-Port <UInt32>] [-ApiVersion <String>]
- [-ProjectName <String>] [-UseSsl] [-PersonalAccessToken <String>] [<CommonParameters>]
+ [-ProjectName <String>] [-UseSsl] [-PersonalAccessToken <String>] [-SkipCertificateCheck] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -151,6 +151,21 @@ The VSTS access token as returned by Get-TfsAccessTokenString
 ```yaml
 Type: String
 Parameter Sets: Vsts
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SkipCertificateCheck
+Skip certificate validation
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
 Aliases:
 
 Required: False

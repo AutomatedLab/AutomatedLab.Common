@@ -1,5 +1,5 @@
 ---
-external help file: AutomatedLab.Common-Help.xml
+external help file: AutomatedLab.Common-help.xml
 Module Name: AutomatedLab.Common
 online version:
 schema: 2.0.0
@@ -15,13 +15,15 @@ Create a new agent queue for your project
 ### Cred
 ```
 New-TfsAgentQueue -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] [-ApiVersion <String>]
- -ProjectName <String> [-UseSsl] [-QueueName <String>] -Credential <PSCredential> [<CommonParameters>]
+ -ProjectName <String> [-UseSsl] [-QueueName <String>] -Credential <PSCredential> [-SkipCertificateCheck]
+ [<CommonParameters>]
 ```
 
 ### Pat
 ```
 New-TfsAgentQueue -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] [-ApiVersion <String>]
- -ProjectName <String> [-UseSsl] [-QueueName <String>] -PersonalAccessToken <String> [<CommonParameters>]
+ -ProjectName <String> [-UseSsl] [-QueueName <String>] -PersonalAccessToken <String> [-SkipCertificateCheck]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -162,6 +164,21 @@ Accept wildcard characters: False
 
 ### -UseSsl
 Indicates that SSL should be used
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SkipCertificateCheck
+Skip certificate validation
 
 ```yaml
 Type: SwitchParameter
