@@ -1,5 +1,5 @@
 ---
-external help file: AutomatedLab.Common-Help.xml
+external help file: AutomatedLab.Common-help.xml
 Module Name: AutomatedLab.Common
 online version:
 schema: 2.0.0
@@ -16,28 +16,28 @@ Create a new team project
 ```
 New-TfsProject -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] [-ApiVersion <String>]
  -ProjectName <String> [-ProjectDescription <String>] [-SourceControlType <Object>] -TemplateName <String>
- [-UseSsl] -Credential <PSCredential> [-Timeout <TimeSpan>] [<CommonParameters>]
+ [-UseSsl] -Credential <PSCredential> [-Timeout <TimeSpan>] [-SkipCertificateCheck] [<CommonParameters>]
 ```
 
 ### GuidCred
 ```
 New-TfsProject -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] [-ApiVersion <String>]
  -ProjectName <String> [-ProjectDescription <String>] [-SourceControlType <Object>] -TemplateGuid <Guid>
- [-UseSsl] -Credential <PSCredential> [-Timeout <TimeSpan>] [<CommonParameters>]
+ [-UseSsl] -Credential <PSCredential> [-Timeout <TimeSpan>] [-SkipCertificateCheck] [<CommonParameters>]
 ```
 
 ### GuidPat
 ```
 New-TfsProject -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] [-ApiVersion <String>]
  -ProjectName <String> [-ProjectDescription <String>] [-SourceControlType <Object>] -TemplateGuid <Guid>
- [-UseSsl] -PersonalAccessToken <String> [-Timeout <TimeSpan>] [<CommonParameters>]
+ [-UseSsl] -PersonalAccessToken <String> [-Timeout <TimeSpan>] [-SkipCertificateCheck] [<CommonParameters>]
 ```
 
 ### NamePat
 ```
 New-TfsProject -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] [-ApiVersion <String>]
  -ProjectName <String> [-ProjectDescription <String>] [-SourceControlType <Object>] -TemplateName <String>
- [-UseSsl] -PersonalAccessToken <String> [-Timeout <TimeSpan>] [<CommonParameters>]
+ [-UseSsl] -PersonalAccessToken <String> [-Timeout <TimeSpan>] [-SkipCertificateCheck] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -247,6 +247,21 @@ Parameter Sets: GuidPat, NamePat
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SkipCertificateCheck
+Skip certificate validation
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

@@ -16,14 +16,16 @@ Create a new release definition
 ```
 New-TfsReleaseDefinition -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>]
  [-ApiVersion <String>] -ProjectName <String> -ReleaseName <String> [-ReleaseTasks <Hashtable[]>]
- [-Environments <Hashtable[]>] [-UseSsl] -Credential <PSCredential> [<CommonParameters>]
+ [-Environments <Hashtable[]>] [-UseSsl] -Credential <PSCredential> [-SkipCertificateCheck]
+ [<CommonParameters>]
 ```
 
 ### Pat
 ```
 New-TfsReleaseDefinition -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>]
  [-ApiVersion <String>] -ProjectName <String> -ReleaseName <String> [-ReleaseTasks <Hashtable[]>]
- [-Environments <Hashtable[]>] [-UseSsl] -PersonalAccessToken <String> [<CommonParameters>]
+ [-Environments <Hashtable[]>] [-UseSsl] -PersonalAccessToken <String> [-SkipCertificateCheck]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -213,6 +215,21 @@ Accept wildcard characters: False
 
 ### -UseSsl
 Indicates if SSL should be used
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SkipCertificateCheck
+Skip certificate validation
 
 ```yaml
 Type: SwitchParameter

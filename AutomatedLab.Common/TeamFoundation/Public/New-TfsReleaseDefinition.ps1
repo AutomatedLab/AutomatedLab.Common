@@ -41,8 +41,16 @@ function New-TfsReleaseDefinition
         
         [Parameter(Mandatory, ParameterSetName = 'Pat')]
         [string]
-        $PersonalAccessToken
+        $PersonalAccessToken,
+
+        [switch]
+        $SkipCertificateCheck
     )
+
+    if ($SkipCertificateCheck.IsPresent)
+    {
+        $null = [ServerCertificateValidationCallback]::Ignore()
+    }
 
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
     $requestUrl += if ( $Port -gt 0)
@@ -243,6 +251,11 @@ function New-TfsReleaseDefinition
         ContentType = 'application/json'
         Body        = ($payload | ConvertTo-Json -Depth 42)
         ErrorAction = 'Stop'
+    }
+
+    if ($PSEdition -eq 'Core' -and (Get-Command -Name Invoke-RestMethod).Parameters.ContainsKey('SkipCertificateCheck'))
+    {
+        $requestParameters.SkipCertificateCheck = $SkipCertificateCheck.IsPresent
     }
 
     if ($Credential)

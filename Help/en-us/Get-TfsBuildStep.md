@@ -1,5 +1,5 @@
 ---
-external help file: AutomatedLab.Common-Help.xml
+external help file: AutomatedLab.Common-help.xml
 Module Name: AutomatedLab.Common
 online version:
 schema: 2.0.0
@@ -15,49 +15,50 @@ Gets all available build steps
 ### Tfs (Default)
 ```
 Get-TfsBuildStep -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] [-UseSsl]
- -Credential <PSCredential> [<CommonParameters>]
+ -Credential <PSCredential> [-SkipCertificateCheck] [<CommonParameters>]
 ```
 
 ### VstsName
 ```
 Get-TfsBuildStep -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] -FriendlyName <String>
- [-UseSsl] -PersonalAccessToken <String> [<CommonParameters>]
+ [-UseSsl] -PersonalAccessToken <String> [-SkipCertificateCheck] [<CommonParameters>]
 ```
 
 ### TfsName
 ```
 Get-TfsBuildStep -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] -FriendlyName <String>
- [-UseSsl] -Credential <PSCredential> [<CommonParameters>]
+ [-UseSsl] -Credential <PSCredential> [-SkipCertificateCheck] [<CommonParameters>]
 ```
 
 ### VstsHashtable
 ```
 Get-TfsBuildStep -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>]
- -FilterHashtable <Hashtable> [-UseSsl] -PersonalAccessToken <String> [<CommonParameters>]
+ -FilterHashtable <Hashtable> [-UseSsl] -PersonalAccessToken <String> [-SkipCertificateCheck]
+ [<CommonParameters>]
 ```
 
 ### TfsHashtable
 ```
 Get-TfsBuildStep -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>]
- -FilterHashtable <Hashtable> [-UseSsl] -Credential <PSCredential> [<CommonParameters>]
+ -FilterHashtable <Hashtable> [-UseSsl] -Credential <PSCredential> [-SkipCertificateCheck] [<CommonParameters>]
 ```
 
 ### VstsScript
 ```
 Get-TfsBuildStep -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] -FilterScript <ScriptBlock>
- [-UseSsl] -PersonalAccessToken <String> [<CommonParameters>]
+ [-UseSsl] -PersonalAccessToken <String> [-SkipCertificateCheck] [<CommonParameters>]
 ```
 
 ### TfsScript
 ```
 Get-TfsBuildStep -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] -FilterScript <ScriptBlock>
- [-UseSsl] -Credential <PSCredential> [<CommonParameters>]
+ [-UseSsl] -Credential <PSCredential> [-SkipCertificateCheck] [<CommonParameters>]
 ```
 
 ### Vsts
 ```
 Get-TfsBuildStep -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] [-UseSsl]
- -PersonalAccessToken <String> [<CommonParameters>]
+ -PersonalAccessToken <String> [-SkipCertificateCheck] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -234,6 +235,21 @@ Parameter Sets: VstsScript, TfsScript
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SkipCertificateCheck
+Skip certificate validation
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

@@ -1,5 +1,5 @@
 ---
-external help file: AutomatedLab.Common-Help.xml
+external help file: AutomatedLab.Common-help.xml
 Module Name: AutomatedLab.Common
 online version:
 schema: 2.0.0
@@ -15,13 +15,15 @@ Gets all build definition templates
 ### Cred (Default)
 ```
 Get-TfsBuildDefinitionTemplate -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>]
- [-ApiVersion <String>] -ProjectName <String> [-UseSsl] -Credential <PSCredential> [<CommonParameters>]
+ [-ApiVersion <String>] -ProjectName <String> [-UseSsl] -Credential <PSCredential> [-SkipCertificateCheck]
+ [<CommonParameters>]
 ```
 
 ### Pat
 ```
 Get-TfsBuildDefinitionTemplate -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>]
- [-ApiVersion <String>] -ProjectName <String> [-UseSsl] -PersonalAccessToken <String> [<CommonParameters>]
+ [-ApiVersion <String>] -ProjectName <String> [-UseSsl] -PersonalAccessToken <String> [-SkipCertificateCheck]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -291,6 +293,21 @@ Parameter Sets: Pat
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SkipCertificateCheck
+Skip certificate validation
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

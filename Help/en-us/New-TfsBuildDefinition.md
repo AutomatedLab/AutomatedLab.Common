@@ -1,5 +1,5 @@
 ---
-external help file: AutomatedLab.Common-Help.xml
+external help file: AutomatedLab.Common-help.xml
 Module Name: AutomatedLab.Common
 online version:
 schema: 2.0.0
@@ -17,7 +17,7 @@ Create a new build definition for your project
 New-TfsBuildDefinition -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>]
  [-ApiVersion <String>] -ProjectName <String> -DefinitionName <String> [-QueueName <String>]
  [-BuildTasks <Hashtable[]>] [-Phases <Hashtable[]>] [-CiTriggerRefs <String[]>] [-Variables <Hashtable>]
- [-UseSsl] -Credential <PSCredential> [<CommonParameters>]
+ [-UseSsl] -Credential <PSCredential> [-SkipCertificateCheck] [<CommonParameters>]
 ```
 
 ### Pat
@@ -25,7 +25,7 @@ New-TfsBuildDefinition -InstanceName <String> [-CollectionName <String>] [-Port 
 New-TfsBuildDefinition -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>]
  [-ApiVersion <String>] -ProjectName <String> -DefinitionName <String> [-QueueName <String>]
  [-BuildTasks <Hashtable[]>] [-Phases <Hashtable[]>] [-CiTriggerRefs <String[]>] [-Variables <Hashtable>]
- [-UseSsl] -PersonalAccessToken <String> [<CommonParameters>]
+ [-UseSsl] -PersonalAccessToken <String> [-SkipCertificateCheck] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -283,6 +283,21 @@ Accept wildcard characters: False
 
 ```yaml
 Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SkipCertificateCheck
+Skip certificate validation
+
+```yaml
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
