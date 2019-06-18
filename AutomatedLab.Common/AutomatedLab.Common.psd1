@@ -22,7 +22,7 @@
 
     FunctionsToExport      = '*'
 
-    RequiredModules        = @('newtonsoft.json')
+    RequiredModules        = @('newtonsoft.json', 'PSFileTransfer')
 
     CmdletsToExport        = '*'
 

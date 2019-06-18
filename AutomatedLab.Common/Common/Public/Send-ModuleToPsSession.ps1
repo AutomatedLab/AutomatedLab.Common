@@ -121,24 +121,49 @@ function Send-ModuleToPSSession
 
         foreach ($s in $Session)
         {
+            $sessionVersion = Invoke-Command -Session $s -ScriptBlock {$PSVersionTable.PSVersion.Major}
             $destination = if ($Scope -eq 'AllUsers')
             {
                 Invoke-Command -Session $s -ScriptBlock {
-                    $destination = Join-Path -Path ([System.Environment]::GetFolderPath('ProgramFiles')) -ChildPath WindowsPowerShell\Modules
+                    $destination = if (-not $IsLinux -and -not $IsMacOs)
+                    {
+                        if ($PSVersionTable.PSVersion -gt 4.0)
+                        {
+                            Join-Path -Path ([System.Environment]::GetFolderPath('ProgramFiles')) -ChildPath WindowsPowerShell\Modules
+                        }
+                        else
+                        {
+                            Join-Path -Path ([System.Environment]::GetFolderPath('System')) -ChildPath WindowsPowerShell\v1.0\Modules
+                        }
+                    }
+                    else
+                    {
+                        '/usr/local/share/powershell/Modules'
+                    }
+
                     if (-not (Test-Path -Path $destination))
                     {
-                        mkdir -Path $destination -Force | Out-Null
+                        New-Item -ItemType Directory -Path $destination -Force | Out-Null
                     }
+
                     $destination
                 }
             }
             else
             {
                 Invoke-Command -Session $s -ScriptBlock { 
-                    $destination = Join-Path -Path ([System.Environment]::GetFolderPath('MyDocuments')) -ChildPath WindowsPowerShell\Modules
+                    $destination = if (-not $IsLinux -and -not $IsMacOs)
+                    {
+                        Join-Path -Path ([System.Environment]::GetFolderPath('MyDocuments')) -ChildPath WindowsPowerShell\Modules
+                    }
+                    else
+                    {
+                        '~/.local/share/powershell/Modules'
+                    }
+
                     if (-not (Test-Path -Path $destination))
                     {
-                        mkdir -Path $destination -Force | Out-Null
+                        New-Item -ItemType Directory -Path $destination -Force | Out-Null
                     }
                     $destination
                 }
@@ -146,7 +171,7 @@ function Send-ModuleToPSSession
 
             Write-Verbose "Sending psd1 manifest module in directory $($Local:Module.ModuleBase)"
 
-            if ($Local:Module.ModuleBase -match '\d{1,4}\.\d{1,4}\.\d{1,4}\.\d{1,4}$' -or $Local:Module.ModuleBase -match '\d{1,4}\.\d{1,4}\.\d{1,4}$')
+            if (($Local:Module.ModuleBase -match '\d{1,4}\.\d{1,4}\.\d{1,4}\.\d{1,4}$' -or $Local:Module.ModuleBase -match '\d{1,4}\.\d{1,4}\.\d{1,4}$') -and $sessionVersion -ge 5)
             {
                 #parent folder contains a specific version. In order to copy the module right, the parent of this parent is required
                 $Local:moduleParentFolder = Split-Path -Path $Local:Module.ModuleBase -Parent
