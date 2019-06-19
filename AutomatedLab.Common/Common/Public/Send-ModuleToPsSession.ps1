@@ -50,6 +50,9 @@ function Send-ModuleToPSSession
         $Verify,
 
         [switch]
+        $Force,
+
+        [switch]
         $NoClobber,
 
         [ValidateRange(1KB, 7.4MB)] #might be good to have much higher top end as the underlying max is controlled by New-PSSessionOption
@@ -76,7 +79,7 @@ function Send-ModuleToPSSession
         }
 
         #Remove any sessions where the same or newer module version already exists
-        if (-not $Force)
+        if (-not $Force.IsPresent)
         {
             Write-Verbose 'Filtering out target sessions that do not need the module'
             $Session = foreach ($item in $PSBoundParameters.Session)
@@ -121,13 +124,20 @@ function Send-ModuleToPSSession
 
         foreach ($s in $Session)
         {
-            $sessionVersion = Invoke-Command -Session $s -ScriptBlock {$PSVersionTable.PSVersion.Major}
+            $sessionVersion = Invoke-Command -Session $s -ScriptBlock {$PSVersionTable.PSVersion}
+
+            if ($Local:Module.PowerShellVersion -gt $sessionVersion)
+            {
+                Write-Warning -Message "Module $($Local:Module.Name) requires PS Version $($Local:Module.PowerShellVersion). We only found $($sessionVersion) on $($s.ComputerName). Skipping."
+                continue
+            }
+
             $destination = if ($Scope -eq 'AllUsers')
             {
                 Invoke-Command -Session $s -ScriptBlock {
                     $destination = if (-not $IsLinux -and -not $IsMacOs)
                     {
-                        if ($PSVersionTable.PSVersion -gt 4.0)
+                        if ($PSVersionTable.PSVersion -ge ([version]::new(4,0)))
                         {
                             Join-Path -Path ([System.Environment]::GetFolderPath('ProgramFiles')) -ChildPath WindowsPowerShell\Modules
                         }
@@ -171,7 +181,7 @@ function Send-ModuleToPSSession
 
             Write-Verbose "Sending psd1 manifest module in directory $($Local:Module.ModuleBase)"
 
-            if (($Local:Module.ModuleBase -match '\d{1,4}\.\d{1,4}\.\d{1,4}\.\d{1,4}$' -or $Local:Module.ModuleBase -match '\d{1,4}\.\d{1,4}\.\d{1,4}$') -and $sessionVersion -ge 5)
+            if (($Local:Module.ModuleBase -match '\d{1,4}\.\d{1,4}\.\d{1,4}\.\d{1,4}$' -or $Local:Module.ModuleBase -match '\d{1,4}\.\d{1,4}\.\d{1,4}$') -and $sessionVersion -ge ([version]::new(5,0)))
             {
                 #parent folder contains a specific version. In order to copy the module right, the parent of this parent is required
                 $Local:moduleParentFolder = Split-Path -Path $Local:Module.ModuleBase -Parent
