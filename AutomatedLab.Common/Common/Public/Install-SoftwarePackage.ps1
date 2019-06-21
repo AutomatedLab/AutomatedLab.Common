@@ -100,7 +100,7 @@ function Install-SoftwarePackage
         
         $tempRemoteFolder = [System.IO.Path]::GetTempFileName()
         Remove-Item -Path $tempRemoteFolder
-        mkdir -Path $tempRemoteFolder
+        New-Item -ItemType Directory -Path $tempRemoteFolder
         expand.exe -F:* $Path $tempRemoteFolder
         
         $cabFile = (Get-ChildItem -Path $tempRemoteFolder\*.cab -Exclude WSUSSCAN.cab).FullName

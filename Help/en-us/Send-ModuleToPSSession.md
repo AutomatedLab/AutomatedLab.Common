@@ -15,8 +15,8 @@ Send an entire module to a remote session
 
 ```
 Send-ModuleToPSSession [-Module] <PSModuleInfo> [-Session] <PSSession[]> [-Scope <String>]
- [-IncludeDependencies] [-Move] [-Encrypt] [-NoWriteBuffer] [-Verify] [-NoClobber] [-MaxBufferSize <UInt32>]
- [<CommonParameters>]
+ [-IncludeDependencies] [-Move] [-Encrypt] [-NoWriteBuffer] [-Verify] [-Force] [-NoClobber]
+ [-MaxBufferSize <UInt32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -185,14 +185,31 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Force
+Indicates that the module should always be transmitted regardless of the version
+that already exists on the remote
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ## OUTPUTS
 
 ### System.IO.FileInfo
+
 ## NOTES
 
 ## RELATED LINKS
