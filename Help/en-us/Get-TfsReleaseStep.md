@@ -15,49 +15,51 @@ Get all possible release steps
 ### Tfs (Default)
 ```
 Get-TfsReleaseStep -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] [-UseSsl]
- -Credential <PSCredential> [<CommonParameters>]
+ -Credential <PSCredential> [-SkipCertificateCheck] [<CommonParameters>]
 ```
 
 ### VstsName
 ```
 Get-TfsReleaseStep -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] -FriendlyName <String>
- [-UseSsl] -PersonalAccessToken <String> [<CommonParameters>]
+ [-UseSsl] -PersonalAccessToken <String> [-SkipCertificateCheck] [<CommonParameters>]
 ```
 
 ### TfsName
 ```
 Get-TfsReleaseStep -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] -FriendlyName <String>
- [-UseSsl] -Credential <PSCredential> [<CommonParameters>]
+ [-UseSsl] -Credential <PSCredential> [-SkipCertificateCheck] [<CommonParameters>]
 ```
 
 ### VstsHashtable
 ```
 Get-TfsReleaseStep -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>]
- -FilterHashtable <Hashtable> [-UseSsl] -PersonalAccessToken <String> [<CommonParameters>]
+ -FilterHashtable <Hashtable> [-UseSsl] -PersonalAccessToken <String> [-SkipCertificateCheck]
+ [<CommonParameters>]
 ```
 
 ### TfsHashtable
 ```
 Get-TfsReleaseStep -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>]
- -FilterHashtable <Hashtable> [-UseSsl] -Credential <PSCredential> [<CommonParameters>]
+ -FilterHashtable <Hashtable> [-UseSsl] -Credential <PSCredential> [-SkipCertificateCheck] [<CommonParameters>]
 ```
 
 ### VstsScript
 ```
 Get-TfsReleaseStep -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>]
- -FilterScript <ScriptBlock> [-UseSsl] -PersonalAccessToken <String> [<CommonParameters>]
+ -FilterScript <ScriptBlock> [-UseSsl] -PersonalAccessToken <String> [-SkipCertificateCheck]
+ [<CommonParameters>]
 ```
 
 ### TfsScript
 ```
 Get-TfsReleaseStep -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>]
- -FilterScript <ScriptBlock> [-UseSsl] -Credential <PSCredential> [<CommonParameters>]
+ -FilterScript <ScriptBlock> [-UseSsl] -Credential <PSCredential> [-SkipCertificateCheck] [<CommonParameters>]
 ```
 
 ### Vsts
 ```
 Get-TfsReleaseStep -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] [-UseSsl]
- -PersonalAccessToken <String> [<CommonParameters>]
+ -PersonalAccessToken <String> [-SkipCertificateCheck] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -203,6 +205,21 @@ Accept wildcard characters: False
 
 ### -UseSsl
 Indicates if SSL should be used
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SkipCertificateCheck
+Skip certificate validation
 
 ```yaml
 Type: SwitchParameter

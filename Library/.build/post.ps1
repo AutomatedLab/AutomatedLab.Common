@@ -12,12 +12,12 @@ $fullClr = Join-Path -Path $path -ChildPath net462
 
 if (-not (Test-Path $destination\lib\core))
 {
-	$null = mkdir $destination\lib\core -Force
+	$null = New-Item -ItemType Directory $destination\lib\core -Force
 }
 
 if (-not (Test-Path $destination\lib\full))
 {
-	$null = mkdir $destination\lib\full -Force
+	$null = New-Item -ItemType Directory $destination\lib\full -Force
 }
 
 robocopy $coreClr $destination\lib\core *.dll /R:15 /W:5

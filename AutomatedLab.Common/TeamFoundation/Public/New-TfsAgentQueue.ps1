@@ -34,8 +34,16 @@ function New-TfsAgentQueue
         
         [Parameter(Mandatory, ParameterSetName = 'Pat')]
         [string]
-        $PersonalAccessToken
+        $PersonalAccessToken,
+
+        [switch]
+        $SkipCertificateCheck
     )
+
+    if ($SkipCertificateCheck.IsPresent)
+    {
+        $null = [ServerCertificateValidationCallback]::Ignore()
+    }
 
     $existingQueue = Get-TfsAgentQueue @PSBoundParameters
     if ($existingQueue) { return $existingQueue }
@@ -75,6 +83,11 @@ function New-TfsAgentQueue
         ContentType = 'application/json'
         Body        = ($payload | ConvertTo-Json)
         ErrorAction = 'Stop'
+    }
+
+    if ($PSEdition -eq 'Core' -and (Get-Command -Name Invoke-RestMethod).Parameters.ContainsKey('SkipCertificateCheck'))
+    {
+        $requestParameters.SkipCertificateCheck = $SkipCertificateCheck.IsPresent
     }
 
     if ($Credential)
