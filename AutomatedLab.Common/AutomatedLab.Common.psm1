@@ -1,25 +1,44 @@
 # Get public and private function definition files.
-$modulebase =  $PSScriptRoot
+$modulebase = $PSScriptRoot
 $importFolders = Get-ChildItem $modulebase -File -Recurse -ErrorAction SilentlyContinue | Group-Object { $_.Directory.Name } -AsHashTable -AsString
 
 # Types first
-$typeExists = try { [AutomatedLab.Common.Win32Exception] }catch { }
-if (-not $typeExists)
+foreach ($type in (Get-ChildItem $modulebase/Types/*.cs))
 {
+    $firstline = Get-Content -TotalCount 1 -Path $type.FullName
+    $addTypeParam = @{
+        Path           = $type.FullName
+        ErrorAction    = 'Stop'
+        WarningAction  = 'SilentlyContinue'
+        IgnoreWarnings = $true
+    }
+
+    if ($firstline.StartsWith('//'))
+    {
+        $winOnly = $firstline -match 'WindowsOnly'
+
+        if ($winOnly -and ($IsLinux -or $IsMacOS))
+        {
+            continue
+        }
+
+        $null = $firstline -match 'ReferenceAssemblies:(?<Assemblies>[\w:\\,\.]+);?'
+        if ($matches.Assemblies)
+        {
+            $addTypeParam.ReferencedAssemblies = $matches.Assemblies -split ','
+        }
+    }
+
     try
     {
-        if ($PSEdition -eq 'Core')
-        {
-            Add-Type -Path $modulebase\lib\core\AutomatedLab.Common.dll -ErrorAction Stop
-        }
-        else
-        {
-            Add-Type -Path $modulebase\lib\full\AutomatedLab.Common.dll -ErrorAction Stop
-        }
+        Add-Type @addTypeParam
     }
     catch
     {
-        Write-Warning -Message "Unable to add AutomatedLab.Common.dll - GPO and PKI functionality might be impaired.`r`nException was: $($_.Exception.Message), $($_.Exception.LoaderExceptions)"
+        if (-not $_.FullyQualifiedErrorId -like 'TYPE_ALREADY_EXISTS*')
+        {
+            Write-Warning -Message "Unable to add $($type.BaseName) - Functionality might be impaired.`r`nException was: $($_.Exception.Message), $($_.Exception.LoaderExceptions)"
+        }
     }
 }
 

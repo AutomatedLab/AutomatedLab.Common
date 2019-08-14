@@ -15,19 +15,7 @@ image: Visual Studio 2017
 skip_commits:
   message: /updated readme.*|update readme.*s/
 
-build:
-  project: ALCommon.sln
-
-dotnet_csproj:
-  patch: true
-  file: '**\*.csproj'
-  version: '{version}'
-  package_version: '{version}'
-  assembly_version: '{version}'
-  file_version: '{version}'
-  informational_version: '{version}'
-
-before_build:
+before_test:
   - nuget restore
   - ps: |
         Write-Host "'before_build' block"
