@@ -15,10 +15,10 @@ image: Visual Studio 2017
 skip_commits:
   message: /updated readme.*|update readme.*s/
 
-before_test:
+build_script:
   - nuget restore
   - ps: |
-        Write-Host "'before_build' block"
+        Write-Host "'build_script' block"
 
         Write-Host "Setting version number in files"
         Add-AppveyorMessage -Message "Setting version number in files" -Category Information
