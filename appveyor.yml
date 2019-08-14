@@ -16,7 +16,6 @@ skip_commits:
   message: /updated readme.*|update readme.*s/
 
 build_script:
-  - nuget restore
   - ps: |
         Write-Host "'build_script' block"
 
