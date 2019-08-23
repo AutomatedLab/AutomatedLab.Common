@@ -158,10 +158,10 @@ function Install-SoftwarePackage
             Write-Verbose "Running Register-ScheduledJob as PowerShell Version is >=3.0"
 
             $scheduledJobParams = @{
-                Name = $jobName
-                ScriptBlock = (Get-Command -Name New-InstallProcess).ScriptBlock
+                Name         = $jobName
+                ScriptBlock  = (Get-Command -Name New-InstallProcess).ScriptBlock
                 ArgumentList = $Path, $CommandLine, $UseShellExecute
-                RunNow = $true
+                RunNow       = $true
             }
             if ($Credential) { $scheduledJobParams.Add('Credential', $Credential) }
             $scheduledJob = Register-ScheduledJob @scheduledJobParams
@@ -204,11 +204,21 @@ function Install-SoftwarePackage
     }
         
     Write-Verbose "Exit code of installation process is '$($result.Process.ExitCode)'"
-    if ($result.Process.ExitCode -ne 0 `
-        -and $result.Process.ExitCode -ne 3010 `
-        -and $result.Process.ExitCode -ne $null `
-    -and $ExpectedReturnCodes -notcontains $result.Process.ExitCode )
+    if ($null -ne $result.Process.ExitCode -and (0, 3010 + $ExpectedReturnCodes) -notcontains $result.Process.ExitCode)
     {
+        $onLegacyOs = try
+        {
+            $type = [AutomatedLab.Common.Win32Exception]
+            $false
+        }
+        catch
+        { $true }
+
+        if ($onLegacyOs)
+        {
+            throw (New-Object System.ComponentModel.Win32Exception($result.Process.ExitCode))
+        }
+
         throw (New-Object AutomatedLab.Common.Win32Exception($result.Process.ExitCode))
     }
     else
