@@ -52,6 +52,10 @@ function New-TfsBuildDefinition
         [Parameter(Mandatory, ParameterSetName = 'Pat')]
         [string]
         $PersonalAccessToken,
+        
+        [switch]$Clean,
+        
+        [int]$CleanOptions = 0,
 
         [switch]
         $SkipCertificateCheck
@@ -82,7 +86,7 @@ function New-TfsBuildDefinition
     $existingBuild = Get-TfsBuildDefinition @exBuildParam
     if ($existingBuild | Where-Object name -eq $DefinitionName)
     { 
-        Write-Verbose -Message ('Build definition {0} in {1} already exists.' -f $DefinitionName, $ProjectName);
+        Write-Warning -Message ('Build definition {0} in {1} already exists.' -f $DefinitionName, $ProjectName)
         return 
     }
 
@@ -148,8 +152,11 @@ function New-TfsBuildDefinition
                 type          = "TfsGit"
                 name          = $repo.name
                 defaultBranch = "refs/heads/master"
-                url           = $repo.remoteUrl
-                clean         = $false
+                url           = $repo.remoteUrl                
+                clean         = $Clean.ToBool()
+                properties = @{
+                    cleanOptions = "$CleanOptions"
+                }
             }
             options    = @(
                 @{
