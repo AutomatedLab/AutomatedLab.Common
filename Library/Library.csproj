@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net462;netcoreapp2.2</TargetFrameworks>
+    <TargetFrameworks>;net462;netcoreapp2.2</TargetFrameworks>
     <AssemblyName>AutomatedLab.Common</AssemblyName>
     <RootNamespace>AutomatedLab</RootNamespace>
     <Version>1.0.0</Version>
@@ -14,14 +14,6 @@
     <PackageReference Include="Microsoft.Win32.Registry" Version="4.5.0" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="2.0.1" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Include=".build\post.ps1" />
-  </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="powershell.exe -File &quot;$(ProjectDir).build\post.ps1&quot; -SolutionDir $(SolutionDir)" />
-  </Target>
 
 </Project>
 
