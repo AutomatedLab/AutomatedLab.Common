@@ -13,7 +13,7 @@ function Get-RunspacePool
         $ApartmentState
     )
 
-    $pools = $(Get-Variable -Name ALCommonRunspacePool_* -ErrorAction SilentlyContinue).Value
+    $pools = $(Get-Variable -Name ALCommonRunspacePool_* -Scope Script -ErrorAction SilentlyContinue).Value
 
     if ($ThrottleLimit)
     {

@@ -17,7 +17,7 @@ function New-RunspacePool
         $Variable
     )
 
-    $pool = Get-Variable -Name "ALCommonRunspacePool_$($ThrottleLimit)_$($ApartmentState)" -Scope Global -ErrorAction SilentlyContinue
+    $pool = Get-Variable -Name "ALCommonRunspacePool_$($ThrottleLimit)_$($ApartmentState)" -Scope Script -ErrorAction SilentlyContinue
     $InitialSessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
 
     foreach ($var in $Variable)
@@ -29,7 +29,7 @@ function New-RunspacePool
     if (-not ($pool))
     {
         Write-Verbose -Message "Creating new runspace pool. Maximum Runspaces: $ThrottleLimit, ApartmentState: $ApartmentState, Variables: $($Variable.Count)"
-        $pool = New-Variable -Name "ALCommonRunspacePool_$($ThrottleLimit)_$($ApartmentState)" -Scope Global -Value $([runspacefactory]::CreateRunspacePool($InitialSessionState)) -PassThru
+        $pool = New-Variable -Name "ALCommonRunspacePool_$($ThrottleLimit)_$($ApartmentState)" -Scope Script -Value $([runspacefactory]::CreateRunspacePool($InitialSessionState)) -PassThru
         [void] $($pool.Value.SetMaxRunspaces($ThrottleLimit))
 
         if ($PSEdition -eq 'Desktop')

@@ -15,12 +15,13 @@ function Remove-RunspacePool
             if ($PSCmdlet.ShouldProcess($pool.InstanceId, 'Closing runspace pool'))
             {
                 $max = $pool.GetMaxRunspaces()
-                $state = if ($pool.ApartmentState) { $pool.ApartmentState } else {'Unknown'}
+                $state = if ($null -ne $pool.ApartmentState) { $pool.ApartmentState } else {'Unknown'}
 
                 $pool.Close()
                 $pool.Dispose()
 
-                Remove-Variable -Name "ALCommonRunspacePool_$($max)_$($state)" -Scope Global -ErrorAction SilentlyContinue
+                Write-Verbose -Message "Attempting to remove ALCommonRunspacePool_$($max)_$($state)"
+                Remove-Variable -Name "ALCommonRunspacePool_$($max)_$($state)" -Scope Script -ErrorAction SilentlyContinue
             }
         }
     }
