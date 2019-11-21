@@ -102,11 +102,8 @@ function Install-SoftwarePackage
         Remove-Item -Path $tempRemoteFolder
         New-Item -ItemType Directory -Path $tempRemoteFolder
         expand.exe -F:* $Path $tempRemoteFolder
-        
-        $cabFile = (Get-ChildItem -Path $tempRemoteFolder\*.cab -Exclude WSUSSCAN.cab).FullName
-
         $Path = 'dism.exe'
-        $CommandLine = "/Online /Add-Package /PackagePath:""$cabFile"" /NoRestart /Quiet"
+        $CommandLine = "/Online /Add-Package /PackagePath:""$tempRemoteFolder"" /NoRestart /Quiet"
     }
     elseif ($installationMethod -eq '.exe')
     { }
