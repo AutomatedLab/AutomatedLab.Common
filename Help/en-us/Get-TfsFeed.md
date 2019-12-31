@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-TfsFeed
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Gets artifact feeds
 
 ## SYNTAX
 
@@ -25,7 +25,7 @@ Get-TfsFeed -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] [
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Gets one or more TFS / Azure DevOps artifact feeds.
 
 ## EXAMPLES
 
@@ -39,7 +39,8 @@ PS C:\> {{ Add example code here }}
 ## PARAMETERS
 
 ### -ApiVersion
-{{ Fill ApiVersion Description }}
+The API version to use.
+Refer to https://www.visualstudio.com/en-us/docs/integrate/api/overview for details.
 
 ```yaml
 Type: String
@@ -54,7 +55,9 @@ Accept wildcard characters: False
 ```
 
 ### -CollectionName
-{{ Fill CollectionName Description }}
+Your collection.
+
+Defaults to DefaultCollection.
 
 ```yaml
 Type: String
@@ -69,7 +72,7 @@ Accept wildcard characters: False
 ```
 
 ### -Credential
-{{ Fill Credential Description }}
+The TFS credential to use
 
 ```yaml
 Type: PSCredential
@@ -99,7 +102,7 @@ Accept wildcard characters: False
 ```
 
 ### -InstanceName
-{{ Fill InstanceName Description }}
+The instance name (dev.azure.com/username or your TFS host name)
 
 ```yaml
 Type: String
@@ -114,7 +117,7 @@ Accept wildcard characters: False
 ```
 
 ### -PersonalAccessToken
-{{ Fill PersonalAccessToken Description }}
+The VSTS access token as returned by Get-TfsAccessTokenString
 
 ```yaml
 Type: String
@@ -129,7 +132,7 @@ Accept wildcard characters: False
 ```
 
 ### -Port
-{{ Fill Port Description }}
+The port of your installation/VSTS instance
 
 ```yaml
 Type: UInt32
@@ -144,7 +147,7 @@ Accept wildcard characters: False
 ```
 
 ### -SkipCertificateCheck
-{{ Fill SkipCertificateCheck Description }}
+Skip certificate validation
 
 ```yaml
 Type: SwitchParameter
@@ -159,7 +162,7 @@ Accept wildcard characters: False
 ```
 
 ### -UseSsl
-{{ Fill UseSsl Description }}
+Indicates that SSL should be used
 
 ```yaml
 Type: SwitchParameter
