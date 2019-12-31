@@ -8,7 +8,7 @@ schema: 2.0.0
 # Remove-TfsFeed
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Remove the given feed
 
 ## SYNTAX
 
@@ -25,7 +25,7 @@ Remove-TfsFeed -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Remove the given feed
 
 ## EXAMPLES
 

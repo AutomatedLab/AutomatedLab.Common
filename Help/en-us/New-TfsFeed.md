@@ -8,7 +8,7 @@ schema: 2.0.0
 # New-TfsFeed
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Creates a new feed
 
 ## SYNTAX
 
@@ -41,7 +41,7 @@ New-TfsFeed -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] [
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Creates a new feed
 
 ## EXAMPLES
 

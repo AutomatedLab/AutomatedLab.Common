@@ -5,36 +5,45 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-TfsFeedPermission
+# Set-TfsFeedPermission
 
 ## SYNOPSIS
-Reads the feed permissions
+Sets the feed's permissions
 
 ## SYNTAX
 
 ### Tfs
 ```
-Get-TfsFeedPermission -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] [-ApiVersion <String>]
- [-FeedName <String>] [-UseSsl] [-Credential <PSCredential>] [-SkipCertificateCheck] [<CommonParameters>]
+Set-TfsFeedPermission -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] [-ApiVersion <String>]
+ -FeedName <String> -Permissions <Object[]> [-UseSsl] [-Credential <PSCredential>] [-SkipCertificateCheck]
+ [<CommonParameters>]
 ```
 
 ### Vsts
 ```
-Get-TfsFeedPermission -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] [-ApiVersion <String>]
- [-FeedName <String>] [-UseSsl] [-PersonalAccessToken <String>] [-SkipCertificateCheck] [<CommonParameters>]
+Set-TfsFeedPermission -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] [-ApiVersion <String>]
+ -FeedName <String> -Permissions <Object[]> [-UseSsl] [-PersonalAccessToken <String>] [-SkipCertificateCheck]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Reads the feed permissions
+Sets the feed's permissions
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+$p = @()
+$p += (New-Object pscustomobject -Property @{ role = 'administrator'; identityDescriptor = 'System.Security.Principal.WindowsIdentity;S-1-5-21-3840877469-1399940413-2468247932-1000' })
+$p += (New-Object pscustomobject -Property @{ role = 'administrator'; identityDescriptor = 'Microsoft.TeamFoundation.Identity;S-1-9-1551374245-688677674-3599067981-2526903658-827877225-0-0-0-0-1' })
+$p += (New-Object pscustomobject -Property @{ role = 'administrator'; identityDescriptor = 'Microsoft.TeamFoundation.Identity;S-1-9-1551374245-3941645230-359989830-2867240742-1249722431-0-0-0-0-1' })
+$p += (New-Object pscustomobject -Property @{ role = 'reader'; identityDescriptor = 'System.Security.Principal.WindowsIdentity;S-1-5-21-3840877469-1399940413-2468247932-513' })
+
+New-TfsFeed @defaultParam -FeedName New2
+Set-TfsFeedPermissions @defaultParam -FeedName New2 -Permissions $p
 ```
 
-{{ Add example description here }}
+Creates a new feed and assignes permissions. Makre sure the SIDs are taken from the domain the TFS / Azure DevOps server is a member of.
 
 ## PARAMETERS
 
@@ -91,7 +100,7 @@ Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -103,6 +112,21 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Permissions
+{{ Fill Permissions Description }}
+
+```yaml
+Type: Object[]
 Parameter Sets: (All)
 Aliases:
 
