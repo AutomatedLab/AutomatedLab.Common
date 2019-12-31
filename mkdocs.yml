@@ -44,6 +44,8 @@ nav:
     - Get-TfsBuildDefinition : en-us/Get-TfsBuildDefinition.md
     - Get-TfsBuildDefinitionTemplate : en-us/Get-TfsBuildDefinitionTemplate.md
     - Get-TfsBuildStep : en-us/Get-TfsBuildStep.md
+    - Get-TfsFeed : en-us/Get-TfsFeed.md
+    - Get-TfsFeedPermission : en-us/Get-TfsFeedPermission.md
     - Get-TfsGitRepository : en-us/Get-TfsGitRepository.md
     - Get-TfsProcessTemplate : en-us/Get-TfsProcessTemplate.md
     - Get-TfsProject : en-us/Get-TfsProject.md
@@ -57,6 +59,7 @@ nav:
     - New-RunspacePool : en-us/New-RunspacePool.md
     - New-TfsAgentQueue : en-us/New-TfsAgentQueue.md
     - New-TfsBuildDefinition : en-us/New-TfsBuildDefinition.md
+    - New-TfsFeed : en-us/New-TfsFeed.md
     - New-TfsProject : en-us/New-TfsProject.md
     - New-TfsReleaseDefinition : en-us/New-TfsReleaseDefinition.md
     - Publish-CaTemplate : en-us/Publish-CaTemplate.md
@@ -65,8 +68,10 @@ nav:
     - Receive-RunspaceJob : en-us/Receive-RunspaceJob.md
     - Remove-PerformanceDataCollectorSet : en-us/Remove-PerformanceDataCollectorSet.md
     - Remove-RunspacePool : en-us/Remove-RunspacePool.md
+    - Remove-TfsFeed : en-us/Remove-TfsFeed.md
     - Request-Certificate : en-us/Request-Certificate.md
     - Send-ModuleToPSSession : en-us/Send-ModuleToPSSession.md
+    - Set-TfsFeedPermissions : en-us/Set-TfsFeedPermissions.md
     - Set-TfsProject : en-us/Set-TfsProject.md
     - Split-Array : en-us/Split-Array.md
     - Start-PerformanceDataCollectorSet : en-us/Start-PerformanceDataCollectorSet.md
