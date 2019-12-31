@@ -58,7 +58,7 @@
         'Get-TfsBuildDefinitionTemplate',
         'Get-TfsBuildStep',
         'Get-TfsFeed',
-        'Get-TfsFeedPermissions',
+        'Get-TfsFeedPermission',
         'Get-TfsGitRepository',
         'Get-TfsProcessTemplate',
         'Get-TfsProject',
