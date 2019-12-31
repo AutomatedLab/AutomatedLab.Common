@@ -85,7 +85,7 @@
         'Remove-TfsFeed',
         'Send-ModuleToPSSession',
         'Set-TfsProject',
-        'Set-TfsFeedPermissions',
+        'Set-TfsFeedPermission',
         'Split-Array',
         'Start-PerformanceDataCollectorSet',
         'Start-RunspaceJob',
