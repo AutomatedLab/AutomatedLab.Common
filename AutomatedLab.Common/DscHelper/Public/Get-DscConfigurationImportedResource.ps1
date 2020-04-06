@@ -56,13 +56,16 @@ function Get-DscConfigurationImportedResource
     foreach ($compositeResource in $compositeResources)
     {
         $modulesInResource = Get-DscConfigurationImportedResource -FilePath $compositeResource.Path
-        if ($modulesInResource.GetType().IsArray)
+        if ($modulesInResource)
         {
-            $modules.AddRange($modulesInResource)
-        }
-        else
-        {
-            [void]$modules.Add($modulesInResource)
+            if ($modulesInResource.GetType().IsArray)
+            {
+                $modules.AddRange($modulesInResource)
+            }
+            else
+            {
+                [void]$modules.Add($modulesInResource)
+            }
         }
     }
     
