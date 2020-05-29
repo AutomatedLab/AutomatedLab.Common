@@ -65,7 +65,7 @@
     
     if ($ApiVersion)
     {
-        $requestUrl += '?api-version={0}' -f $ApiVersion
+        $requestUrl += '&api-version={0}' -f $ApiVersion
     }
 
     $requestParameters = @{
