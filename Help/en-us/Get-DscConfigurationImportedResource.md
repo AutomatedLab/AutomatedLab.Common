@@ -17,9 +17,9 @@ Retrieve all imported resource modules from a DSC configuration
 Get-DscConfigurationImportedResource -FilePath <String> [<CommonParameters>]
 ```
 
-### ByName
+### ByConfiguration
 ```
-Get-DscConfigurationImportedResource -Name <String> [<CommonParameters>]
+Get-DscConfigurationImportedResource -Configuration <System.Management.Automation.ConfigurationInfo> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -47,7 +47,7 @@ configuration stuff
 '@ | Set-Content .\ConfigurationFile.ps1
 .\ConfigurationFile.ps1
 
-Get-DscConfigurationImportedResource -Name stuff
+Get-DscConfigurationImportedResource -Configuration (Get-Command -Name stuff)
 ```
 
 Returns "nx"
@@ -69,12 +69,12 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Name
-The name of a configuration that has already been imported
+### -Configuration
+A configuration that has already been imported an can be received using Get-Command
 
 ```yaml
 Type: String
-Parameter Sets: ByName
+Parameter Sets: ByConfiguration
 Aliases:
 
 Required: True
