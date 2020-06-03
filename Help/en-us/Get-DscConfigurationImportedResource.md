@@ -73,7 +73,7 @@ Accept wildcard characters: False
 A configuration that has already been imported an can be received using Get-Command
 
 ```yaml
-Type: System.Management.Automation.ConfigurationInfo
+Type: ConfigurationInfo
 Parameter Sets: ByConfiguration
 Aliases:
 
