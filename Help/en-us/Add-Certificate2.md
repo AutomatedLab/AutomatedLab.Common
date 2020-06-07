@@ -15,13 +15,13 @@ Cmdlet to add a certificate to a store
 
 ### ByteArray (Default)
 ```
-Add-Certificate2 -RawContentBytes <Byte[]> -Store <StoreName> -Location <CertStoreLocation>
+Add-Certificate2 -RawContentBytes <Byte[]> -Store <string> -Location <CertStoreLocation>
  [-ServiceName <String>] [-CertificateType <String>] [-Password <String>] [<CommonParameters>]
 ```
 
 ### File
 ```
-Add-Certificate2 -Path <String> -Store <StoreName> -Location <CertStoreLocation> [-ServiceName <String>]
+Add-Certificate2 -Path <String> -Store <string> -Location <CertStoreLocation> [-ServiceName <String>]
  [-CertificateType <String>] [-Password <String>] [<CommonParameters>]
 ```
 
@@ -61,7 +61,7 @@ Accept wildcard characters: False
 The certificate store, e.g My
 
 ```yaml
-Type: StoreName
+Type: string
 Parameter Sets: (All)
 Aliases:
 
