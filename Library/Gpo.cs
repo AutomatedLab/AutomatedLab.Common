@@ -488,12 +488,12 @@ namespace GPO
                         {
                             Save(isMachine, false);
                         }
-                        catch (System.IO.FileLoadException fili)
+                        catch (System.IO.FileLoadException)
                         {
                             RegCloseKey(gphKey);
                             return ResultCode.SaveFailed;
                         }
-                        catch (COMException e)
+                        catch (COMException)
                         {
                             RegCloseKey(gphKey);
                             return ResultCode.SaveFailed;
@@ -557,13 +557,13 @@ namespace GPO
                     {
                         Save(isMachine, true);
                     }
-                    catch (System.IO.FileLoadException fili)
+                    catch (System.IO.FileLoadException)
                     {
                         RegCloseKey(gphSubKey);
                         RegCloseKey(gphKey);
                         return ResultCode.SaveFailed;
                     }
-                    catch (COMException e)
+                    catch (COMException)
                     {
                         RegCloseKey(gphSubKey);
                         RegCloseKey(gphKey);
