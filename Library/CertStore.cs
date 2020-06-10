@@ -1,104 +1,280 @@
-﻿using System.Collections.Generic;
+﻿using AutomatedLab.Common;
+using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace System.Security.Cryptography.X509Certificates
 {
+    public class CertificateStore
+    {
+        public string Name { get; set; }
+        public string Location { get; set; }
+        public string SystemName { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("{0} {1} ({2})", Location, Name, SystemName);
+        }
+    }
+
     public class Win32
     {
-        static List<string> stores = new List<string>();
+        private const int FALSE = 0;
+        private const int TRUE = 1;
+        private static string currentStore = string.Empty;
+        private static string serviceName = string.Empty;
+        private static string userName = string.Empty;
 
-        [DllImport("crypt32.dll", EntryPoint = "CertOpenStore", CharSet = CharSet.Auto, SetLastError = true)]
+        #region Structs
+        [StructLayout(LayoutKind.Sequential)]
+        struct CERT_SYSTEM_STORE_RELOCATE_PARA
+        {
+            public IntPtr RegistryKey;
+            public IntPtr StoreLocation;
+        }
+        #endregion
+
+        #region Functions
+        [DllImport("Crypt32", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern IntPtr CertOpenStore(
             int storeProvider,
             int encodingType,
             IntPtr hcryptProv,
-            int flags,
-            String pvPara);
+            uint flags,
+            string pvPara);
 
-        [DllImport("crypt32.dll", EntryPoint = "CertCloseStore", CharSet = CharSet.Auto, SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
+        [DllImport("Crypt32", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern bool CertCloseStore(
             IntPtr storeProvider,
-            int flags);
+            uint flags);
 
-        [DllImport("crypt32.dll", CharSet = CharSet.Unicode)]
-        public static extern uint CertEnumSystemStore(
-            uint dwFlags,
-            uint pvSystemStoreLocationPara,
-            string pvArg,
-            CertEnumSystemStoreCallback pfnEnum
-            );
+        [DllImport("Crypt32", CharSet = CharSet.Unicode, SetLastError = true)]
+        static extern int CertEnumPhysicalStore(
+            IntPtr SystemStore,
+            uint flags,
+            ArrayList userArg,
+            EnumPhyCallbackWithArrayList callback
+      );
 
-        public static bool CertEnumSystemStoreCallbackMethod(
-                string pvSystemStore,
-                uint dwFlags,
-                ref CERT_SYSTEM_STORE_INFO pStoreInfo,
-                uint pvReserved,
-                string pvArg
-                )
-        {
-            stores.Add(pvSystemStore);
-            return true;
-        }
+        [DllImport("Crypt32", CharSet = CharSet.Unicode, SetLastError = true)]
+        static extern int CertEnumSystemStore(
+            uint flags,
+            [MarshalAs(UnmanagedType.LPWStr)]
+            string SystemStoreLocationPara,
+            ArrayList userArg,
+            EnumStoreCallbackWithArrayList callback
+       );
 
-        [StructLayout(LayoutKind.Sequential)]
-        public struct CERT_SYSTEM_STORE_INFO
-        {
-            uint cbSize;
-        }
-
-        public static string[] GetCertificateStores(CertStoreLocation location)
-        {
-            uint retval = 0;
-            stores = new List<string>();
-
-            CertEnumSystemStoreCallback StoreCallback = new CertEnumSystemStoreCallback(CertEnumSystemStoreCallbackMethod);
-            retval = CertEnumSystemStore(
-                (uint)location,
-                0,
-                "My",
-                StoreCallback
-                );
-
-            return stores.ToArray();
-        }
-    }
-
-    public delegate bool CertEnumSystemStoreCallback(
-        [In, MarshalAs(UnmanagedType.LPWStr)]
-        string pvSystemStore,
-        uint dwFlags,
-        ref Win32.CERT_SYSTEM_STORE_INFO pStoreInfo,
-        uint pvReserved,
-        [In, MarshalAs(UnmanagedType.LPWStr)]
-        string pvArg
+        [DllImport("Crypt32", CharSet = CharSet.Unicode, SetLastError = true)]
+        static extern int CertEnumSystemStoreLocation(
+            uint flags,
+            ArrayList userArg,
+            EnumLocCallbackWithArrayList callback
         );
 
-    public enum CertStoreLocation
-    {
-        CERT_SYSTEM_STORE_CURRENT_USER = 0x00010000,
-        CERT_SYSTEM_STORE_LOCAL_MACHINE = 0x00020000,
-        CERT_SYSTEM_STORE_SERVICES = 0x00050000,
-        CERT_SYSTEM_STORE_USERS = 0x00060000
+        [DllImport("Crypt32", CharSet = CharSet.Unicode, SetLastError = true)]
+        static extern int CertEnumSystemStore(
+            uint flags,
+            IntPtr SystemStoreLocationPara,
+            ArrayList userArg,
+            EnumStoreCallbackWithArrayList callback
+        );
+        #endregion
+
+        #region Delegates
+        delegate int EnumLocCallbackWithArrayList(
+            [MarshalAs(UnmanagedType.LPWStr)]
+            string storeLocation,
+            uint flags,
+            IntPtr reserved,
+            ArrayList userArg);
+
+        delegate int EnumPhyCallbackWithArrayList(IntPtr systemStore,
+            uint flags,
+            [MarshalAs(UnmanagedType.LPWStr)]
+            string storeName,
+            IntPtr storeInfo,
+            IntPtr reserved,
+            ArrayList userArg);
+
+        delegate int EnumStoreCallbackWithArrayList(IntPtr systemStore,
+            uint flags,
+            IntPtr storeInfo,
+            IntPtr reserved,
+            ArrayList userArg);
+
+        static int MyEnumLocCallbackWithArrayList(
+            string storeLocation,
+            uint flags,
+            IntPtr reserved,
+            ArrayList userArg)
+        {
+
+            currentStore = storeLocation;
+
+            switch ((CertStoreLocation)flags)
+            {
+                case CertStoreLocation.CERT_SYSTEM_STORE_LOCAL_MACHINE:
+                case CertStoreLocation.CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY:
+                case CertStoreLocation.CERT_SYSTEM_STORE_CURRENT_USER:
+                case CertStoreLocation.CERT_SYSTEM_STORE_CURRENT_SERVICE:
+                case CertStoreLocation.CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY:
+                case CertStoreLocation.CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE:
+                    CertEnumSystemStore(flags, IntPtr.Zero, userArg, MyEnumStoreCallbackWithArrayList);
+                    break;
+                case CertStoreLocation.CERT_SYSTEM_STORE_SERVICES: //Services
+                    IntPtr servicePtr = Marshal.StringToHGlobalUni(serviceName);
+                    CertEnumSystemStore(flags, servicePtr, userArg, MyEnumStoreCallbackWithArrayList);
+                    Marshal.FreeHGlobal(servicePtr);
+                    break;
+                case CertStoreLocation.CERT_SYSTEM_STORE_USERS:
+
+                default:
+                    CertEnumSystemStore(flags, storeLocation, userArg, MyEnumStoreCallbackWithArrayList);
+                    break;
+            }
+            return TRUE;
+        }
+
+        static int MyEnumStoreCallbackWithArrayList(
+            IntPtr systemStore,
+            uint flags,
+            IntPtr storeInfo,
+            IntPtr reserved,
+            ArrayList userArg)
+        {
+            if (CertEnumPhysicalStore(systemStore, flags, userArg, MyEnumPhyCallbackWithArrayList) == 0)
+            {
+                Exception ex = Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
+            }
+            return TRUE;
+        }
+
+        static int MyEnumPhyCallbackWithArrayList(
+            IntPtr systemStore,
+            uint flags,
+            string storeName,
+            IntPtr storeInfo,
+            IntPtr reserved,
+            ArrayList userArg)
+        {
+            string systemName = string.Empty;
+            if (TryGetSystemName(systemStore, flags, out systemName))
+            {
+
+                userArg.Add(new CertificateStore()
+                {
+                    Location = currentStore,
+                    Name = systemName,
+                    SystemName = storeName
+                }
+                );
+            }
+            return TRUE;
+        }
+        #endregion
+
+        #region Methods
+        static bool TryGetSystemName(IntPtr systemStore, uint flags, out string systemName)
+        {
+            systemName = string.Empty;
+            if (systemStore == IntPtr.Zero)
+                return false;
+
+            if (flags < 0)
+            {
+                CERT_SYSTEM_STORE_RELOCATE_PARA cssrp = (CERT_SYSTEM_STORE_RELOCATE_PARA)Marshal.PtrToStructure(
+                    systemStore, typeof(CERT_SYSTEM_STORE_RELOCATE_PARA)
+                );
+                systemName = Marshal.PtrToStringUni(cssrp.StoreLocation);
+                return true;
+            }
+            else
+            {
+                systemName = Marshal.PtrToStringUni(systemStore);
+                return true;
+            }
+        }
+
+        public static List<CertificateStore> GetCertificateStores(bool returnOnlyDefault = true)
+        {
+            var al = new ArrayList();
+            var result = 0;
+
+            try
+            {
+                result = CertEnumSystemStoreLocation((uint)CertOpenStoreFlags.CERT_STORE_FIND_ALL, al, MyEnumLocCallbackWithArrayList);
+            }
+            catch (Win32Exception e)
+            {
+                throw e;
+            }
+
+            if (returnOnlyDefault)
+                return al.Cast<CertificateStore>().Where(entry => entry.SystemName == ".Default").ToList();
+            else
+                return al.Cast<CertificateStore>().ToList();
+        }
+
+        public static List<CertificateStore> GetServiceCertificateStores(string serviceName, bool returnOnlyDefault = true)
+        {
+            Win32.serviceName = serviceName;
+
+            return GetCertificateStores(returnOnlyDefault).Where(entry => entry.Name.StartsWith(serviceName)).ToList();
+        }
+        #endregion
     }
 
+    #region Enums
     [Flags]
-    public enum CertStoreFlags
+    public enum CertOpenStoreFlags : uint
     {
-        CERT_STORE_NO_CRYPT_RELEASE_FLAG = 0x00000001,
-        CERT_STORE_SET_LOCALIZED_NAME_FLAG = 0x00000002,
-        CERT_STORE_DEFER_CLOSE_UNTIL_LAST_FREE_FLAG = 0x00000004,
-        CERT_STORE_DELETE_FLAG = 0x00000010,
-        CERT_STORE_SHARE_STORE_FLAG = 0x00000040,
-        CERT_STORE_SHARE_CONTEXT_FLAG = 0x00000080,
-        CERT_STORE_MANIFOLD_FLAG = 0x00000100,
-        CERT_STORE_ENUM_ARCHIVED_FLAG = 0x00000200,
-        CERT_STORE_UPDATE_KEYID_FLAG = 0x00000400,
-        CERT_STORE_BACKUP_RESTORE_FLAG = 0x00000800,
-        CERT_STORE_READONLY_FLAG = 0x00008000,
-        CERT_STORE_OPEN_EXISTING_FLAG = 0x00004000,
-        CERT_STORE_CREATE_NEW_FLAG = 0x00002000,
-        CERT_STORE_MAXIMUM_ALLOWED_FLAG = 0x00001000
+        CERT_STORE_FIND_ALL = 0,
+        CERT_STORE_NO_CRYPT_RELEASE_FLAG = 1,
+        CERT_STORE_SET_LOCALIZED_NAME_FLAG = 2,
+        CERT_STORE_DEFER_CLOSE_UNTIL_LAST_FREE_FLAG = 4,
+        CERT_STORE_DELETE_FLAG = 10,
+        CERT_STORE_SHARE_STORE_FLAG = 64,
+        CERT_STORE_SHARE_CONTEXT_FLAG = 128,
+        CERT_STORE_MANIFOLD_FLAG = 256,
+        CERT_STORE_ENUM_ARCHIVED_FLAG = 512,
+        CERT_STORE_UPDATE_KEYID_FLAG = 1024,
+        CERT_STORE_BACKUP_RESTORE_FLAG = 2048,
+        CERT_STORE_MAXIMUM_ALLOWED_FLAG = 4096,
+        CERT_STORE_CREATE_NEW_FLAG = 8192,
+        CERT_STORE_OPEN_EXISTING_FLAG = 16384,
+        CERT_STORE_READONLY_FLAG = 32768,
+        CERT_REGISTRY_STORE_REMOTE_FLAG = 65536,
+        CERT_REGISTRY_STORE_SERIALIZED_FLAG = 131072,
+        CERT_REGISTRY_STORE_ROAMING_FLAG = 262144,
+        CERT_REGISTRY_STORE_MY_IE_DIRTY_FLAG = 524288,
+        CERT_REGISTRY_STORE_LM_GPT_FLAG = 16777216,
+        CERT_REGISTRY_STORE_CLIENT_GPT_FLAG = 2147483648
+    }
+
+    public enum CertStoreLocation : uint
+    {
+        CERT_SYSTEM_STORE_LOCATION_MASK = 16711680,
+        CERT_SYSTEM_STORE_LOCATION_SHIFT = 16,
+
+        CERT_SYSTEM_STORE_CURRENT_USER_ID = 1,  //hklm
+        CERT_SYSTEM_STORE_LOCAL_MACHINE_ID = 2,//hklm\Software\Microsoft\Cryptography\Services
+        CERT_SYSTEM_STORE_CURRENT_SERVICE_ID = 4,
+        CERT_SYSTEM_STORE_SERVICES_ID = 5,//HKEY_USERS
+        CERT_SYSTEM_STORE_USERS_ID = 6, //hkcu\Software\Policies\Microsoft\SystemCertificates
+        CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY_ID = 7, //hklm\Software\Policies\Microsoft\SystemCertificates
+        CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY_ID = 8, //hklm\Software\Microsoft\EnterpriseCertificates
+        CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE_ID = 9,
+
+        CERT_SYSTEM_STORE_CURRENT_USER = (int)CERT_SYSTEM_STORE_CURRENT_USER_ID << (int)CERT_SYSTEM_STORE_LOCATION_SHIFT,
+        CERT_SYSTEM_STORE_LOCAL_MACHINE = (int)CERT_SYSTEM_STORE_LOCAL_MACHINE_ID << (int)CERT_SYSTEM_STORE_LOCATION_SHIFT,
+        CERT_SYSTEM_STORE_CURRENT_SERVICE = (int)CERT_SYSTEM_STORE_CURRENT_SERVICE_ID << (int)CERT_SYSTEM_STORE_LOCATION_SHIFT,
+        CERT_SYSTEM_STORE_SERVICES = (int)CERT_SYSTEM_STORE_SERVICES_ID << (int)CERT_SYSTEM_STORE_LOCATION_SHIFT,
+        CERT_SYSTEM_STORE_USERS = (int)CERT_SYSTEM_STORE_USERS_ID << (int)CERT_SYSTEM_STORE_LOCATION_SHIFT,
+        CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY = (int)CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY_ID << (int)CERT_SYSTEM_STORE_LOCATION_SHIFT,
+        CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY = (int)CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY_ID << (int)CERT_SYSTEM_STORE_LOCATION_SHIFT,
+        CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE = (int)CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE_ID << (int)CERT_SYSTEM_STORE_LOCATION_SHIFT
     }
 
     public enum CertStoreProvider
@@ -126,4 +302,5 @@ namespace System.Security.Cryptography.X509Certificates
         CERT_STORE_PROV_LDAP_W = 16,
         CERT_STORE_PROV_LDAP = CERT_STORE_PROV_LDAP_W
     }
+    #endregion
 }

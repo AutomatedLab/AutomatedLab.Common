@@ -16,24 +16,24 @@ Get one or more certificates
 ### FindCer (Default)
 ```
 Get-Certificate2 -SearchString <String> -FindType <X509FindType> [-Location <CertStoreLocation>]
- [-Store <StoreName>] [-ServiceName <String>] [<CommonParameters>]
+ [-Store <string>] [-ServiceName <String>] [<CommonParameters>]
 ```
 
 ### FindPfx
 ```
 Get-Certificate2 -SearchString <String> -FindType <X509FindType> [-Location <CertStoreLocation>]
- [-Store <StoreName>] [-ServiceName <String>] -Password <SecureString> [-ExportPrivateKey] [<CommonParameters>]
+ [-Store <string>] [-ServiceName <String>] -Password <SecureString> [-ExportPrivateKey] [<CommonParameters>]
 ```
 
 ### AllPfx
 ```
-Get-Certificate2 [-Location <CertStoreLocation>] [-Store <StoreName>] [-ServiceName <String>] [-All]
+Get-Certificate2 [-Location <CertStoreLocation>] [-Store <string>] [-ServiceName <String>] [-All]
  [-IncludeServices] -Password <SecureString> [-ExportPrivateKey] [<CommonParameters>]
 ```
 
 ### AllCer
 ```
-Get-Certificate2 [-Location <CertStoreLocation>] [-Store <StoreName>] [-ServiceName <String>] [-All]
+Get-Certificate2 [-Location <CertStoreLocation>] [-Store <string>] [-ServiceName <String>] [-All]
  [-IncludeServices] [<CommonParameters>]
 ```
 
@@ -106,7 +106,7 @@ Accept wildcard characters: False
 The store to look in, e.g. My
 
 ```yaml
-Type: StoreName
+Type: string
 Parameter Sets: (All)
 Aliases:
 

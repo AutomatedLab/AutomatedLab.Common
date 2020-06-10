@@ -20,7 +20,7 @@ function Get-Certificate2
         [Parameter(ParameterSetName = 'AllPfx')]
         [Parameter(ParameterSetName = 'FindCer')]
         [Parameter(ParameterSetName = 'FindPfx')]
-        [System.Security.Cryptography.X509Certificates.StoreName]$Store,
+        [string]$Store,
         
         [Parameter(ParameterSetName = 'AllCer')]
         [Parameter(ParameterSetName = 'AllPfx')]
@@ -45,88 +45,152 @@ function Get-Certificate2
         [switch]$ExportPrivateKey
     )
     
-    if ($Location -eq 'CERT_SYSTEM_STORE_SERVICES' -and (-not $ServiceName))
+    $services = Get-Service
+    
+    if ($ServiceName -and $Location -ne 'CERT_SYSTEM_STORE_SERVICES')
     {
-        Write-Error "Please specify a ServiceName if the Location is set to 'CERT_SYSTEM_STORE_SERVICES'"
-        return
-    }
-    else
-    {
-        $IncludeServices = $true
+        $Location = 'CERT_SYSTEM_STORE_SERVICES'
     }
     
-    $storeProvider = [System.Security.Cryptography.X509Certificates.CertStoreProvider]::CERT_STORE_PROV_SYSTEM_REGISTRY
+    if ($ServiceName -and $ServiceName -notin $services.Name)
+    {
+        Write-Error "The service '$ServiceName' could not be found."
+        return
+    }
+    
+    $storeProvider = [System.Security.Cryptography.X509Certificates.CertStoreProvider]::CERT_STORE_PROV_SYSTEM
     
     $certs = foreach ($currentLocation in [Enum]::GetNames([System.Security.Cryptography.X509Certificates.CertStoreLocation]))
     {
         if ($Location -and $Location -ne $currentLocation)
         {
+            Write-Verbose "Skipping location '$currentLocation'"
             continue
         }
         Write-Verbose "Enumerating stores location '$currentLocation'"
 
-        $internalLocation = [System.Security.Cryptography.X509Certificates.CertStoreLocation]$currentLocation -bor [System.Security.Cryptography.X509Certificates.CertStoreFlags]::CERT_STORE_READONLY_FLAG
+        $internalLocation = [System.Security.Cryptography.X509Certificates.CertStoreLocation]$currentLocation -bor [System.Security.Cryptography.X509Certificates.CertOpenStoreFlags]::CERT_STORE_READONLY_FLAG
     
-        foreach ($currentStore in [System.Enum]::GetNames([System.Security.Cryptography.X509Certificates.StoreName]))
+        $availableStores = if ($ServiceName)
         {
-            if ($Store -and $Store -ne $currentStore)
+            [System.Security.Cryptography.X509Certificates.Win32]::GetServiceCertificateStores($ServiceName)
+        }
+        elseif ($Location -eq [System.Security.Cryptography.X509Certificates.CertStoreLocation]::CERT_SYSTEM_STORE_SERVICES)
+        {
+            $services = Get-Service
+            foreach ($Service in $services)
             {
-                continue
+                [System.Security.Cryptography.X509Certificates.Win32]::GetServiceCertificateStores($service.Name)
             }
-            
-            if ($currentLocation -eq [System.Security.Cryptography.X509Certificates.CertStoreLocation]::CERT_SYSTEM_STORE_SERVICES -and $IncludeServices)
-            {
-                $services = Get-Service
-                $storePaths = @()
-                
-                foreach ($service in $services)
-                {
-                    $storePaths += "$($service.Name)\$currentStore"
-                }
-            }
-            else
-            {
-                $storePaths = $currentStore
-            }
-            
-            Write-Verbose "Enumerating certificates in store '$storePath' in location '$currentLocation'"
+        }
+        else
+        {
+            [System.Security.Cryptography.X509Certificates.Win32]::GetCertificateStores()
+        }
         
-            foreach ($storePath in $storePaths)
+        $availableStores = if ($Location -eq [System.Security.Cryptography.X509Certificates.CertStoreLocation]::CERT_SYSTEM_STORE_CURRENT_USER)
+        {
+            $availableStores | Where-Object Location -eq CurrentUser
+        }
+        elseif ($Location -eq [System.Security.Cryptography.X509Certificates.CertStoreLocation]::CERT_SYSTEM_STORE_LOCAL_MACHINE)
+        {
+            $availableStores | Where-Object Location -eq LocalMachine
+        }
+        elseif ($Location -eq [System.Security.Cryptography.X509Certificates.CertStoreLocation]::CERT_SYSTEM_STORE_LOCAL_MACHINE)
+        {
+            $availableStores | Where-Object Location -eq LocalMachine
+        }
+        elseif ($Location -eq [System.Security.Cryptography.X509Certificates.CertStoreLocation]::CERT_SYSTEM_STORE_SERVICES)
+        {
+            $availableStores | Where-Object Location -eq Services
+        }
+        elseif ($Location -eq [System.Security.Cryptography.X509Certificates.CertStoreLocation]::CERT_SYSTEM_STORE_USERS)
+        {
+            $availableStores | Where-Object Location -eq Users
+        }
+        elseif ($Location -eq [System.Security.Cryptography.X509Certificates.CertStoreLocation]::CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY)
+        {
+            $availableStores | Where-Object Location -eq CurrentUserGroupPolicy
+        }
+        elseif ($Location -eq [System.Security.Cryptography.X509Certificates.CertStoreLocation]::CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY)
+        {
+            $availableStores | Where-Object Location -eq LocalMachineGroupPolicy
+        }
+        elseif ($Location -eq [System.Security.Cryptography.X509Certificates.CertStoreLocation]::CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE)
+        {
+            $availableStores | Where-Object Location -eq LocalMachineEnterprise
+        }
+        else
+        {
+            $availableStores
+        }
+        
+        if ($Store)
+        {
+            if ($ServiceName)
             {
-                $storePtr = [System.Security.Cryptography.X509Certificates.Win32]::CertOpenStore($storeProvider, 0, 0, $internalLocation, $storePath)
-                if ($storePtr -eq [System.IntPtr]::Zero)
+                if ("$ServiceName\$Store" -notin $availableStores.Name)
                 {
-                    Write-Verbose "Store '$storePath' in location '$currentLocation' could not be opened."
+                    Write-Error "The store '$Store' does not exist for location '$currentLocation' for service '$ServiceName'"
                     continue
-                }
-            
-                $s = New-Object System.Security.Cryptography.X509Certificates.X509Store($storePtr)
-                $result = if ($All)
-                {
-                    $s.Certificates
                 }
                 else
                 {
-                    $s.Certificates.Find($FindType, $SearchString, $false)
+                    $availableStores = $availableStores | Where-Object Name -eq "$ServiceName\$Store"
                 }
                 
-                foreach ($item in $result)
-                {
-                    $item | Add-Member -MemberType NoteProperty -Name Location -Value $currentLocation
-                    $item | Add-Member -MemberType NoteProperty -Name Store -Value $storePath
-                    $item | Add-Member -MemberType NoteProperty -Name Password -Value $plainPassword
-                    
-                    if ($Location -eq 'CERT_SYSTEM_STORE_SERVICES')
-                    {
-                        $item | Add-Member -MemberType NoteProperty -Name ServiceName -Value ($storePath -split '\\')[0]
-                        $item | Add-Member -MemberType NoteProperty -Name Store -Value ($storePath -split '\\')[1] -Force
-                    }
-                    
-                    $item
-                }
-
-                [void][System.Security.Cryptography.X509Certificates.Win32]::CertCloseStore($storePtr, 0)
             }
+            else
+            {
+                if ($Store -notin $availableStores.Name)
+                {
+                    Write-Error "The store '$Store' does not exist for location '$currentLocation'"
+                    continue
+                }
+                else
+                {
+                    $availableStores = $availableStores | Where-Object Name -eq $Store
+                }
+            }
+        }
+            
+        foreach ($storePath in $availableStores)
+        {
+            Write-Verbose "Enumerating certificates in store '$storePath' in location '$currentLocation'"
+                
+            $storePtr = [System.Security.Cryptography.X509Certificates.Win32]::CertOpenStore($storeProvider, 0, 0, $internalLocation, $storePath.Name)
+            if ($storePtr -eq [System.IntPtr]::Zero)
+            {
+                Write-Verbose "Store '$storePath' in location '$currentLocation' could not be opened."
+                continue
+            }
+            
+            $s = New-Object System.Security.Cryptography.X509Certificates.X509Store($storePtr)
+            $result = if ($All)
+            {
+                $s.Certificates
+            }
+            else
+            {
+                $s.Certificates.Find($FindType, $SearchString, $false)
+            }
+                
+            foreach ($item in $result)
+            {
+                $item | Add-Member -MemberType NoteProperty -Name Location -Value $currentLocation
+                $item | Add-Member -MemberType NoteProperty -Name Store -Value $storePath
+                $item | Add-Member -MemberType NoteProperty -Name Password -Value $plainPassword
+                    
+                if ($Location -eq 'CERT_SYSTEM_STORE_SERVICES')
+                {
+                    $item | Add-Member -MemberType NoteProperty -Name ServiceName -Value ($storePath -split '\\')[0]
+                    $item | Add-Member -MemberType NoteProperty -Name Store -Value ($storePath -split '\\')[1] -Force
+                }
+                    
+                $item
+            }
+
+            [void][System.Security.Cryptography.X509Certificates.Win32]::CertCloseStore($storePtr, 0)
         }
     }
 
@@ -180,7 +244,7 @@ function Get-Certificate2
         
         $certInfo.ComputerName = $env:COMPUTERNAME
         $certInfo.Location = $cert.Location
-        $certInfo.Store = $cert.Store
+        $certInfo.Store = $cert.Store.Name
         $certInfo.ServiceName = $cert.ServiceName
         
         $certInfo

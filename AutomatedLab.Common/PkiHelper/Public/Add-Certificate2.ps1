@@ -9,7 +9,7 @@ function Add-Certificate2
         [byte[]]$RawContentBytes,
         
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
-        [System.Security.Cryptography.X509Certificates.StoreName]$Store,
+        [string]$Store,
         
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [System.Security.Cryptography.X509Certificates.CertStoreLocation]$Location,
