@@ -25,7 +25,6 @@ namespace System.Security.Cryptography.X509Certificates
         private static string currentStore = string.Empty;
         private static string serviceName = string.Empty;
         private static string userName = string.Empty;
-        private static uint flags = (uint)CertOpenStoreFlags.CERT_STORE_FIND_ALL;
 
         #region Structs
         [StructLayout(LayoutKind.Sequential)]
@@ -60,7 +59,7 @@ namespace System.Security.Cryptography.X509Certificates
 
         [DllImport("Crypt32", CharSet = CharSet.Unicode, SetLastError = true)]
         static extern int CertEnumSystemStore(
-            uint Flags,
+            uint flags,
             [MarshalAs(UnmanagedType.LPWStr)]
             string SystemStoreLocationPara,
             ArrayList userArg,
@@ -69,14 +68,14 @@ namespace System.Security.Cryptography.X509Certificates
 
         [DllImport("Crypt32", CharSet = CharSet.Unicode, SetLastError = true)]
         static extern int CertEnumSystemStoreLocation(
-            uint Flags,
+            uint flags,
             ArrayList userArg,
             EnumLocCallbackWithArrayList callback
         );
 
         [DllImport("Crypt32", CharSet = CharSet.Unicode, SetLastError = true)]
         static extern int CertEnumSystemStore(
-            uint Flags,
+            uint flags,
             IntPtr SystemStoreLocationPara,
             ArrayList userArg,
             EnumStoreCallbackWithArrayList callback
