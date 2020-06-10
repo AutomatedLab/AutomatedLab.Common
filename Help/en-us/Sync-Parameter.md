@@ -14,7 +14,7 @@ Synchronise cmdlet parameters with a hashtable
 ## SYNTAX
 
 ```
-Sync-Parameter [-Command] <Object> [[-Parameters] <Hashtable>] [<CommonParameters>]
+Sync-Parameter [-Command] <Object> [[-Parameters] <Hashtable>] [-ConvertValue] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -29,6 +29,15 @@ PS C:\> New-Item @parma
 
 Grabs all valid parameters for New-Item from the PSBoundParameters collection in order to splat
 them to New-Item
+
+### Example 2
+```powershell
+PS C:\> $parma = Sync-Parameter -Command (Get-Command New-Item) -Parameters $PSBoundParameters -ConvertValue
+PS C:\> New-Item @parma
+```
+
+Grabs all valid parameters for New-Item from the PSBoundParameters collection in order to splat
+them to New-Item, converting the parameter values as well
 
 ## PARAMETERS
 
@@ -57,6 +66,22 @@ Aliases:
 
 Required: False
 Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ConvertValue
+Indicates that the parameter values should be converted if possible. Throws
+an error if not possible.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
