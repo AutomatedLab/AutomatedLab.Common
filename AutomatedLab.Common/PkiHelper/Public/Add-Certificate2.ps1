@@ -9,7 +9,7 @@ function Add-Certificate2
         [byte[]]$RawContentBytes,
         
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
-        [System.Security.Cryptography.X509Certificates.StoreName]$Store,
+        [string]$Store,
         
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [System.Security.Cryptography.X509Certificates.CertStoreLocation]$Location,
@@ -56,7 +56,7 @@ function Add-Certificate2
     
         $storeProvider = [System.Security.Cryptography.X509Certificates.CertStoreProvider]::CERT_STORE_PROV_SYSTEM_REGISTRY
 
-        $Location = $Location -bor [System.Security.Cryptography.X509Certificates.CertStoreFlags]::CERT_STORE_MAXIMUM_ALLOWED_FLAG
+        $Location = $Location -bor [System.Security.Cryptography.X509Certificates.CertOpenStoreFlags]::CERT_STORE_MAXIMUM_ALLOWED_FLAG
     
         $storePtr = [System.Security.Cryptography.X509Certificates.Win32]::CertOpenStore($storeProvider, 0, 0, $Location, $storePath)
         if ($storePtr -eq [System.IntPtr]::Zero)
