@@ -4,21 +4,15 @@ function Get-DscConfigurationImportedResource
         [Parameter(Mandatory, ParameterSetName = 'ByFile')]
         [string]$FilePath,
         
-        [Parameter(Mandatory, ParameterSetName = 'ByName')]
-        [string]$Name
+        [Parameter(Mandatory, ParameterSetName = 'ByConfiguration')]
+        [System.Management.Automation.ConfigurationInfo]$Configuration
     )
-
-    if ($PSEdition -eq 'Core')
-    {
-        Write-Warning -Message 'Get-DscConfigurationImportedResource is not compatible with PowerShell Core.'
-        return
-    }
     
     $modules = New-Object System.Collections.ArrayList
 
-    if ($Name)
+    if ($Configuration)
     {
-        $ast = (Get-Command -Name $Name).ScriptBlock.Ast
+        $ast = $Configuration.ScriptBlock.Ast
         $FilePath = $ast.FindAll( { $args[0] -is [System.Management.Automation.Language.ScriptBlockAst] }, $true)[0].Extent.File
         if (-not $FilePath)
         {
@@ -31,10 +25,10 @@ function Get-DscConfigurationImportedResource
     
     $configurations = $ast.FindAll( { $args[0] -is [System.Management.Automation.Language.ConfigurationDefinitionAst] }, $true)
     Write-Verbose "Script knwos about $($configurations.Count) configurations"
-    foreach ($configuration in $configurations)
+    foreach ($c in $configurations)
     {
-        $importCmds = $configuration.Body.ScriptBlock.FindAll( { $args[0].Value -eq 'Import-DscResource' -and $args[0] -is [System.Management.Automation.Language.StringConstantExpressionAst] }, $true)
-        Write-Verbose "Configuration $($configuration.InstanceName) knows about $($importCmds.Count) Import-DscResource commands"
+        $importCmds = $c.Body.ScriptBlock.FindAll( { $args[0].Value -eq 'Import-DscResource' -and $args[0] -is [System.Management.Automation.Language.StringConstantExpressionAst] }, $true)
+        Write-Verbose "Configuration $($c.InstanceName) knows about $($importCmds.Count) Import-DscResource commands"
     
         foreach ($importCmd in $importCmds)
         {
@@ -56,13 +50,16 @@ function Get-DscConfigurationImportedResource
     foreach ($compositeResource in $compositeResources)
     {
         $modulesInResource = Get-DscConfigurationImportedResource -FilePath $compositeResource.Path
-        if ($modulesInResource.GetType().IsArray)
+        if ($modulesInResource)
         {
-            $modules.AddRange($modulesInResource)
-        }
-        else
-        {
-            [void]$modules.Add($modulesInResource)
+            if ($modulesInResource.GetType().IsArray)
+            {
+                $modules.AddRange($modulesInResource)
+            }
+            else
+            {
+                [void]$modules.Add($modulesInResource)
+            }
         }
     }
     
