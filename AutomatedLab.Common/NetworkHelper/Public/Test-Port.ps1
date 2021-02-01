@@ -54,7 +54,6 @@ function Test-Port
                     {
                         $tcpClient.Close()
                         $sw.Stop()
-                        Write-Verbose 'Connection Timeout'
 
                         $result.Open = $false
                         $result.Notes = 'Connection to Port Timed Out'
@@ -62,11 +61,18 @@ function Test-Port
                     }
                     else
                     {
-                        [void]$tcpClient.EndConnect($connect)
-                        $tcpClient.Close()
-                        $sw.Stop()
+                        try
+                        {
+                            [void]$tcpClient.EndConnect($connect)
+                            $tcpClient.Close()
+                            $sw.Stop()
 
-                        $result.Open = $true
+                            $result.Open = $true
+                        }
+                        catch
+                        {
+                            $result.Open = $false
+                        }
                     }
 
                     $result.ResponseTime = $sw.ElapsedMilliseconds
@@ -109,7 +115,7 @@ function Test-Port
                         $result.Open = $false
                         $result.Notes = 'Unable to verify if port is open or if host is unavailable.'
                     }
-                    finally
+                   finally
                     {
                         $udpClient.Close()
                         $result.ResponseTime = $sw.ElapsedMilliseconds
@@ -128,4 +134,4 @@ function Test-Port
     {
         $report 
     }
-}
+} 
