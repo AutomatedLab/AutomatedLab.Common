@@ -34,8 +34,8 @@ function Add-VariableToPSSession
 
         $scriptBlock = 
         {
-            param([string]$Path, [object]$Value)
-            $null = Set-Item -Path Variable:\$Path -Value $Value
+            param([string]$_AL_Path, [object]$Value)
+            $null = Set-Item -Path Variable:\$_AL_Path -Value $Value
         }
     }
 
