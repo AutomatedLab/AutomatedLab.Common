@@ -48,8 +48,7 @@
 # Grab nuget bits, install modules, set build variables, start build.
 Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
 
-Resolve-Module PlatyPS, Psake, PSDeploy, BuildHelpers, PSScriptAnalyzer, newtonsoft.json, PSFileTransfer, PSFramework
-Install-Module -Name Pester -Force -AllowClobber -SkipPublisherCheck -MaximumVersion 4.99.99
+Resolve-Module PlatyPS, Psake, PSDeploy, BuildHelpers, PSScriptAnalyzer, newtonsoft.json, PSFileTransfer, PSFramework, Pester
 
 Set-BuildEnvironment
 

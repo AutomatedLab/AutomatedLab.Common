@@ -5,32 +5,48 @@ if (-not $ENV:BHModulePath)
 
 Remove-Module $ENV:BHProjectName -ErrorAction SilentlyContinue -Force
 Import-Module $ENV:BHModulePath -Force
+    
+BeforeDiscovery {
+}
+if (-not $ENV:BHModulePath)
+{
+    Set-BuildEnvironment -Path $PSScriptRoot\..
+}
 
-InModuleScope -ModuleName $ENV:BHProjectName {
+Remove-Module $ENV:BHProjectName -ErrorAction SilentlyContinue -Force
+Import-Module $ENV:BHModulePath -Force
+    
+BeforeDiscovery {
+    $goodTests = @(
+        @{ InputData = '2.1.32.23'; Result = '00000010.00000001.00100000.00010111' }
+        @{ InputData = '192.168.2.1'; Result = '11000000.10101000.00000010.00000001' }
+    )
+    $badTests = @(
+        @{ InputData = "" }
+        @{ InputData = '777.543.123.656' }
+    )
+}
+
     Describe "ConvertTo-BinaryIp" {
-        $goodIp = "192.168.2.1"
-        $badIp = "555.123.123.123"
-        $noIpAtAll = ""
 
         Context "Valid IP" {
             
-            It "Should return a binary dotted IP" {
-                ConvertTo-BinaryIP -IPAddress $goodIp | Should BeExactly "11000000.10101000.00000010.00000001"
+            It "Should return a binary dotted IP" -TestCases $goodTests {
+                ConvertTo-BinaryIP -IPAddress $InputData | Should -BeExactly $Result
             }
 
-            It "Should not throw" {
-                {ConvertTo-BinaryIP -IPAddress $goodIp} | Should Not Throw
+            It "Should not throw an error" -TestCases $goodTests {
+                { ConvertTo-BinaryIP -IPAddress $InputData } | Should -Not -Throw
             }
         }
 
         Context "Invalid IP" {
-            It "Should throw on bad IP" {
-                {ConvertTo-BinaryIP -IPAddress $badIp} | Should Throw
+            It "Should -Throw on bad IP" -TestCases $badTests {
+                { ConvertTo-BinaryIP -IPAddress $InputData } | Should -Throw
             }
 
-            It "Should throw on empty string" {
-                {ConvertTo-BinaryIP -IPAddress $noIpAtAll} | Should Throw
+            It "Should -Throw on empty string" -TestCases $badTests {
+                { ConvertTo-BinaryIP -IPAddress $InputData } | Should -Throw
             }
         }
     }
-}

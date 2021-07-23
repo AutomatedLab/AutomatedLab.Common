@@ -1,3 +1,4 @@
+
 if (-not $ENV:BHModulePath)
 {
     Set-BuildEnvironment -Path $PSScriptRoot\..
@@ -5,36 +6,29 @@ if (-not $ENV:BHModulePath)
 
 Remove-Module $ENV:BHProjectName -ErrorAction SilentlyContinue -Force
 Import-Module $ENV:BHModulePath -Force
+    
+BeforeDiscovery {
+    $testDataGood = @(
+        @{Value = 'Test'; Result = 'Test 0' }
+        @{Value = 'Test 665' ; Result = 'Test 666' }
+        @{Value = 'Test -10' ; Result = 'Test -10 0' }
+    )
+    $testDataBad = @(    
+        @{Value = "Test $([int64]::MaxValue)" ; Result = 'nA' }
+    )
+}
 
-InModuleScope $ENV:BHProjectName {
     Describe "Add-StringIncrement" {
         Context "Add-StringIncrement" {
-            $testData = @{
-                'Test'                      = 'Test 0'
-                'Test 665'                  = 'Test 666'
-                "Test $([int64]::MaxValue)" = 'nA'
-                'Test -10'                  = 'Test -10 0'
+            It "Should return <Result>" -TestCases $testDataGood {
+                Add-StringIncrement -String $Value | Should -BeExactly $Result
             }
 
-            foreach ($testItem in $testData.GetEnumerator())
-            {
-                if ( $testItem.Value -ne 'nA')
-                {
-                    It "Should return $($testItem.Value)" {
-                        Add-StringIncrement -String $testItem.Key | Should BeExactly $testItem.Value
-                    }
-
-                    It "Should not throw" {
-                        {Add-StringIncrement -String $testItem.Key} | Should Not Throw
-                    }
-                }
-                else
-                {
-                    It "Should throw" {
-                        {Add-StringIncrement -String $testItem.Key} | Should Throw
-                    }    
-                }
+            It "Should not throw an error" -TestCases $testDataGood {
+                { Add-StringIncrement -String $Value } | Should -Not -Throw
+            }
+            It "Should throw an error"  -TestCases $testDataBad {
+                { Add-StringIncrement -String $Value } | Should -Throw
             }
         }
     }
-}
