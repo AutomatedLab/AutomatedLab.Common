@@ -5,9 +5,11 @@ if (-not $ENV:BHModulePath)
 
 Remove-Module $ENV:BHProjectName -ErrorAction SilentlyContinue -Force
 Import-Module $ENV:BHModulePath -Force
+    
+BeforeDiscovery {
+}
 
-InModuleScope -ModuleName $ENV:BHProjectName {
+
     Describe "Publish-CaTemplate" {
 
     }
-}

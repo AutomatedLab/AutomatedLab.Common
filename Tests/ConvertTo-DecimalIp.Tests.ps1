@@ -5,32 +5,39 @@ if (-not $ENV:BHModulePath)
 
 Remove-Module $ENV:BHProjectName -ErrorAction SilentlyContinue -Force
 Import-Module $ENV:BHModulePath -Force
+    
+BeforeDiscovery {
+    $goodTests = @(
+        @{ InputData = '2.1.32.23'; Result = '33628183' }
+        @{ InputData = '192.168.2.1'; Result = '3232236033' }
+    )
+    $badTests = @(
+        @{ InputData = "" }
+        @{ InputData = '777.543.123.656' }
+    )
+}
 
-InModuleScope -ModuleName $ENV:BHProjectName {
-    Describe "ConvertTo-DecimalIp" {
-        $goodIp = '192.168.2.1'
-        $badIp = '555.123.123.123'
-        $noIpAtAll = ""
 
-        Context "Valid IP" {
+Describe "ConvertTo-DecimalIp" {
+
+    Context "Valid IP" {
             
-            It "Should return a binary dotted IP" {
-                ConvertTo-DecimalIP -IPAddress $goodIp | Should BeExactly 3232236033
-            }
-
-            It "Should not throw" {
-                {ConvertTo-DecimalIP -IPAddress $goodIp} | Should Not Throw
-            }
+        It "Should return a binary dotted IP" -TestCases $goodTests {
+            ConvertTo-DecimalIP -IPAddress $InputData | Should -BeExactly $Result
         }
 
-        Context "Invalid IP" {
-            It "Should throw on bad IP" {
-                {ConvertTo-DecimalIP -IPAddress $badIp} | Should Throw
-            }
+        It "Should not throw an error" -TestCases $goodTests {
+            { ConvertTo-DecimalIP -IPAddress $InputData } | Should -Not -Throw
+        }
+    }
 
-            It "Should throw on empty string" {
-                {ConvertTo-DecimalIP -IPAddress $noIpAtAll} | Should Throw
-            }
+    Context "Invalid IP" {
+        It "Should -Throw on bad IP" -TestCases $badTests {
+            { ConvertTo-DecimalIP -IPAddress $InputData } | Should -Throw
+        }
+
+        It "Should -Throw on empty string" -TestCases $badTests {
+            { ConvertTo-DecimalIP -IPAddress $InputData } | Should -Throw
         }
     }
 }

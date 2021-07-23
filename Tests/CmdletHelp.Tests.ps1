@@ -5,7 +5,6 @@ if (-not $ENV:BHModulePath)
 
 Remove-Module $ENV:BHProjectName -ErrorAction SilentlyContinue -Force
 Import-Module $ENV:BHModulePath -Force
-
 <#
     .NOTES
         The original test this is based upon was written by June Blender.
@@ -38,7 +37,6 @@ Import-Module $ENV:BHModulePath -Force
 		These can be used to tweak the tests slightly in cases of need.
 		See the example file for explanations on each of these usage and effect.
 #>
-
 $commands = Get-Command -Module (Get-Module $ENV:BHProjectName) -CommandType Cmdlet, Function
 
 ## When testing help, remember that help is cached at the beginning of each session.
@@ -49,65 +47,37 @@ foreach ($command in $commands)
 {
     $commandName = $command.Name
     
+    # Skip all functions that are on the exclusions list
+    if ($global:FunctionHelpTestExceptions -contains $commandName) { continue }
+    
     # The module-qualified command fails on Microsoft.PowerShell.Archive cmdlets
     $Help = Get-Help $commandName -ErrorAction SilentlyContinue
-    $testhelperrors = 0
-    $testhelpall = 0
-    Describe "Test help for $commandName" {
+	
+    Describe "Test help for $commandName" -Skip {
         
-        $testhelpall += 1
-        if ($Help.Synopsis -like '*`[`<CommonParameters`>`]*')
-        {
-            # If help is not found, synopsis in auto-generated help is the syntax diagram
-            It "should not be auto-generated" {
-                $Help.Synopsis | Should -Not -BeLike '*`[`<CommonParameters`>`]*'
-            }
-            $testhelperrors += 1
+        # If help is not found, synopsis in auto-generated help is the syntax diagram
+        It "should not be auto-generated" -TestCases @{ Help = $Help } {
+            $Help.Synopsis | Should -Not -BeLike '*`[`<CommonParameters`>`]*'
         }
         
-        $testhelpall += 1
-        if ([String]::IsNullOrEmpty($Help.Description.Text))
-        {
-            # Should be a description for every function
-            It "gets description for $commandName" {
-                $Help.Description | Should -Not -BeNullOrEmpty
-            }
-            $testhelperrors += 1
+        # Should be a description for every function
+        It "gets description for $commandName" -TestCases @{ Help = $Help } {
+            $Help.Description | Should -Not -BeNullOrEmpty
         }
         
-        $testhelpall += 1
-        if ([String]::IsNullOrEmpty(($Help.Examples.Example | Select-Object -First 1).Code))
-        {
-            # Should be at least one example
-            It "gets example code from $commandName" {
-                ($Help.Examples.Example | Select-Object -First 1).Code | Should -Not -BeNullOrEmpty
-            }
-            $testhelperrors += 1
+        # Should be at least one example
+        It "gets example code from $commandName" -TestCases @{ Help = $Help } {
+            ($Help.Examples.Example | Select-Object -First 1).Code | Should -Not -BeNullOrEmpty
+        }
+	
+        # Should be at least one example description
+        It "gets example help from $commandName" -TestCases @{ Help = $Help } {
+            ($Help.Examples.Example.Remarks | Select-Object -First 1).Text | Should -Not -BeNullOrEmpty
         }
         
-        $testhelpall += 1
-        if ([String]::IsNullOrEmpty(($Help.Examples.Example.Remarks | Select-Object -First 1).Text))
-        {
-            # Should be at least one example description
-            It "gets example help from $commandName" {
-                ($Help.Examples.Example.Remarks | Select-Object -First 1).Text | Should -Not -BeNullOrEmpty
-            }
-            $testhelperrors += 1
-        }
-        
-        if ($testhelperrors -eq 0)
-        {
-            It "Ran silently $testhelpall tests" {
-                $testhelperrors | Should -be 0
-            }
-        }
-        
-        $testparamsall = 0
-        $testparamserrors = 0
         Context "Test parameter help for $commandName" {
             
-            $Common = 'Debug', 'ErrorAction', 'ErrorVariable', 'InformationAction', 'InformationVariable', 'OutBuffer', 'OutVariable',
-            'PipelineVariable', 'Verbose', 'WarningAction', 'WarningVariable'
+            $common = 'Debug', 'ErrorAction', 'ErrorVariable', 'InformationAction', 'InformationVariable', 'OutBuffer', 'OutVariable', 'PipelineVariable', 'Verbose', 'WarningAction', 'WarningVariable'
             
             $parameters = $command.ParameterSets.Parameters | Sort-Object -Property Name -Unique | Where-Object Name -notin $common
             $parameterNames = $parameters.Name
@@ -116,59 +86,51 @@ foreach ($command in $commands)
             {
                 $parameterName = $parameter.Name
                 $parameterHelp = $Help.parameters.parameter | Where-Object Name -EQ $parameterName
-                
-                $testparamsall += 1
-                if ([String]::IsNullOrEmpty($parameterHelp.Description.Text))
-                {
-                    # Should be a description for every parameter
-                    It "gets help for parameter: $parameterName : in $commandName" {
-                        $parameterHelp.Description.Text | Should -Not -BeNullOrEmpty
-                    }
-                    $testparamserrors += 1
+			
+                # Should be a description for every parameter
+                It "gets help for parameter: $parameterName : in $commandName" -TestCases @{ parameterHelp = $parameterHelp } {
+                    $parameterHelp.Description.Text | Should -Not -BeNullOrEmpty
                 }
                 
-                $testparamsall += 1
                 $codeMandatory = $parameter.IsMandatory.toString()
-                if ($parameterHelp.Required -ne $codeMandatory)
-                {
-                    # Required value in Help should match IsMandatory property of parameter
-                    It "help for $parameterName parameter in $commandName has correct Mandatory value" {
-                        $parameterHelp.Required | Should -Be $codeMandatory
-                    }
-                    $testparamserrors += 1
+                It "help for $parameterName parameter in $commandName has correct Mandatory value" -TestCases @{ parameterHelp = $parameterHelp; codeMandatory = $codeMandatory } {
+                    $parameterHelp.Required | Should -Be $codeMandatory
                 }
-                
+                                
                 $codeType = $parameter.ParameterType.Name
                 
-                $testparamsall += 1
-                # To avoid calling Trim method on a null object.
-                $helpType = if ($parameterHelp.parameterValue) { $parameterHelp.parameterValue.Trim() }
-                if ($helpType -ne $codeType)
+                if ($parameter.ParameterType.IsEnum)
                 {
+                    # Enumerations often have issues with the typename not being reliably available
+                    $names = $parameter.ParameterType::GetNames($parameter.ParameterType)
                     # Parameter type in Help should match code
-                    It "help for $commandName has correct parameter type for $parameterName" {
+                    It "help for $commandName has correct parameter type for $parameterName" -TestCases @{ parameterHelp = $parameterHelp; names = $names } {
+                        $parameterHelp.parameterValueGroup.parameterValue | Should -be $names
+                    }
+                }
+                elseif ($parameter.ParameterType.FullName -in $HelpTestEnumeratedArrays)
+                {
+                    # Enumerations often have issues with the typename not being reliably available
+                    $names = [Enum]::GetNames($parameter.ParameterType.DeclaredMembers[0].ReturnType)
+                    It "help for $commandName has correct parameter type for $parameterName" -TestCases @{ parameterHelp = $parameterHelp; names = $names } {
+                        $parameterHelp.parameterValueGroup.parameterValue | Should -be $names
+                    }
+                }
+                else
+                {
+                    # To avoid calling Trim method on a null object.
+                    $helpType = if ($parameterHelp.parameterValue) { $parameterHelp.parameterValue.Trim() }
+                    # Parameter type in Help should match code
+                    It "help for $commandName has correct parameter type for $parameterName" -TestCases @{ helpType = $helpType; codeType = $codeType } {
                         $helpType | Should -be $codeType
                     }
-                    $testparamserrors += 1
                 }
-                
             }
             foreach ($helpParm in $HelpParameterNames)
             {
-                $testparamsall += 1
-                if ($helpParm -notin $parameterNames)
-                {
-                    # Shouldn't find extra parameters in help.
-                    It "finds help parameter in code: $helpParm" {
-                        $helpParm -in $parameterNames | Should -Be $true
-                    }
-                    $testparamserrors += 1
-                }
-            }
-            if ($testparamserrors -eq 0)
-            {
-                It "Ran silently $testparamsall tests" {
-                    $testparamserrors | Should -be 0
+                # Shouldn't find extra parameters in help.
+                It "finds help parameter in code: $helpParm" -TestCases @{ helpParm = $helpParm; parameterNames = $parameterNames } {
+                    $helpParm -in $parameterNames | Should -Be $true
                 }
             }
         }
