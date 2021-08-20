@@ -5,43 +5,53 @@ if (-not $ENV:BHModulePath)
 
 Remove-Module $ENV:BHProjectName -ErrorAction SilentlyContinue -Force
 Import-Module $ENV:BHModulePath -Force
+    
+BeforeDiscovery {
+    $testDataArrays = @(
+        @{
+            InputData               = @('Entry1', 'Entry2', 'Entry3')
+            ResultTwoWay            = @('Entry1', 'Entry1', 'Entry2', 'Entry2', 'Entry3', 'Entry3')
+            ResultOneWaySource      = @('Entry1', 'Entry1', 'Entry2')
+            ResultOneWayDestination = @('Entry2', 'Entry3', 'Entry3')
+        }
+        @{InputData = 'A string' }
+    )
+    $testDataSingles = @(
+        @{InputData = 42 }
+        @{InputData = 'A string' }
+    )
+}
 
-InModuleScope -ModuleName $ENV:BHProjectName {
+
     Describe "Get-FullMesh" {
-        $testData = @('Entry1', 'Entry2', 'Entry3')
-        $testDataSingle = 42
-        $results = @('Entry1', 'Entry1', 'Entry2', 'Entry2', 'Entry3', 'Entry3')
-        $resultsSourceOneway = @('Entry1', 'Entry1', 'Entry2')
-        $resultsDestinationOneway = @('Entry2', 'Entry3', 'Entry3')
         
         Context 'Two-way' {
-            It 'Should return a full mesh on arrays' {
-                ((Get-FullMesh -List $testData).Source | Sort-Object) | Should Be $results
-                ((Get-FullMesh -List $testData).Destination | Sort-Object) | Should Be $results
+            It 'Should return a full mesh on arrays' -TestCases $testDataArrays {
+                ((Get-FullMesh -List $InputData).Source | Sort-Object) | Should -Be $ResultTwoWay
+                ((Get-FullMesh -List $InputData).Destination | Sort-Object) | Should -Be $ResultTwoWay
             }
 
-            It 'Should return $null on single values' {
-                Get-FullMesh -List $testDataSingle | Should Be $null
+            It 'Should return $null on single value <InputData>' -TestCases $testDataSingles {
+                Get-FullMesh -List $InputData | Should -BeNullOrEmpty
             }
 
-            It 'Should not throw' {
-                {Get-FullMesh -List $testData} | Should Not throw
+            It 'Should -Not -Throw'  -TestCases $testDataArrays {
+                { Get-FullMesh -List $InputData } | Should -Not -Throw
             }
         }
 
         Context 'One-way' {
-            It 'Should return a one-way mesh on arrays' {
-                ((Get-FullMesh -List $testData -OneWay).Source | Sort-Object) | Should Be $resultsSourceOneway
-                ((Get-FullMesh -List $testData -OneWay).Destination | Sort-Object) | Should Be $resultsDestinationOneway
+            It 'Should return a one-way mesh on arrays' -TestCases $testDataArrays {
+                ((Get-FullMesh -List $InputData -OneWay).Source | Sort-Object) | Should -Be $ResultOneWaySource
+                ((Get-FullMesh -List $InputData -OneWay).Destination | Sort-Object) | Should -Be $ResultOneWayDestination
             }
 
-            It 'Should return $null on single values' {
-                Get-FullMesh -List $testDataSingle -OneWay | Should Be $null
+            It 'Should return $null on single value <InputData>' -TestCases $testDataSingles {
+                Get-FullMesh -List $InputData -OneWay | Should -BeNullOrEmpty
             }
 
-            It 'Should not throw' {
-                {Get-FullMesh -List $testData -OneWay} | Should Not throw
+            It 'Should -Not -Throw' -TestCases $testDataArrays {
+                { Get-FullMesh -List $InputData -OneWay } | Should -Not -Throw
             }
         }
     }
-}

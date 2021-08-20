@@ -1,3 +1,4 @@
+
 if (-not $ENV:BHModulePath)
 {
     Set-BuildEnvironment -Path $PSScriptRoot\..
@@ -5,27 +6,36 @@ if (-not $ENV:BHModulePath)
 
 Remove-Module $ENV:BHProjectName -ErrorAction SilentlyContinue -Force
 Import-Module $ENV:BHModulePath -Force
+    
+BeforeDiscovery {
+    
+    $testValid = @(
+        @{ Mask = '255.255.252.0'; Length = 22 }        
+        @{ Mask = '255.0.0.0'; Length = 8 }        
+        @{ Mask = '255.255.0.0'; Length = 16 }
+        @{ Mask = '255.255.255.254'; Length = 31 }
+    )
+    $testInvalid = @(
+        @{ Length = -1 }
+        @{ Length = 42 }
+    )
+}
 
-InModuleScope -ModuleName $ENV:BHProjectName {
-    Describe "ConvertTo-Mask" {
-        $validMask = 22
-        $invalidMasks = @(-1, 33)
-        Context "Valid data" {
-            It "Should work" {
-                ConvertTo-Mask -MaskLength $validMask | Should BeExactly "255.255.252.0"
-            }
-
-            It "Should not throw" {
-                {ConvertTo-Mask -MaskLength $validMask} | Should Not Throw
-            }
+Describe "ConvertTo-Mask" {
+        
+    Context "Valid data" {
+        It "Should work" -TestCases $testValid {
+            ConvertTo-Mask -MaskLength $Length | Should -BeExactly $Mask
         }
-        Context "Invalid data" {
-            foreach ($mask in $invalidMasks)
-            {
-                It "Should Throw with mask $mask" {
-                    {ConvertTo-Mask -MaskLength $mask} | Should Throw
-                }
-            }
+
+        It "Should not throw an error" -TestCases $testValid {
+            { ConvertTo-Mask -MaskLength $Length } | Should -Not -Throw
         }
     }
+    Context "Invalid data" {
+        It "Should -Throw with CIDR <Length>" -TestCases $testInvalid {
+            { ConvertTo-Mask -MaskLength $Length } | Should -Throw
+        }
+    }
+    
 }

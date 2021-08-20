@@ -5,42 +5,40 @@ if (-not $ENV:BHModulePath)
 
 Remove-Module $ENV:BHProjectName -ErrorAction SilentlyContinue -Force
 Import-Module $ENV:BHModulePath -Force
-
-InModuleScope 'AutomatedLab.Common' {
-    Describe Add-AccountPrivilege {
-        $badLsa = New-Object psobject | Add-Member -MemberType ScriptMethod -Name AddPrivileges -Value {throw 'An error'} -PassThru
-        $goodLsa = New-Object psobject | Add-Member -MemberType ScriptMethod -Name AddPrivileges -Value {} -PassThru
-        $parameters = @{
+    
+BeforeDiscovery {
+    $testCases = @(
+        @{
             UserName  = @("Usera", "Userb")
             Privilege = @("SeUndockPrivilege", "SeShutdownPrivilege")
         }
+    )
+}
 
-        Context 'User is administrator on system' {
-            Mock -CommandName New-Object -MockWith {
-                return $goodLsa
+Describe Add-AccountPrivilege {
+    Context 'User is administrator on system' {
+        BeforeEach {
+            Mock -ModuleName AutomatedLab.Common -CommandName New-Object -MockWith {
+                return ("" | Add-Member -MemberType ScriptMethod -Name AddPrivileges -Value {} -PassThru)
             }
-
-            It 'Should not throw' {
-                {Add-AccountPrivilege @parameters} | Should Not Throw
-            }
-
-            It 'Should return $null' {
-                (Add-AccountPrivilege @parameters)
-            }
-
-            Assert-MockCalled -CommandName New-Object
         }
 
-        Context 'User is not administrator on system' {
-            Mock -CommandName New-Object -MockWith {
-                return $badLsa
-            }
+        It 'Should -Not -Throw' -TestCases $testCases {
+            { Add-AccountPrivilege -UserName $UserName -Privilege $Privilege } | Should -Not -Throw
+            
+            Should -Invoke -CommandName New-Object -ModuleName AutomatedLab.Common
+        }
+    }
 
-            It 'Should throw' {
-                {Add-AccountPrivilege @parameters} | Should Throw
+    Context 'User is not administrator on system' {
+        BeforeEach {
+            Mock -ModuleName AutomatedLab.Common -CommandName New-Object -MockWith {
+                return ("" | Add-Member -MemberType ScriptMethod -Name AddPrivileges -Value { throw 'An error' } -PassThru)
             }
+        }
 
-            Assert-MockCalled -CommandName New-Object
+        It 'Should -Throw' -TestCases $testCases {
+            { Add-AccountPrivilege -UserName $UserName -Privilege $Privilege } | Should -Throw
         }
     }
 }

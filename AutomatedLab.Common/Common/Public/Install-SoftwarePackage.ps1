@@ -72,9 +72,7 @@ function Install-SoftwarePackage
     $installationFile = [System.IO.Path]::GetFileName($Path)
     
     if ($installationMethod -eq '.msi')
-    {
-        Write-Verbose -Message 'Starting installation of MSI file'
-        
+    {        
         [string]$CommandLine = if (-not $CommandLine)
         {
             @(
@@ -94,10 +92,29 @@ function Install-SoftwarePackage
         
         $Path = 'msiexec.exe'
     }
-    elseif ($installationMethod -eq '.msu')
+    elseif ($installationMethod -eq '.msp')
     {
-        Write-Verbose -Message 'Starting installation of MSU file'
+        [string]$CommandLine = if (-not $CommandLine)
+        {
+            @(
+                "/P `"$Path`"", # Install this MSI
+                '/QN', # Quietly, without a UI
+                "/L*V `"$([System.IO.Path]::GetTempPath())$([System.IO.Path]::GetFileNameWithoutExtension($Path)).log`""     # Verbose output to this log
+            )
+        }
+        else
+        {
+            '/P {0} {1}' -f $Path, $CommandLine # Install this MSI
+        }
         
+        Write-Verbose -Message 'Installation arguments for MSI are:'
+        Write-Verbose -Message "`tPath: $Path"
+        Write-Verbose -Message "`tLog File: '`t$([System.IO.Path]::GetTempPath())$([System.IO.Path]::GetFileNameWithoutExtension($Path)).log'"
+        
+        $Path = 'msiexec.exe'
+    }
+    elseif ($installationMethod -eq '.msu')
+    {        
         $tempRemoteFolder = [System.IO.Path]::GetTempFileName()
         Remove-Item -Path $tempRemoteFolder
         New-Item -ItemType Directory -Path $tempRemoteFolder
@@ -112,6 +129,8 @@ function Install-SoftwarePackage
         Write-Error -Message 'The extension of the file to install is unknown'
         return
     }
+
+    Write-Verbose -Message "Starting installation of $installationMethod file"
 
     if ($AsScheduledJob)
     {

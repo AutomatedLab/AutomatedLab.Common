@@ -5,32 +5,33 @@ if (-not $ENV:BHModulePath)
 
 Remove-Module $ENV:BHProjectName -ErrorAction SilentlyContinue -Force
 Import-Module $ENV:BHModulePath -Force
+    
+BeforeDiscovery {
+    $goodTests = @(
+        @{ InputData = '3232236033'; Result = '192.168.2.1' }
+        @{ InputData = '11010010.10010110.10101010.01010101'; Result = '210.150.170.85' }
+    )
+    $badTests = @(
+        @{ InputData = "" }
+        @{ InputData = '-123123123' }
+    )
+}
 
-InModuleScope -ModuleName $ENV:BHProjectName {
+
     Describe "ConvertTo-DottedDecimalIp" {
-        $goodDecimal = '3232236033' # 192.168.2.1
-        $goodBinary = "11010010.10010110.10101010.01010101" # 210.150.170.85
-        $badDecimal = -123123123
 
         Context "Valid data" {
-            It "Should convert decimal addresses" {
-                ConvertTo-DottedDecimalIP -IPAddress $goodDecimal | Should BeExactly "192.168.2.1"
+            It "Should convert <InputData>" -TestCases $goodTestst {
+                ConvertTo-DottedDecimalIP -IPAddress $InputData | Should BeExactly $Result
             }
-            It "Should not throw with a decimal address" {
-                {ConvertTo-DottedDecimalIP -IPAddress $goodDecimal} | Should Not Throw
-            }
-            It "Should convert binary addresses" {
-                ConvertTo-DottedDecimalIP -IPAddress $goodBinary | Should BeExactly "210.150.170.85"
-            }
-            It "Should not throw with a binary address" {
-                {ConvertTo-DottedDecimalIP -IPAddress $goodBinary} | Should Not Throw
+            It "Should -Not -Throw with <InputData>" -TestCases $goodTestst {
+                {ConvertTo-DottedDecimalIP -IPAddress $InputData} | Should -Not -Throw
             }
         }
 
         Context "Invalid data" {
-            It "Should throw" {
-                {ConvertTo-DottedDecimalIP -IPAddress $badDecimal} | Should Throw
+            It "Should throw an error" -TestCases $badTests {
+                {ConvertTo-DottedDecimalIP -IPAddress $InputData} | Should -Throw
             }
         }
     }
-}
