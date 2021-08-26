@@ -83,7 +83,7 @@ function Install-SoftwarePackage
         }
         else
         {
-            '/I {0} {1}' -f $Path, $CommandLine # Install this MSI
+            '/I "{0}" {1}' -f $Path, $CommandLine # Install this MSI
         }
         
         Write-Verbose -Message 'Installation arguments for MSI are:'
