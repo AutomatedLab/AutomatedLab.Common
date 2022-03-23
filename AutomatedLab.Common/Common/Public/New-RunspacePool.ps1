@@ -14,11 +14,21 @@ function New-RunspacePool
 
         [Parameter()]
         [System.Management.Automation.PSVariable[]]
-        $Variable
+        $Variable,
+
+        [Parameter()]
+        [System.Management.Automation.FunctionInfo[]]
+        $Function
     )
 
     $pool = Get-Variable -Name "ALCommonRunspacePool_$($ThrottleLimit)_$($ApartmentState)" -Scope Script -ErrorAction SilentlyContinue
     $InitialSessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
+
+    foreach ($func in $Function)
+    {
+        $ssFunc = [System.Management.Automation.Runspaces.SessionStateFunctionEntry]::new($func.Name, $func.ScriptBlock)
+        $InitialSessionState.Commands.Add($ssFunc)
+    }
 
     foreach ($var in $Variable)
     {

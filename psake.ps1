@@ -56,7 +56,13 @@ Task Test -Depends CompileHelp {
     }
 
     # Gather test results. Store them in a variable and file
-    $TestResults = Invoke-Pester -Path $ProjectRoot\Tests -PassThru -OutputFormat NUnitXml -OutputFile "$ProjectRoot\$TestFile"
+    $po = [PesterConfiguration]::new()
+    $po.Run.Path = "$ProjectRoot\Tests"
+    $po.TestResult.Enabled = $true
+    $po.TestResult.OutputFormat = 'NUnitXml'
+    $po.TestResult.OutputPath = "$ProjectRoot\$TestFile"
+    $po.Run.PassThru = $true
+    $TestResults = Invoke-Pester -Configuration $po
 
     # In Appveyor?  Upload our tests! #Abstract this into a function?
     If ($ENV:BHBuildSystem -eq 'AppVeyor')
