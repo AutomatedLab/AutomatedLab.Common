@@ -13,12 +13,12 @@ Create a new runspace pool
 ## SYNTAX
 
 ```
-New-RunspacePool [[-ThrottleLimit] <Int32>] [[-ApartmentState] <ApartmentState>] [[-Variable] <PSVariable[]>]
+New-RunspacePool [[-ThrottleLimit] <Int32>] [[-ApartmentState] <ApartmentState>] [[-Variable] <PSVariable[]>] [[-Function] <FunctionInfo[]>]
  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Create a new runspace pool with the specified throttle limit, apartment state and variables
+Create a new runspace pool with the specified throttle limit, apartment state, functions and variables
 
 ## EXAMPLES
 
@@ -28,6 +28,14 @@ PS C:\> New-RunspacePool -ThrottleLimit 10 -Variable (Get-Variable Credential, P
 ```
 
 Creates a runspace pool with a maximum of 10 runspaces and transfers the variable Credential and Path to it.
+
+### Example 2
+```powershell
+PS C:\> function eggs { 'eggs' }; function ham {'ham'}; New-RunspacePool -ThrottleLimit 5 -Function (Get-Command eggs,ham)
+```
+
+Creates a runspace pool with a maximum of 5 runspaces and imports the functions eggs and ham into
+its initial session state, ready for use.
 
 ## PARAMETERS
 
@@ -72,6 +80,21 @@ Aliases:
 
 Required: False
 Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Function
+A list of functions transferred into each runspace pool. Shared by the entire pool
+
+```yaml
+Type: FunctionInfo[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 3
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
