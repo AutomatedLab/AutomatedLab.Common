@@ -3,7 +3,7 @@ environment:
   NuGetApiKey:
     secure: tAdUQmRiZ270LOPN8SwbjISLfu6ldDTw6LWvdtsk+pQR7r5bJnGrG8Ntyt87edJ/
 
-version: 2.1.{build}
+version: 2.2.{build}
 
 skip_tags: true
 skip_branch_with_pr: true
@@ -40,7 +40,7 @@ after_build:
   - ps: |
         Write-Host "Publishing library"
         $projPath = Join-Path $env:APPVEYOR_BUILD_FOLDER -ChildPath 'Library\Library.csproj' -Resolve -ErrorAction Stop
-        dotnet publish $projPath -f netcoreapp2.2 -o (Join-Path -Path $env:APPVEYOR_BUILD_FOLDER 'AutomatedLab.Common\lib\core')
+        dotnet publish $projPath -f net6.0 -o (Join-Path -Path $env:APPVEYOR_BUILD_FOLDER 'AutomatedLab.Common\lib\core')
         dotnet publish $projPath -f net462 -o (Join-Path -Path $env:APPVEYOR_BUILD_FOLDER 'AutomatedLab.Common\lib\full')
 
 
