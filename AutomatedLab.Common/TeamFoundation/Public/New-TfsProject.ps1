@@ -4,7 +4,7 @@ function New-TfsProject
     [CmdletBinding(DefaultParameterSetName = 'NameCred')]
     param
     (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $InstanceName,
 
@@ -19,7 +19,7 @@ function New-TfsProject
         [string]
         $ApiVersion = '2.0',
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $ProjectName,
 
@@ -29,26 +29,26 @@ function New-TfsProject
         [ValidateSet('Git', 'Tfvc')]
         $SourceControlType = 'Git',
 
-        [Parameter(Mandatory, ParameterSetName = 'GuidPat')]
-        [Parameter(Mandatory, ParameterSetName = 'GuidCred')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'GuidPat')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'GuidCred')]
         [guid]
         $TemplateGuid,
 
-        [Parameter(Mandatory, ParameterSetName = 'NamePat')]
-        [Parameter(Mandatory, ParameterSetName = 'NameCred')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'NamePat')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'NameCred')]
         [string]
         $TemplateName,
 
         [switch]
         $UseSsl,
 
-        [Parameter(Mandatory, ParameterSetName = 'GuidCred')]
-        [Parameter(Mandatory, ParameterSetName = 'NameCred')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'GuidCred')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'NameCred')]
         [pscredential]
         $Credential,
         
-        [Parameter(Mandatory, ParameterSetName = 'NamePat')]
-        [Parameter(Mandatory, ParameterSetName = 'GuidPat')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'NamePat')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'GuidPat')]
         [string]
         $PersonalAccessToken,
 

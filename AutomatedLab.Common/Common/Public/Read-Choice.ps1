@@ -1,10 +1,10 @@
 function Read-Choice
 { 
     param(
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [String[]]$ChoiceList, 
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [String]$Caption,
         
         [String]$Message,

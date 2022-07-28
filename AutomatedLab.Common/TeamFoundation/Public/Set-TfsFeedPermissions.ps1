@@ -3,7 +3,7 @@ function Set-TfsFeedPermissions
     
     param
     (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $InstanceName,
 
@@ -18,11 +18,11 @@ function Set-TfsFeedPermissions
         [string]
         $ApiVersion = '2.0',
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $FeedName,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [object[]]
         $Permissions,
 

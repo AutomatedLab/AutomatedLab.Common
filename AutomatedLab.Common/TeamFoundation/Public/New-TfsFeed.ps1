@@ -4,7 +4,7 @@ function New-TfsFeed
     [CmdletBinding(DefaultParameterSetName = 'NameCred')]
     param
     (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $InstanceName,
 
@@ -19,7 +19,7 @@ function New-TfsFeed
         [string]
         $ApiVersion = '2.0',
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $FeedName,
 
@@ -29,13 +29,13 @@ function New-TfsFeed
         [switch]
         $UseSsl,
 
-        [Parameter(Mandatory, ParameterSetName = 'GuidCred')]
-        [Parameter(Mandatory, ParameterSetName = 'NameCred')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'GuidCred')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'NameCred')]
         [pscredential]
         $Credential,
         
-        [Parameter(Mandatory, ParameterSetName = 'NamePat')]
-        [Parameter(Mandatory, ParameterSetName = 'GuidPat')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'NamePat')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'GuidPat')]
         [string]
         $PersonalAccessToken,
 

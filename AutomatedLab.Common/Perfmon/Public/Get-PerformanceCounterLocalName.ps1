@@ -2,7 +2,7 @@ function Get-PerformanceCounterLocalName
 {
     param
     (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [UInt32]$ID,
         
         [string]$ComputerName = $env:COMPUTERNAME

@@ -1,9 +1,9 @@
 function Get-NetworkSummary
 {
     param (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [String]$IPAddress,
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [String]$SubnetMask
     )
     If ($IPAddress.Contains('/'))

@@ -1,7 +1,7 @@
 function Test-HashtableKeys
 {
     param (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [hashtable]$Hashtable,
 
         [string[]]$MandatoryKeys,

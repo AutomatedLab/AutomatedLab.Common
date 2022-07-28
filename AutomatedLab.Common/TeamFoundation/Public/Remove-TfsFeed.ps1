@@ -3,7 +3,7 @@ function Remove-TfsFeed
     
     param
     (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $InstanceName,
  
@@ -18,7 +18,7 @@ function Remove-TfsFeed
         [string]
         $ApiVersion = '1.0',
  
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $FeedName,
  

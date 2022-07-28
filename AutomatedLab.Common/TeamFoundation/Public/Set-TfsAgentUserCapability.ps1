@@ -2,7 +2,7 @@
 {
     param
     (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $InstanceName,
 
@@ -10,17 +10,17 @@
         [string]
         $CollectionName = 'DefaultCollection',
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $PoolName = '*',
 
-        [Parameter(Mandatory, ParameterSetName = 'CredId')]
-        [Parameter(Mandatory, ParameterSetName = 'PatId')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'CredId')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'PatId')]
         [uint16]
         $AgentId,
 
-        [Parameter(Mandatory, ParameterSetName = 'CredObject')]
-        [Parameter(Mandatory, ParameterSetName = 'PatObject')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'CredObject')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'PatObject')]
         [object]
         $Agent,
 
@@ -34,20 +34,20 @@
         [switch]
         $UseSsl,
 
-        [Parameter(Mandatory, ParameterSetName = 'CredId')]
-        [Parameter(Mandatory, ParameterSetName = 'CredObject')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'CredId')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'CredObject')]
         [pscredential]
         $Credential,
         
-        [Parameter(Mandatory, ParameterSetName = 'PatId')]
-        [Parameter(Mandatory, ParameterSetName = 'PatObject')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'PatId')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'PatObject')]
         [string]
         $PersonalAccessToken,
 
         [switch]
         $SkipCertificateCheck,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [hashtable]
         $Capability
     )

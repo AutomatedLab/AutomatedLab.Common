@@ -3,7 +3,7 @@ function New-TfsAgentQueue
     
     param
     (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $InstanceName,
 
@@ -18,7 +18,7 @@ function New-TfsAgentQueue
         [string]
         $ApiVersion = '3.0-preview.1',
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $ProjectName,
 
@@ -28,11 +28,11 @@ function New-TfsAgentQueue
         [string]
         $QueueName,
 
-        [Parameter(Mandatory, ParameterSetName = 'Cred')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'Cred')]
         [pscredential]
         $Credential,
         
-        [Parameter(Mandatory, ParameterSetName = 'Pat')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'Pat')]
         [string]
         $PersonalAccessToken,
 

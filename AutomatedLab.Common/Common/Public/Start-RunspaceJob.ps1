@@ -3,11 +3,11 @@ function Start-RunspaceJob
     [CmdletBinding()]
     param
     (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.ScriptBlock]
         $ScriptBlock,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.Runspaces.RunspacePool]
         $RunspacePool,
 
