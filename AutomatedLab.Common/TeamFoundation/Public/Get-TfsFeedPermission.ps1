@@ -3,7 +3,7 @@ function Get-TfsFeedPermission
     
     param
     (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $InstanceName,
  

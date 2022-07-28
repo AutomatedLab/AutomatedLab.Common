@@ -2,7 +2,7 @@ function New-PerformanceDataCollectorSet
 {
     [CmdletBinding(DefaultParameterSetName = 'Counter')]
     Param(
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]$CollectorSetName,
 
         [datetime]$StartDate,

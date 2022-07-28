@@ -2,7 +2,7 @@ function Get-TfsAgentPool
 {
     param
     (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $InstanceName,
 
@@ -24,11 +24,11 @@ function Get-TfsAgentPool
         [switch]
         $UseSsl,
 
-        [Parameter(Mandatory, ParameterSetName = 'Cred')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'Cred')]
         [pscredential]
         $Credential,
         
-        [Parameter(Mandatory, ParameterSetName = 'Pat')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'Pat')]
         [string]
         $PersonalAccessToken,
 

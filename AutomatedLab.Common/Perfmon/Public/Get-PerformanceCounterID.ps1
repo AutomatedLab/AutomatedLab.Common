@@ -2,7 +2,7 @@ function Get-PerformanceCounterID
 {
     param
     (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         $Name
     )
  
