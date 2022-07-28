@@ -4,7 +4,7 @@ function Get-StringSection
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
         [string]$String,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [int]$SectionSize
     )
 

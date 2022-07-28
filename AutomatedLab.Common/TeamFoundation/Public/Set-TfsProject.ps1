@@ -3,7 +3,7 @@ function Set-TfsProject
     
     param
     (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $InstanceName,
 
@@ -18,7 +18,7 @@ function Set-TfsProject
         [string]
         $ApiVersion = '2.0',
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $ProjectGuid,
 

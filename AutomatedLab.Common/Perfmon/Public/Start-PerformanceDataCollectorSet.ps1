@@ -1,7 +1,7 @@
 function Start-PerformanceDataCollectorSet
 {
     Param(
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]$CollectorSetName,
         
         [string]$ComputerName = 'localhost'

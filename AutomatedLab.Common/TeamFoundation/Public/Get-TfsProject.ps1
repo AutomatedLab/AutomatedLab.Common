@@ -3,7 +3,7 @@ function Get-TfsProject
     
     param
     (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $InstanceName,
  

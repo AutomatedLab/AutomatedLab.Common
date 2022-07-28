@@ -3,7 +3,7 @@ function Get-TfsReleaseStep
     [CmdletBinding(DefaultParameterSetName = 'Tfs')]
     param
     (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $InstanceName,
 
@@ -15,36 +15,36 @@ function Get-TfsReleaseStep
         [uint32]
         $Port,
 
-        [Parameter(Mandatory, ParameterSetName = 'TfsName')]
-        [Parameter(Mandatory, ParameterSetName = 'VstsName')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'TfsName')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'VstsName')]
         [SupportsWildcards()]
         [string]
         $FriendlyName,
 
-        [Parameter(Mandatory, ParameterSetName = 'TfsHashtable')]
-        [Parameter(Mandatory, ParameterSetName = 'VstsHashtable')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'TfsHashtable')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'VstsHashtable')]
         [hashtable]
         $FilterHashtable,
 
-        [Parameter(Mandatory, ParameterSetName = 'TfsScript')]
-        [Parameter(Mandatory, ParameterSetName = 'VstsScript')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'TfsScript')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'VstsScript')]
         [scriptblock]
         $FilterScript,
 
         [switch]
         $UseSsl,
 
-        [Parameter(Mandatory, ParameterSetName = 'Tfs')]
-        [Parameter(Mandatory, ParameterSetName = 'TfsName')]
-        [Parameter(Mandatory, ParameterSetName = 'TfsHashtable')]
-        [Parameter(Mandatory, ParameterSetName = 'TfsScript')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'Tfs')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'TfsName')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'TfsHashtable')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'TfsScript')]
         [pscredential]
         $Credential,
         
-        [Parameter(Mandatory, ParameterSetName = 'Vsts')]
-        [Parameter(Mandatory, ParameterSetName = 'VstsName')]
-        [Parameter(Mandatory, ParameterSetName = 'VstsHashtable')]
-        [Parameter(Mandatory, ParameterSetName = 'VstsScript')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'Vsts')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'VstsName')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'VstsHashtable')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'VstsScript')]
         [string]
         $PersonalAccessToken,
 

@@ -3,7 +3,7 @@ function Get-TfsFeed
     
     param
     (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $InstanceName,
  

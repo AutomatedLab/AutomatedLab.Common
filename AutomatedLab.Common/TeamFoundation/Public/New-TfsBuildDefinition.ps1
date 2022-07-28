@@ -4,7 +4,7 @@ function New-TfsBuildDefinition
     [CmdletBinding(DefaultParameterSetName = 'Cred')]
     param
     (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $InstanceName,
 
@@ -19,11 +19,11 @@ function New-TfsBuildDefinition
         [string]
         $ApiVersion = '2.0',
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $ProjectName,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $DefinitionName,
 
@@ -45,11 +45,11 @@ function New-TfsBuildDefinition
         [switch]
         $UseSsl,
 
-        [Parameter(Mandatory, ParameterSetName = 'Cred')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'Cred')]
         [pscredential]
         $Credential,
         
-        [Parameter(Mandatory, ParameterSetName = 'Pat')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'Pat')]
         [string]
         $PersonalAccessToken,
         

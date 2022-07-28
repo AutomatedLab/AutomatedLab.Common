@@ -3,7 +3,7 @@ function Get-TfsProcessTemplate
     
     param
     (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $InstanceName,
 
@@ -21,11 +21,11 @@ function Get-TfsProcessTemplate
         [switch]
         $UseSsl,
 
-        [Parameter(Mandatory, ParameterSetName = 'Tfs')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'Tfs')]
         [pscredential]
         $Credential,
         
-        [Parameter(Mandatory, ParameterSetName = 'Vsts')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'Vsts')]
         [string]
         $PersonalAccessToken,
 

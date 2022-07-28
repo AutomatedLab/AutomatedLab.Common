@@ -1,13 +1,13 @@
 function Split-Array
 {
     param(
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [System.Collections.IEnumerable]$List,
 
-        [Parameter(Mandatory, ParameterSetName = 'ChunkSize')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'ChunkSize')]
         [int]$ChunkSize,
         
-        [Parameter(Mandatory, ParameterSetName = 'ChunkCount')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'ChunkCount')]
         [int]$ChunkCount
     )
     $aggregateList = @()

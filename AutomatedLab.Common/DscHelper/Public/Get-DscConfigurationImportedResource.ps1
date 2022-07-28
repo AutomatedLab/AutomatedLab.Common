@@ -1,10 +1,10 @@
 function Get-DscConfigurationImportedResource
 {
     param(
-        [Parameter(Mandatory, ParameterSetName = 'ByFile')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'ByFile')]
         [string]$FilePath,
         
-        [Parameter(Mandatory, ParameterSetName = 'ByConfiguration')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'ByConfiguration')]
         [System.Management.Automation.ConfigurationInfo]$Configuration
     )
     

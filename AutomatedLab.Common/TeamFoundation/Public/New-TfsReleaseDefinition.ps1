@@ -3,7 +3,7 @@ function New-TfsReleaseDefinition
     [CmdletBinding(DefaultParameterSetName = 'Cred')]
     param
     (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $InstanceName,
 
@@ -18,11 +18,11 @@ function New-TfsReleaseDefinition
         [string]
         $ApiVersion = '3.0-preview.3',
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $ProjectName,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $ReleaseName,
 
@@ -35,11 +35,11 @@ function New-TfsReleaseDefinition
         [switch]
         $UseSsl,
 
-        [Parameter(Mandatory, ParameterSetName = 'Cred')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'Cred')]
         [pscredential]
         $Credential,
         
-        [Parameter(Mandatory, ParameterSetName = 'Pat')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'Pat')]
         [string]
         $PersonalAccessToken,
 
