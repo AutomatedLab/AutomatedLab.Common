@@ -3,7 +3,7 @@ function Receive-RunspaceJob
     [CmdletBinding()]
     param
     (
-        [Parameter(ValueFromPipeline)]
+        [Parameter(ValueFromPipeline = $true)]
         [object[]]
         $RunspaceJob
     )
