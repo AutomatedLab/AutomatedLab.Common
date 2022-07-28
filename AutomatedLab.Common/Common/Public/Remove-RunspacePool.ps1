@@ -3,7 +3,7 @@ function Remove-RunspacePool
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low')]
     param
     (
-        [Parameter(ValueFromPipeline)]
+        [Parameter(ValueFromPipeline = $true)]
         [System.Management.Automation.Runspaces.RunspacePool[]]
         $RunspacePool
     )
