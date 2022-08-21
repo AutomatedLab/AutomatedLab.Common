@@ -124,7 +124,10 @@ function Send-ModuleToPSSession
 
         foreach ($s in $Session)
         {
-            $sessionVersion = Invoke-Command -Session $s -ScriptBlock {$PSVersionTable.PSVersion}
+            [version]$sessionVersion = Invoke-Command -Session $s -ScriptBlock {
+                if ($PSEdition -eq 'core') {return ('{0}.{1}.{2}' -f $PSVersionTable.PSVersion.Major,$PSVersionTable.PSVersion.Minor,$PSVersionTable.PSVersion.Patch)}
+                $PSVersionTable.PSVersion   
+            }
 
             if ($Local:Module.PowerShellVersion -gt $sessionVersion)
             {
@@ -137,7 +140,7 @@ function Send-ModuleToPSSession
                 Invoke-Command -Session $s -ScriptBlock {
                     $destination = if (-not $IsLinux -and -not $IsMacOs)
                     {
-                        if ($PSVersionTable.PSVersion -ge ([version]::new(4,0)))
+                        if ($PSVersionTable.PSVersion.Major -ge 4)
                         {
                             Join-Path -Path ([System.Environment]::GetFolderPath('ProgramFiles')) -ChildPath WindowsPowerShell\Modules
                         }
