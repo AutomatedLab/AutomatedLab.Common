@@ -3,7 +3,7 @@ environment:
   NuGetApiKey:
     secure: tAdUQmRiZ270LOPN8SwbjISLfu6ldDTw6LWvdtsk+pQR7r5bJnGrG8Ntyt87edJ/
 
-version: 2.2.{build}
+version: 2.3.{build}
 
 skip_tags: true
 skip_branch_with_pr: true
