@@ -11,6 +11,8 @@ function Install-SoftwarePackage
         
         [bool]$UseShellExecute,
 
+        [string]$WorkingDirectory,
+
         [int[]]$ExpectedReturnCodes,
 
         [system.management.automation.pscredential]$Credential
@@ -25,12 +27,15 @@ function Install-SoftwarePackage
 
             [string]$CommandLine,
             
-            [bool]$UseShellExecute
+            [bool]$UseShellExecute,
+
+            [string]$WorkingDirectory
         )
     
         $pInfo = New-Object -TypeName System.Diagnostics.ProcessStartInfo
         $pInfo.FileName = $Path
-        
+        if (-not [string]::IsNullOrWhiteSpace($WorkingDirectory)) { $pInfo.WorkingDirectory = $WorkingDirectory }
+
         $pInfo.UseShellExecute = $UseShellExecute
         if (-not $UseShellExecute)
         {
@@ -179,6 +184,7 @@ function Install-SoftwarePackage
                 ArgumentList = $Path, $CommandLine, $UseShellExecute
                 RunNow       = $true
             }
+            if ($WorkingDirectory) { $scheduledJobParams.ArgumentList += $WorkingDirectory }
             if ($Credential) { $scheduledJobParams.Add('Credential', $Credential) }
             $scheduledJob = Register-ScheduledJob @scheduledJobParams
             Write-Verbose "ScheduledJob object registered with the ID $($scheduledJob.Id)"
@@ -195,7 +201,7 @@ function Install-SoftwarePackage
     }
     else
     {
-        $result = New-InstallProcess -Path $Path -CommandLine $CommandLine -UseShellExecute $UseShellExecute
+        $result = New-InstallProcess -Path $Path -CommandLine $CommandLine -UseShellExecute $UseShellExecute -WorkingDirectory $WorkingDirectory
     }
     
     Start-Sleep -Seconds 5
