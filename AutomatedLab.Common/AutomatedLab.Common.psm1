@@ -1,7 +1,5 @@
 # Get public and private function definition files.
 $modulebase =  $PSScriptRoot
-$importFolders = Get-ChildItem $modulebase -File -Recurse -ErrorAction SilentlyContinue | Group-Object { $_.Directory.Name } -AsHashTable -AsString
-
 # Types first
 $typeExists = try { [AutomatedLab.Common.Win32Exception] }catch { }
 if (-not $typeExists)
@@ -28,6 +26,8 @@ try
     [ServerCertificateValidationCallback]::Ignore()
 }
 catch { }
+
+$importFolders = Get-ChildItem $modulebase -File -Recurse -ErrorAction SilentlyContinue | Group-Object { $_.Directory.Name } -AsHashTable -AsString
 
 # Dot source the files
 foreach ($import in @($importFolders.Public + $importFolders.Private))

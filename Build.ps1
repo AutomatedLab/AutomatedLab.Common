@@ -50,7 +50,8 @@ Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
 
 Resolve-Module PlatyPS, Psake, PSDeploy, BuildHelpers, PSScriptAnalyzer, newtonsoft.json, PSFileTransfer, PSFramework, Pester
 
-Set-BuildEnvironment
+Set-BuildEnvironment -Force
+$null = mkdir (Join-Path $env:BHBuildOutput AutomatedLab.Common) -Force -ErrorAction SilentlyContinue
 
 Invoke-psake .\psake.ps1
 exit ( [int]( -not $psake.build_success ) )
