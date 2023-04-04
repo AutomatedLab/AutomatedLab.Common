@@ -24,19 +24,27 @@ Task Init {
     "`n"
 }
 
-Task CompileHelp -Depends Init {
+Task CompileHelpAndModule -Depends Init {
     $lines
+    "`n`tSTATUS: Compiling module"
+    if ($env:BHBuildSystem -ne 'AppVeyor')
+    {
+        $projPath = Join-Path $env:BHProjectPath -ChildPath 'Library\Library.csproj' -Resolve -ErrorAction Stop
+        dotnet publish $projPath -f net6.0 -o (Join-Path -Path $env:BHBuildOutput 'AutomatedLab.Common\lib\core')
+        dotnet publish $projPath -f net462 -o (Join-Path -Path $env:BHBuildOutput 'AutomatedLab.Common\lib\full')
+    }
+    & (Join-Path $ProjectRoot -ChildPath 'AutomatedLab.Common/.build/build.ps1')
     "`n`tSTATUS: Compiling help content from markdown"
     foreach ($language in (Get-ChildItem -Path (Join-Path $ProjectRoot -ChildPath Help) -Directory))
     {
         $ci = try { [cultureinfo]$language.BaseName} catch { }
         if (-not $ci) {continue}
 
-        New-ExternalHelp -Path $language.FullName -OutputPath (Join-Path $ProjectRoot -ChildPath "$ENV:BHProjectName\$($language.BaseName)")
+        New-ExternalHelp -Path $language.FullName -OutputPath (Join-Path $env:BHBuildOutput -ChildPath "AutomatedLab.Common\$($language.BaseName)")
     }
 }
 
-Task Test -Depends CompileHelp {
+Task Test -Depends CompileHelpAndModule {
     $lines
     "`n`tSTATUS: Testing with PowerShell $PSVersion"
 
@@ -85,20 +93,22 @@ Task Test -Depends CompileHelp {
 
 Task Build -Depends Test {
     $lines
-    
-    # Load the module, read the exported functions, update the psd1 FunctionsToExport
-    Set-ModuleFunctions -Verbose
+
+    Import-Module -Force (Join-Path -Path $env:BHBuildOutput -ChildPath AutomatedLab.Common\AutomatedLab.Common.psd1)
 
     # Bump the module version
-    Update-Metadata -Path $env:BHPSModuleManifest -Verbose -Value $env:APPVEYOR_BUILD_VERSION
+    if ($env:APPVEYOR_BUILD_VERSION)
+    {
+        Update-Metadata -Path (Join-Path -Path $env:BHBuildOutput -ChildPath AutomatedLab.Common\AutomatedLab.Common.psd1) -Verbose -Value $env:APPVEYOR_BUILD_VERSION
+    }
 }
 
 Task Deploy -Depends Build {
     $lines
-    "Starting deployment with files inside $ProjectRoot"
+    "Starting deployment with files inside $(Join-Path $ProjectRoot publish)"
 
     $Params = @{
-        Path    = $ProjectRoot
+        Path    = $ENV:BHProjectPath
         Force   = $true
         Recurse = $false # We keep psdeploy artifacts, avoid deploying those : )
         Verbose = $true
