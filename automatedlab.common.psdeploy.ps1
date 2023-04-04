@@ -22,7 +22,7 @@ if (
 {
     Deploy Module {
         By PSGalleryModule {
-            FromSource (Join-Path -Path $env:BHBuildOutput -ChildPath AutomatedLab.Common\AutomatedLab.Common.psd1)
+            FromSource (Join-Path -Path $env:BHBuildOutput -ChildPath AutomatedLab.Common)
             To PSGallery
             WithOptions @{
                 ApiKey = $ENV:NugetApiKey
