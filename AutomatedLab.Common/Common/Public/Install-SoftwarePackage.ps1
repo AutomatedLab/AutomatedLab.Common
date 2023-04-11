@@ -67,6 +67,13 @@ function Install-SoftwarePackage
         Write-Error "The file '$Path' could not found"
         return        
     }
+
+    $pattern = '\\\\automatedlabsource[a-z]{6}.file.core.windows.net\\labsources'
+    if ((Test-Path -Path C:\WindowsAzure) -and $path -match $pattern) #Runnign on Azure VM?
+    {
+        $labSourcesDriveLetter = (Get-PSDrive | Where-Object DisplayRoot -Match $pattern)[0].Name #Sometimes, there are two drives, so we need to get the first one
+        $path = $path -replace $pattern, "$($labSourcesDriveLetter):"
+    }
         
     $start = Get-Date
     Write-Verbose -Message "Starting setup of '$Path' with the following command"
@@ -83,7 +90,7 @@ function Install-SoftwarePackage
             @(
                 "/I `"$Path`"", # Install this MSI
                 '/QN', # Quietly, without a UI
-                "/L*V `"$([System.IO.Path]::GetTempPath())$([System.IO.Path]::GetFileNameWithoutExtension($Path)).log`""     # Verbose output to this log
+                "/L*V `"$([System.IO.Path]::GetTempPath())$([System.IO.Path]::GetFileNameWithoutExtension($Path)).log`"" # Verbose output to this log
             )
         }
         else
