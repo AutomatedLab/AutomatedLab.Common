@@ -35,8 +35,12 @@ function Install-SoftwarePackage
         if (-not ((Test-Path -Path $Path) -and $Path -match '\\automatedlabsources[a-z]{5}\.file\.core\.windows\.net'))
         {
             $labSourcesConnectOutput = C:\AL\AzureLabSources.ps1
+            if ($labSourcesConnectOutput.AlternativeLabSourcesPath)
+            {
+                $Path = $Path.Replace($labSourcesConnectOutput.LabSourcesPath, $labSourcesConnectOutput.AlternativeLabSourcesPath)
+            }
         }
-    
+
         $pInfo = New-Object -TypeName System.Diagnostics.ProcessStartInfo
         $pInfo.FileName = $Path
         if (-not [string]::IsNullOrWhiteSpace($WorkingDirectory)) { $pInfo.WorkingDirectory = $WorkingDirectory }
