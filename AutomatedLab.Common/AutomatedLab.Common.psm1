@@ -8,11 +8,11 @@ if (-not $typeExists)
     {
         if ($PSEdition -eq 'Core')
         {
-            Add-Type -Path $modulebase\lib\core\AutomatedLab.Common.dll -ErrorAction Stop
+            Add-Type -Path $modulebase/lib/core/AutomatedLab.Common.dll -ErrorAction Stop
         }
         else
         {
-            Add-Type -Path $modulebase\lib\full\AutomatedLab.Common.dll -ErrorAction Stop
+            Add-Type -Path $modulebase/lib/full/AutomatedLab.Common.dll -ErrorAction Stop
         }
     }
     catch
