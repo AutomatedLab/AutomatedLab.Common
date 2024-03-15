@@ -31,7 +31,16 @@ function Install-SoftwarePackage
 
             [string]$WorkingDirectory
         )
-    
+
+        if (-not ((Test-Path -Path $Path) -and $Path -match '\\automatedlabsources[a-z]{5}\.file\.core\.windows\.net'))
+        {
+            $labSourcesConnectOutput = C:\AL\AzureLabSources.ps1
+            if ($labSourcesConnectOutput.AlternativeLabSourcesPath)
+            {
+                $Path = $Path.Replace($labSourcesConnectOutput.LabSourcesPath, $labSourcesConnectOutput.AlternativeLabSourcesPath)
+            }
+        }
+
         $pInfo = New-Object -TypeName System.Diagnostics.ProcessStartInfo
         $pInfo.FileName = $Path
         if (-not [string]::IsNullOrWhiteSpace($WorkingDirectory)) { $pInfo.WorkingDirectory = $WorkingDirectory }
@@ -52,11 +61,14 @@ function Install-SoftwarePackage
         $p.WaitForExit()
         Write-Verbose -Message 'Process exited. Reading output'
 
-        $params = @{ Process = $p }
+        $params = @{
+            Process = $p
+            LabSourcesConnectOutput = $labSourcesConnectOutput
+        }
         if (-not $UseShellExecute)
         {
-            $params.Add('Output', $p.StandardOutput.ReadToEnd())
-            $params.Add('Error', $p.StandardError.ReadToEnd())
+            $params.Output = $p.StandardOutput.ReadToEnd()
+            $params.Error = $p.StandardError.ReadToEnd()
         }
         New-Object -TypeName PSObject -Property $params
     }
