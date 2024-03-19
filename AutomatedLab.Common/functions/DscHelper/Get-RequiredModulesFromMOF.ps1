@@ -1,4 +1,4 @@
-#author Iain Brighton, from here: https://gist.github.com/iainbrighton/9d3dd03630225ee44126769c5d9c50a9
+﻿#author Iain Brighton, from here: https://gist.github.com/iainbrighton/9d3dd03630225ee44126769c5d9c50a9
 function Get-RequiredModulesFromMOF
 {
     [CmdletBinding()]

@@ -44,7 +44,6 @@
         'Get-DotNetFrameworkVersion',
         'Get-DscConfigurationImportedResource',
         'Get-FullMesh',
-        'Get-ModuleDependency',
         'Get-NetworkAddress',
         'Get-NetworkRange',
         'Get-NetworkSummary',

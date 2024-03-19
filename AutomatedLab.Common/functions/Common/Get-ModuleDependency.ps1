@@ -1,4 +1,4 @@
-function Get-ModuleDependency
+﻿function Get-ModuleDependency
 {
 	[CmdletBinding()]
     [OutputType([System.Management.Automation.PSModuleInfo])]
