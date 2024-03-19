@@ -22,8 +22,7 @@ Converts a CIDR mask length to the dotted IP address
 ## EXAMPLES
 
 ### CIDR 28
-
-```powershell
+```
 PS C:\> ConvertTo-Mask 28
 ```
 

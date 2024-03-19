@@ -16,7 +16,7 @@ Create a new certificate template
 New-CATemplate [-TemplateName] <String> [[-DisplayName] <String>] [-SourceTemplateName] <String>
  [[-ApplicationPolicy] <String[]>] [[-EnrollmentFlags] <EnrollmentFlags>]
  [[-PrivateKeyFlags] <PrivateKeyFlags>] [[-KeyUsage] <KeyUsage>] [[-Version] <Int32>]
- [[-ValidityPeriod] <TimeSpan>] [[-RenewalPeriod] <TimeSpan>] [<CommonParameters>]
+ [[-ValidityPeriod] <TimeSpan>] [[-RenewalPeriod] <TimeSpan>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -25,7 +25,7 @@ Create a new certificate template from a source template
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> New-CATemplate -TemplateName WebServerCustom -DisplayName "Custom Web Server" -SourceTemplateName WebServer -RenewalPeriod 60.00:00:00
 ```
 
@@ -34,7 +34,7 @@ Duplicates the template WebServer with the new name WebServerCustom and a renewa
 ## PARAMETERS
 
 ### -ApplicationPolicy
-The application policies ot assign
+The application policies to assign
 
 ```yaml
 Type: String[]
@@ -65,13 +65,13 @@ Accept wildcard characters: False
 ```
 
 ### -EnrollmentFlags
-The enrollment flags to assign, e.g. Autoenrollment
+The enrollment flags to assign, e.g.
+Autoenrollment
 
 ```yaml
 Type: EnrollmentFlags
 Parameter Sets: (All)
 Aliases:
-Accepted values: None, IncludeSymmetricAlgorithms, CAManagerApproval, KraPublish, DsPublish, AutoenrollmentCheckDsCert, Autoenrollment, ReenrollExistingCert, RequireUserInteraction, RemoveInvalidFromStore, AllowEnrollOnBehalfOf, IncludeOcspRevNoCheck, ReuseKeyTokenFull, BasicConstraintsInEndEntityCerts, IgnoreEnrollOnReenrollment, IssuancePoliciesFromRequest
 
 Required: False
 Position: 4
@@ -81,13 +81,13 @@ Accept wildcard characters: False
 ```
 
 ### -KeyUsage
-The key usage, e.g. KEY_ENCIPHERMENT for a document encrypt cert usable by CMS
+The key usage, e.g.
+KEY_ENCIPHERMENT for a document encrypt cert usable by CMS
 
 ```yaml
 Type: KeyUsage
 Parameter Sets: (All)
 Aliases:
-Accepted values: NO_KEY_USAGE, ENCIPHER_ONLY_KEY_USAGE, CRL_SIGN, KEY_CERT_SIGN, KEY_AGREEMENT, DATA_ENCIPHERMENT, KEY_ENCIPHERMENT, NON_REPUDIATION, DIGITAL_SIGNATURE, DECIPHER_ONLY_KEY_USAGE
 
 Required: False
 Position: 6
@@ -97,13 +97,13 @@ Accept wildcard characters: False
 ```
 
 ### -PrivateKeyFlags
-The private key flags, e.g. AllowKeyExport
+The private key flags, e.g.
+AllowKeyExport
 
 ```yaml
 Type: PrivateKeyFlags
 Parameter Sets: (All)
 Aliases:
-Accepted values: None, RequireKeyArchival, AllowKeyExport, RequireStrongProtection, RequireAlternateSignatureAlgorithm, ReuseKeysRenewal, UseLegacyProvider, TrustOnUse, ValidateCert, ValidateKey, Preferred, Required, WithoutPolicy, xxx
 
 Required: False
 Position: 5
@@ -187,13 +187,43 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

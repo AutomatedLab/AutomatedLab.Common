@@ -22,8 +22,7 @@ Gets the VSTS PAT base64 encoded to use with the TFS cmdlets
 ## EXAMPLES
 
 ### Example 1
-
-```powershell
+```
 Get-TfsAccessTokenString -PersonalAccessToken (New-Guid).Guid
 ```
 

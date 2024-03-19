@@ -1,7 +1,8 @@
-@{
+﻿@{
     RootModule             = 'AutomatedLab.Common.psm1'
 
-    ModuleVersion          = '2.1.0'
+    ModuleVersion          = '2.4.0'
+
     GUID                   = '554685d3-5c61-4080-afd6-1dd3d4d7a261'
 
     Author                 = 'Raimund Andree, Per Pedersen, Jan-Hendrik Peters'
@@ -18,30 +19,32 @@
 
     CLRVersion             = '4.0'
 
-    CompatiblePSEditions   = @('Desktop','Core')
+    CompatiblePSEditions   = @('Desktop', 'Core')
 
+    # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport      = @(
         'Add-AccountPrivilege',
         'Add-CATemplateStandardPermission',
         'Add-Certificate2',
         'Add-FunctionToPSSession',
         'Add-StringIncrement',
-        'Add-VariableToPSSession',
         'Add-TfsAgentUserCapability',
-        'ConvertTo-BinaryIP',
-        'ConvertTo-DecimalIP',
-        'ConvertTo-DottedDecimalIP',
+        'Add-VariableToPSSession',
+        'ConvertTo-BinaryIp',
+        'ConvertTo-DecimalIp',
+        'ConvertTo-DottedDecimalIp',
         'ConvertTo-Mask',
         'ConvertTo-MaskLength',
         'Enable-AutoEnrollment',
         'Find-CertificateAuthority',
         'Get-BroadcastAddress',
-        'Get-CATemplate',
+        'Get-CaTemplate',
         'Get-Certificate2',
         'Get-ConsoleText',
         'Get-DotNetFrameworkVersion',
         'Get-DscConfigurationImportedResource',
         'Get-FullMesh',
+        'Get-ModuleDependency',
         'Get-NetworkAddress',
         'Get-NetworkRange',
         'Get-NetworkSummary',
@@ -71,7 +74,7 @@
         'Get-Type',
         'Install-SoftwarePackage',
         'Invoke-Ternary',
-        'New-CATemplate',
+        'New-CaTemplate',
         'New-PerformanceDataCollectorSet',
         'New-RunspacePool',
         'New-TfsAgentQueue',
@@ -86,31 +89,31 @@
         'Remove-PerformanceDataCollectorSet',
         'Remove-RunspacePool',
         'Remove-TfsAgentUserCapability',
-        'Request-Certificate',
         'Remove-TfsFeed',
-        'Send-ModuleToPSSession',
+        'Request-Certificate',
+        'Send-ModuleToPsSession',
         'Set-TfsAgentUserCapability',
-        'Set-TfsProject',
         'Set-TfsFeedPermission',
+        'Set-TfsProject',
         'Split-Array',
         'Start-PerformanceDataCollectorSet',
         'Start-RunspaceJob',
         'Stop-PerformanceDataCollectorSet',
         'Sync-Parameter',
-        'Test-CATemplate',
+        'Test-CaTemplate',
         'Test-HashtableKeys',
         'Test-IsAdministrator',
         'Test-Port',
         'Wait-RunspaceJob'
     )
 
-    RequiredModules        = @('newtonsoft.json', 'PSFileTransfer')
+    RequiredModules        = @('PSFileTransfer')
 
     CmdletsToExport        = @()
 
     VariablesToExport      = @()
 
-    AliasesToExport        = '??'
+    AliasesToExport        = '??', 'Set-TfsFeedPermissions'
 
     PrivateData            = @{
 

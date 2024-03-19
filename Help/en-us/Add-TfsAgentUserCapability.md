@@ -1,5 +1,5 @@
 ---
-external help file: AutomatedLab.Common-help.xml
+external help file: AutomatedLab.Common-Help.xml
 Module Name: AutomatedLab.Common
 online version:
 schema: 2.0.0
@@ -46,7 +46,7 @@ Adds capabilities to an existing build agent
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Add-TfsAgentUserCapability -InstanceName AL -CollectionName ALProject1 -PoolName Sharknado -AgentId 1 -Capability @{Cap1 = 'Value1'}
 ```
 
@@ -85,7 +85,8 @@ Accept wildcard characters: False
 ```
 
 ### -ApiVersion
-The API version to use. Capabilites require 5.1+
+The API version to use.
+Capabilites require 5.1+
 
 ```yaml
 Type: String
@@ -215,7 +216,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -230,7 +231,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -241,7 +242,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

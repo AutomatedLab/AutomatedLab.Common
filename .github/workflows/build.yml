@@ -1,0 +1,27 @@
+﻿on:
+  push:
+    branches:
+      - master
+      - develop
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install Prerequisites
+      run: .\build\vsts-prerequisites.ps1
+      shell: powershell
+    - name: Build
+      run: .\build\vsts-build.ps1 -SkipPublish -LocalRepo
+      shell: powershell
+    - name: Validate
+      run: .\build\vsts-validate.ps1
+      shell: powershell
+    - name: Publish
+      run: .\build\vsts-build.ps1 -ApiKey $env:APIKEY -Preview:$${{ github.ref == 'develop' }}
+      shell: powershell
+      env:
+        APIKEY: ${{ secrets.NUGETAPIKEY }}

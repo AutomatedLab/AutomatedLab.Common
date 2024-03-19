@@ -22,8 +22,7 @@ Calculate network address from given IP and net mask
 ## EXAMPLES
 
 ### Example 1
-
-```powershell
+```
 PS C:\> Get-NetworkAddress -IPAddress 192.168.23.44 -SubnetMask 255.255.252.0
 ```
 
