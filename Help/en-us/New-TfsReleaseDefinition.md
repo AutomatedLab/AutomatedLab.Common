@@ -1,5 +1,5 @@
 ---
-external help file: AutomatedLab.Common-help.xml
+external help file: AutomatedLab.Common-Help.xml
 Module Name: AutomatedLab.Common
 online version:
 schema: 2.0.0
@@ -16,16 +16,16 @@ Create a new release definition
 ```
 New-TfsReleaseDefinition -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>]
  [-ApiVersion <String>] -ProjectName <String> -ReleaseName <String> [-ReleaseTasks <Hashtable[]>]
- [-Environments <Hashtable[]>] [-UseSsl] -Credential <PSCredential> [-SkipCertificateCheck]
- [<CommonParameters>]
+ [-Environments <Hashtable[]>] [-UseSsl] -Credential <PSCredential> [-SkipCertificateCheck] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ### Pat
 ```
 New-TfsReleaseDefinition -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>]
  [-ApiVersion <String>] -ProjectName <String> -ReleaseName <String> [-ReleaseTasks <Hashtable[]>]
- [-Environments <Hashtable[]>] [-UseSsl] -PersonalAccessToken <String> [-SkipCertificateCheck]
- [<CommonParameters>]
+ [-Environments <Hashtable[]>] [-UseSsl] -PersonalAccessToken <String> [-SkipCertificateCheck] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -34,7 +34,7 @@ Create a new release definition
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 $buildSteps = @(
     @{
         "enabled"         = $true
@@ -213,6 +213,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -SkipCertificateCheck
+Skip certificate validation
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -UseSsl
 Indicates if SSL should be used
 
@@ -223,18 +238,34 @@ Aliases:
 
 Required: False
 Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -SkipCertificateCheck
-Skip certificate validation
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
 
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
-Aliases:
+Aliases: wi
 
 Required: False
 Position: Named
@@ -249,7 +280,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

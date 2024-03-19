@@ -22,7 +22,7 @@ Attempts to retrieve a public IP address by trying 'https://api.ipify.org?format
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-PublicIpAddress
 ```
 

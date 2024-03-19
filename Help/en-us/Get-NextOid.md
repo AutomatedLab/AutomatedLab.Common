@@ -8,7 +8,6 @@ schema: 2.0.0
 # Get-NextOid
 
 ## SYNOPSIS
-
 Get a new valid Object Identifier (OID)
 
 ## SYNTAX
@@ -18,13 +17,12 @@ Get-NextOid [-Oid] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-
 Get a new valid Object Identifier (OID), for example to be used when creating a new CA template with the New-CATemplate cmdlet.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-NextOid -Oid 1.3.6.1.4.1.311.42.1.17
 ```
 

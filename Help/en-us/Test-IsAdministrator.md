@@ -8,7 +8,6 @@ schema: 2.0.0
 # Test-IsAdministrator
 
 ## SYNOPSIS
-
 Test if the current user is a local administrator
 
 ## SYNTAX
@@ -18,13 +17,12 @@ Test-IsAdministrator [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-
 Test if the current user is a local administrator
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Test-IsAdministrator
 ```
 

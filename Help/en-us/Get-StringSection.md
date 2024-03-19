@@ -8,7 +8,6 @@ schema: 2.0.0
 # Get-StringSection
 
 ## SYNOPSIS
-
 Split a string into an array in sections defined by the section size
 
 ## SYNTAX
@@ -18,13 +17,12 @@ Get-StringSection [-String] <String> [-SectionSize] <Int32> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-
 Split a string into an array in sections defined by the section size
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> (Get-StringSection -String 00155DE63F36 -SectionSize 2) -join ':'
 ```
 
@@ -32,24 +30,7 @@ Returns a MAC address delimited by : from a string
 
 ## PARAMETERS
 
-### -String
-
-The string to split
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
 ### -SectionSize
-
 The amount of characters in each split
 
 ```yaml
@@ -61,6 +42,21 @@ Required: True
 Position: 1
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -String
+The string to split
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 0
+Default value: None
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 

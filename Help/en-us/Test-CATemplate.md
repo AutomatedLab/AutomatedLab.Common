@@ -8,7 +8,6 @@ schema: 2.0.0
 # Test-CATemplate
 
 ## SYNOPSIS
-
 Test if a certificate template exists
 
 ## SYNTAX
@@ -18,13 +17,12 @@ Test-CATemplate [-TemplateName] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-
 Test if a certificate template exists
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Test-CATemplate -TemplateName WebServerCustom
 ```
 

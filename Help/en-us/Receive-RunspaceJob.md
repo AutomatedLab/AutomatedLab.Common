@@ -1,5 +1,5 @@
 ---
-external help file: AutomatedLab.Common-help.xml
+external help file: AutomatedLab.Common-Help.xml
 Module Name: AutomatedLab.Common
 online version:
 schema: 2.0.0
@@ -22,7 +22,7 @@ Receive the results of a runspace job
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> $jobs | Receive-RunspaceJob
 ```
 
@@ -51,7 +51,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.Object[]
-
 ## OUTPUTS
 
 ### System.Object

@@ -1,5 +1,5 @@
 ---
-external help file: AutomatedLab.Common-help.xml
+external help file: AutomatedLab.Common-Help.xml
 Module Name: AutomatedLab.Common
 online version:
 schema: 2.0.0
@@ -17,8 +17,8 @@ Create a new build definition for your project
 New-TfsBuildDefinition -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>]
  [-ApiVersion <String>] -ProjectName <String> -DefinitionName <String> [-QueueName <String>]
  [-BuildTasks <Hashtable[]>] [-Phases <Hashtable[]>] [-CiTriggerRefs <String[]>] [-Variables <Hashtable>]
- [-UseSsl] -Credential <PSCredential> [-Clean] [-CleanOptions <Int32>] [-SkipCertificateCheck]
- [<CommonParameters>]
+ [-UseSsl] -Credential <PSCredential> [-Clean] [-CleanOptions <Int32>] [-SkipCertificateCheck] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ### Pat
@@ -26,8 +26,8 @@ New-TfsBuildDefinition -InstanceName <String> [-CollectionName <String>] [-Port 
 New-TfsBuildDefinition -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>]
  [-ApiVersion <String>] -ProjectName <String> -DefinitionName <String> [-QueueName <String>]
  [-BuildTasks <Hashtable[]>] [-Phases <Hashtable[]>] [-CiTriggerRefs <String[]>] [-Variables <Hashtable>]
- [-UseSsl] -PersonalAccessToken <String> [-Clean] [-CleanOptions <Int32>] [-SkipCertificateCheck]
- [<CommonParameters>]
+ [-UseSsl] -PersonalAccessToken <String> [-Clean] [-CleanOptions <Int32>] [-SkipCertificateCheck] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -36,8 +36,7 @@ Create a new build definition for your project
 ## EXAMPLES
 
 ### Definition with simple build step
-
-```powershell
+```
 $buildSteps = @(
     @{
         "enabled"         = $true
@@ -65,6 +64,128 @@ This sample adds a single build step which calls a build script inside the team 
 
 ## PARAMETERS
 
+### -ApiVersion
+The API version to use.
+Refer to https://www.visualstudio.com/en-us/docs/integrate/api/overview for details
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -BuildTasks
+An array of hashtables describing your build tasks, e.g.: $buildSteps = @(     @{         "enabled"         = $true         "continueOnError" = $false         "alwaysRun"       = $false         "displayName"     = "Execute Build.ps1"         "task"            = @{             "id"          = "e213ff0f-5d5c-4791-802d-52ea3e7be1f1" # We need to refer to a valid ID - refer to Get-LabBuildStep for all available steps             "versionSpec" = "*"         }         "inputs"          = @{             scriptType          = "filePath"             scriptName          = ".Build.ps1"             arguments           = "-resolveDependency"             failOnStandardError = $false         }     } )
+
+```yaml
+Type: Hashtable[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -CiTriggerRefs
+{{ Fill CiTriggerRefs Description }}
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Clean
+Clean cloned repository on agent
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -CleanOptions
+0 - Sources 1 - Sources and output directory 2 - Sources directory 3 - All build directories
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -CollectionName
+Your collection.
+Defaults to DefaultCollection
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Credential
+The TFS credential to use
+
+```yaml
+Type: PSCredential
+Parameter Sets: Cred
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DefinitionName
+The name of your build definition
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -InstanceName
 The instance name (dev.azure.com/username or your TFS host name)
 
@@ -80,12 +201,26 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -CollectionName
-Your collection.
-Defaults to DefaultCollection
+### -PersonalAccessToken
+The VSTS access token as returned by Get-TfsAccessTokenString
 
 ```yaml
 Type: String
+Parameter Sets: Pat
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Phases
+{{ Fill Phases Description }}
+
+```yaml
+Type: Hashtable[]
 Parameter Sets: (All)
 Aliases:
 
@@ -111,39 +246,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ApiVersion
-The API version to use.
-Refer to https://www.visualstudio.com/en-us/docs/integrate/api/overview for details
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -ProjectName
 The name of your team project
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -DefinitionName
-The name of your build definition
 
 ```yaml
 Type: String
@@ -172,35 +276,17 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -BuildTasks
-An array of hashtables describing your build tasks, e.g.:
-$buildSteps = @(
-    @{
-        "enabled"         = $true
-        "continueOnError" = $false
-        "alwaysRun"       = $false
-        "displayName"     = "Execute Build.ps1"
-        "task"            = @{
-            "id"          = "e213ff0f-5d5c-4791-802d-52ea3e7be1f1" # We need to refer to a valid ID - refer to Get-LabBuildStep for all available steps
-            "versionSpec" = "*"
-        }
-        "inputs"          = @{
-            scriptType          = "filePath"
-            scriptName          = ".Build.ps1"
-            arguments           = "-resolveDependency"
-            failOnStandardError = $false
-        }
-    }
-)
+### -SkipCertificateCheck
+Skip certificate validation
 
 ```yaml
-Type: Hashtable[]
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -215,67 +301,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Credential
-The TFS credential to use
-
-```yaml
-Type: PSCredential
-Parameter Sets: Cred
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PersonalAccessToken
-The VSTS access token as returned by Get-TfsAccessTokenString
-
-```yaml
-Type: String
-Parameter Sets: Pat
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -CiTriggerRefs
-{{ Fill CiTriggerRefs Description }}
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Phases
-{{ Fill Phases Description }}
-
-```yaml
-Type: Hashtable[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -295,13 +321,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Clean
-Clean cloned repository on agent
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
 
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
-Aliases:
+Aliases: cf
 
 Required: False
 Position: Named
@@ -310,31 +336,14 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -CleanOptions
-0 - Sources
-1 - Sources and output directory
-2 - Sources directory
-3 - All build directories
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -SkipCertificateCheck
-Skip certificate validation
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
 
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
-Aliases:
+Aliases: wi
 
 Required: False
 Position: Named

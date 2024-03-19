@@ -8,7 +8,6 @@ schema: 2.0.0
 # Get-CATemplate
 
 ## SYNOPSIS
-
 Find a CA template
 
 ## SYNTAX
@@ -18,13 +17,12 @@ Get-CATemplate [-TemplateName] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-
 Find a CA template
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-CATemplate -TemplateName WebServer
 ```
 
@@ -33,7 +31,6 @@ Attempts to find the template called WebServer
 ## PARAMETERS
 
 ### -TemplateName
-
 The template name (not display name)
 
 ```yaml

@@ -22,19 +22,11 @@ Get a custom object with detailed information about a network
 ## EXAMPLES
 
 ### Simple
-
-```powershell
+```
 PS C:\> Get-Networksummary -IPAddress 192.168.23.44 -SubnetMask 255.255.255.248
 ```
 
-Network    : 192.168.23.40
-Broadcast  : 192.168.23.47
-Range      : 192.168.23.41 - 192.168.23.46
-Mask       : 255.255.255.248
-MaskLength : 29
-Hosts      : 6
-Class      : C
-IsPrivate  : True
+Network    : 192.168.23.40 Broadcast  : 192.168.23.47 Range      : 192.168.23.41 - 192.168.23.46 Mask       : 255.255.255.248 MaskLength : 29 Hosts      : 6 Class      : C IsPrivate  : True
 
 ## PARAMETERS
 

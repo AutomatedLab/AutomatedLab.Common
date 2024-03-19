@@ -1,5 +1,5 @@
 ---
-external help file: AutomatedLab.Common-help.xml
+external help file: AutomatedLab.Common-Help.xml
 Module Name: AutomatedLab.Common
 online version:
 schema: 2.0.0
@@ -30,7 +30,7 @@ Gets one or more VSTS/TFS projects
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> {{ Add example code here }}
 ```
 
@@ -38,15 +38,16 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -InstanceName
-The instance name (dev.azure.com/username or your TFS host name)
+### -ApiVersion
+The API version to use.
+Refer to https://www.visualstudio.com/en-us/docs/integrate/api/overview for details
 
 ```yaml
 Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -69,12 +70,12 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Port
-The port of your installation/VSTS instance
+### -Credential
+The TFS credential to use
 
 ```yaml
-Type: UInt32
-Parameter Sets: (All)
+Type: PSCredential
+Parameter Sets: Tfs
 Aliases:
 
 Required: False
@@ -84,12 +85,41 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ApiVersion
-The API version to use.
-Refer to https://www.visualstudio.com/en-us/docs/integrate/api/overview for details
+### -InstanceName
+The instance name (dev.azure.com/username or your TFS host name)
 
 ```yaml
 Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PersonalAccessToken
+The VSTS access token as returned by Get-TfsAccessTokenString
+
+```yaml
+Type: String
+Parameter Sets: Vsts
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Port
+The port of your installation/VSTS instance
+
+```yaml
+Type: UInt32
 Parameter Sets: (All)
 Aliases:
 
@@ -116,51 +146,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -UseSsl
-Indicates that SSL should be used
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Credential
-The TFS credential to use
-
-```yaml
-Type: PSCredential
-Parameter Sets: Tfs
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -PersonalAccessToken
-The VSTS access token as returned by Get-TfsAccessTokenString
-
-```yaml
-Type: String
-Parameter Sets: Vsts
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -SkipCertificateCheck
 Skip certificate validation
 
@@ -171,7 +156,22 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -UseSsl
+Indicates that SSL should be used
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

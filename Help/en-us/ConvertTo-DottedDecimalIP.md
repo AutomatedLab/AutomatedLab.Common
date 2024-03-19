@@ -22,16 +22,14 @@ Converts decimal and binary IPs to their dotted form
 ## EXAMPLES
 
 ### Binary
-
-```powershell
+```
 PS C:\> ConvertTo-DottedDecimalIP -IPAddress 00000001.00000010.00000011.00000100
 ```
 
 1.2.3.4
 
 ### Decimal
-
-```powershell
+```
 PS C:\> ConvertTo-DottedDecimalIP -IPAddress 3232236133
 ```
 

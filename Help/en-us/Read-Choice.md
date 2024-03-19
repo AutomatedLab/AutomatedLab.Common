@@ -8,7 +8,6 @@ schema: 2.0.0
 # Read-Choice
 
 ## SYNOPSIS
-
 Read a user's choice from the command line
 
 ## SYNTAX
@@ -19,34 +18,19 @@ Read-Choice [-ChoiceList] <String[]> [-Caption] <String> [[-Message] <String>] [
 ```
 
 ## DESCRIPTION
-
 Read a user's choice from the command line
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Read-Choice "&Apples","&Oranges" -Caption "Please select" -Message "What are we comparing today?"
 ```
 
-Prompts the user to choose between Apples and Oranges. Using the Ampersand, one character can be used to make the selection easier
+Prompts the user to choose between Apples and Oranges.
+Using the Ampersand, one character can be used to make the selection easier
 
 ## PARAMETERS
-
-### -ChoiceList
-The list of possible options. Include a & in each option to specify which key can be pressed for the option
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
 
 ### -Caption
 The caption of the request
@@ -63,16 +47,17 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Message
-The message to display
+### -ChoiceList
+The list of possible options.
+Include a & in each option to specify which key can be pressed for the option
 
 ```yaml
-Type: String
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 
-Required: False
-Position: 2
+Required: True
+Position: 0
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -88,6 +73,21 @@ Aliases:
 
 Required: False
 Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Message
+The message to display
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

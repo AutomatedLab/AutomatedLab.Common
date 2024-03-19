@@ -22,17 +22,11 @@ Get the usable range of addresses for a network
 ## EXAMPLES
 
 ### Small net
-
-```powershell
+```
 PS C:\> Get-NetworkRange -IPAddress 192.168.23.44 -SubnetMask 255.255.255.248
 ```
 
-192.168.23.41
-192.168.23.42
-192.168.23.43
-192.168.23.44
-192.168.23.45
-192.168.23.46
+192.168.23.41 192.168.23.42 192.168.23.43 192.168.23.44 192.168.23.45 192.168.23.46
 
 ## PARAMETERS
 

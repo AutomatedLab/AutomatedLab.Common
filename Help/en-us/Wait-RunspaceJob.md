@@ -1,5 +1,5 @@
 ---
-external help file: AutomatedLab.Common-help.xml
+external help file: AutomatedLab.Common-Help.xml
 Module Name: AutomatedLab.Common
 online version:
 schema: 2.0.0
@@ -22,13 +22,14 @@ Wait for runspace jobs to finish
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> $pool = New-RunspacePool -Throttle 10
 PS C:\> $jobs = 1..100 | % { Start-RunspaceJob -RunspacePool $pool -ScriptBlock {Start-Sleep -Seconds 10; 'works'}}
 PS C:\> $jobs | Wait-RunspaceJob
 ```
 
-Enqueues 100 new jobs in a runspace pool that executes 10 jobs in parallel. Will finish after approximately 10 seconds.
+Enqueues 100 new jobs in a runspace pool that executes 10 jobs in parallel.
+Will finish after approximately 10 seconds.
 
 ## PARAMETERS
 
@@ -42,7 +43,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -68,7 +69,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.Object[]
-
 ## OUTPUTS
 
 ### System.Object

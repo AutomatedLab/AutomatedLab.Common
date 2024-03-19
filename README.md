@@ -1,20 +1,8 @@
-# AutomatedLab.Common
+﻿# AutomatedLab.Common
 
 This repository collects helper functions from different areas like DSC, Networking, PKI, ... for use in your infrastructure. Our module AutomatedLab heavily relies on these cmdlets as well.
 
 Starting with version 2, AutomatedLab.Common will support PowerShell Core. Please apply common sense and don't expect Windows-only functionality to work in Linux. Otherwise, all cmdlets have been tested in Windows as well as Linux and should work in general.
-
-## Status
-
-Our current build status of master and develop:
-
-| AppVeyor (master)        | AppVeyor (develop)       |
-|--------------------------|--------------------------|
-| [![master-image][]][master-site] | [![develop-image][]][master-site] |
-
-[master-image]: https://ci.appveyor.com/api/projects/status/l6r33lbrxkcu76kw/branch/master?svg=true
-[develop-image]: https://ci.appveyor.com/api/projects/status/l6r33lbrxkcu76kw/branch/develop?svg=true
-[master-site]: https://ci.appveyor.com/project/AutomatedLab/AutomatedLab-Common
 
 ## Common
 

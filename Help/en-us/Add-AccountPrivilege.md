@@ -17,72 +17,18 @@ Add-AccountPrivilege [-UserName] <String[]> [[-Privilege] <String[]>] [<CommonPa
 ```
 
 ## DESCRIPTION
-Can be used to enable one of the following privileges for one or more users:
-'SeNetworkLogonRight', 
-            'SeRemoteInteractiveLogonRight', 
-            'SeBatchLogonRight', 
-            'SeInteractiveLogonRight', 
-            'SeServiceLogonRight', 
-            'SeDenyNetworkLogonRight', 
-            'SeDenyInteractiveLogonRight', 
-            'SeDenyBatchLogonRight', 
-            'SeDenyServiceLogonRight', 
-            'SeDenyRemoteInteractiveLogonRight', 
-            'SeTcbPrivilege', 
-            'SeMachineAccountPrivilege', 
-            'SeIncreaseQuotaPrivilege', 
-            'SeBackupPrivilege', 
-            'SeChangeNotifyPrivilege', 
-            'SeSystemTimePrivilege', 
-            'SeCreateTokenPrivilege', 
-            'SeCreatePagefilePrivilege', 
-            'SeCreateGlobalPrivilege', 
-            'SeDebugPrivilege', 
-            'SeEnableDelegationPrivilege', 
-            'SeRemoteShutdownPrivilege', 
-            'SeAuditPrivilege', 
-            'SeImpersonatePrivilege', 
-            'SeIncreaseBasePriorityPrivilege', 
-            'SeLoadDriverPrivilege', 
-            'SeLockMemoryPrivilege', 
-            'SeSecurityPrivilege', 
-            'SeSystemEnvironmentPrivilege', 
-            'SeManageVolumePrivilege', 
-            'SeProfileSingleProcessPrivilege', 
-            'SeSystemProfilePrivilege', 
-            'SeUndockPrivilege', 
-            'SeAssignPrimaryTokenPrivilege', 
-            'SeRestorePrivilege', 
-            'SeShutdownPrivilege', 
-            'SeSynchAgentPrivilege', 
-            'SeTakeOwnershipPrivilege'
+Can be used to enable one of the following privileges for one or more users: 'SeNetworkLogonRight',              'SeRemoteInteractiveLogonRight',              'SeBatchLogonRight',              'SeInteractiveLogonRight',              'SeServiceLogonRight',              'SeDenyNetworkLogonRight',              'SeDenyInteractiveLogonRight',              'SeDenyBatchLogonRight',              'SeDenyServiceLogonRight',              'SeDenyRemoteInteractiveLogonRight',              'SeTcbPrivilege',              'SeMachineAccountPrivilege',              'SeIncreaseQuotaPrivilege',              'SeBackupPrivilege',              'SeChangeNotifyPrivilege',              'SeSystemTimePrivilege',              'SeCreateTokenPrivilege',              'SeCreatePagefilePrivilege',              'SeCreateGlobalPrivilege',              'SeDebugPrivilege',              'SeEnableDelegationPrivilege',              'SeRemoteShutdownPrivilege',              'SeAuditPrivilege',              'SeImpersonatePrivilege',              'SeIncreaseBasePriorityPrivilege',              'SeLoadDriverPrivilege',              'SeLockMemoryPrivilege',              'SeSecurityPrivilege',              'SeSystemEnvironmentPrivilege',              'SeManageVolumePrivilege',              'SeProfileSingleProcessPrivilege',              'SeSystemProfilePrivilege',              'SeUndockPrivilege',              'SeAssignPrimaryTokenPrivilege',              'SeRestorePrivilege',              'SeShutdownPrivilege',              'SeSynchAgentPrivilege',              'SeTakeOwnershipPrivilege'
 
 ## EXAMPLES
 
 ### Add CreateProcessToken rights
-
-```powershell
+```
 PS C:\> Add-AccountPrivilege -UserName greedyAccount@contoso.com -Privilege SeImpersonatePrivilege
 ```
 
 Enables the Impersonate privilege
 
 ## PARAMETERS
-
-### -UserName
-The list of user names that will receive the privileges
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
 
 ### -Privilege
 The list of privileges to add
@@ -94,6 +40,21 @@ Aliases:
 
 Required: False
 Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -UserName
+The list of user names that will receive the privileges
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 0
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

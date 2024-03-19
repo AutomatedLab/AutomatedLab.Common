@@ -8,7 +8,6 @@ schema: 2.0.0
 # Get-Certificate2
 
 ## SYNOPSIS
-
 Get one or more certificates
 
 ## SYNTAX
@@ -16,36 +15,37 @@ Get one or more certificates
 ### FindCer (Default)
 ```
 Get-Certificate2 -SearchString <String> -FindType <X509FindType> [-Location <CertStoreLocation>]
- [-Store <string>] [-ServiceName <String>] [<CommonParameters>]
+ [-Store <String>] [-ServiceName <String>] [<CommonParameters>]
 ```
 
 ### FindPfx
 ```
 Get-Certificate2 -SearchString <String> -FindType <X509FindType> [-Location <CertStoreLocation>]
- [-Store <string>] [-ServiceName <String>] -Password <SecureString> [-ExportPrivateKey] [<CommonParameters>]
+ [-Store <String>] [-ServiceName <String>] -Password <SecureString> [-ExportPrivateKey] [<CommonParameters>]
 ```
 
 ### AllPfx
 ```
-Get-Certificate2 [-Location <CertStoreLocation>] [-Store <string>] [-ServiceName <String>] [-All]
- [-IncludeServices] -Password <SecureString> [-ExportPrivateKey] [<CommonParameters>]
+Get-Certificate2 [-Location <CertStoreLocation>] [-Store <String>] [-ServiceName <String>] [-All]
+ -Password <SecureString> [-ExportPrivateKey] [<CommonParameters>]
 ```
 
 ### AllCer
 ```
-Get-Certificate2 [-Location <CertStoreLocation>] [-Store <string>] [-ServiceName <String>] [-All]
- [-IncludeServices] [<CommonParameters>]
+Get-Certificate2 [-Location <CertStoreLocation>] [-Store <String>] [-ServiceName <String>] [-All]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-
-Gets one or more certificates based on a search string in order to add them e.g. to another machine or store.
-Supports both Cer as well as PFX. Password is required when using PFX.
+Gets one or more certificates based on a search string in order to add them e.g.
+to another machine or store.
+Supports both Cer as well as PFX.
+Password is required when using PFX.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> $bytes = Invoke-Command SomeHost { Get-Certificate2 -SearchString japete -FindType FindBySubjectName -Location CERT_SYSTEM_STORE_CURRENT_USER -Store My} | Add-Certificate2
 ```
 
@@ -53,25 +53,39 @@ Remotely retrieves the certificate for CN=japete and installs it locally.
 
 ## PARAMETERS
 
-### -SearchString
-
-The search string to use. For more information, see: https://docs.microsoft.com/en-us/dotnet/api/system.security.cryptography.x509certificates.x509certificate2collection.find
+### -All
+Retrieve all certificates
 
 ```yaml
-Type: String
-Parameter Sets: FindCer, FindPfx
+Type: SwitchParameter
+Parameter Sets: AllPfx, AllCer
 Aliases:
 
 Required: True
 Position: Named
-Default value: None
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExportPrivateKey
+Indicates that the private key should be exported for a PFX certificate
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: FindPfx, AllPfx
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -FindType
-
-Sets which attribute will be searched, e.g. FindBySubjectName
+Sets which attribute will be searched, e.g.
+FindBySubjectName
 
 ```yaml
 Type: X509FindType
@@ -86,8 +100,8 @@ Accept wildcard characters: False
 ```
 
 ### -Location
-
-The location to search in. Possible values CERT_SYSTEM_STORE_CURRENT_USER, CERT_SYSTEM_STORE_LOCAL_MACHINE, CERT_SYSTEM_STORE_SERVICES, CERT_SYSTEM_STORE_USERS
+The location to search in.
+Possible values CERT_SYSTEM_STORE_CURRENT_USER, CERT_SYSTEM_STORE_LOCAL_MACHINE, CERT_SYSTEM_STORE_SERVICES, CERT_SYSTEM_STORE_USERS
 
 ```yaml
 Type: CertStoreLocation
@@ -101,40 +115,7 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Store
-
-The store to look in, e.g. My
-
-```yaml
-Type: string
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ServiceName
-
-The name of the service
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Password
-
 The password used to decrypt the PFX private key
 
 ```yaml
@@ -149,13 +130,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -All
-
-Retrieve all certificates
+### -SearchString
+The search string to use.
+For more information, see: https://docs.microsoft.com/en-us/dotnet/api/system.security.cryptography.x509certificates.x509certificate2collection.find
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: AllPfx, AllCer
+Type: String
+Parameter Sets: FindCer, FindPfx
 Aliases:
 
 Required: True
@@ -165,13 +146,12 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -IncludeServices
-
-Indicates that services will be included
+### -ServiceName
+The name of the service
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: AllPfx, AllCer
+Type: String
+Parameter Sets: (All)
 Aliases:
 
 Required: False
@@ -181,13 +161,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ExportPrivateKey
-
-Indicates that the private key should be exported for a PFX certificate
+### -Store
+The store to look in, e.g.
+My
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: FindPfx, AllPfx
+Type: String
+Parameter Sets: (All)
 Aliases:
 
 Required: False

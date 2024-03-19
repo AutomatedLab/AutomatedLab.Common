@@ -1,5 +1,5 @@
 ---
-external help file: AutomatedLab.Common-help.xml
+external help file: AutomatedLab.Common-Help.xml
 Module Name: AutomatedLab.Common
 online version:
 schema: 2.0.0
@@ -22,14 +22,14 @@ Get all active runspace pools that match the selected parameters like ThrottleLi
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-RunspacePool
 ```
 
 Returns all runspace pools
 
 ### Example 2
-```powershell
+```
 PS C:\> Get-RunspacePool -ThrottleLimit 10 -ApartmentState MTA
 ```
 
@@ -38,14 +38,13 @@ Gets all runspace pools with a throttle limit of 10
 ## PARAMETERS
 
 ### -ApartmentState
-
-The thread apartment state (not on PS Core), e.g. STA, MTA or Unknown
+The thread apartment state (not on PS Core), e.g.
+STA, MTA or Unknown
 
 ```yaml
 Type: ApartmentState
 Parameter Sets: (All)
 Aliases:
-Accepted values: STA, MTA, Unknown
 
 Required: False
 Position: 1
@@ -55,7 +54,6 @@ Accept wildcard characters: False
 ```
 
 ### -ThrottleLimit
-
 The throttle limit of the runspace pool
 
 ```yaml
@@ -76,11 +74,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Management.Automation.Runspaces.RunspacePool[]
-
 ## NOTES
 
 ## RELATED LINKS

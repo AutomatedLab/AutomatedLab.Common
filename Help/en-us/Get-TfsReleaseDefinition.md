@@ -1,5 +1,5 @@
 ---
-external help file: AutomatedLab.Common-help.xml
+external help file: AutomatedLab.Common-Help.xml
 Module Name: AutomatedLab.Common
 online version:
 schema: 2.0.0
@@ -8,7 +8,6 @@ schema: 2.0.0
 # Get-TfsReleaseDefinition
 
 ## SYNOPSIS
-
 Get one or more TFS/Azure DevOps Release Definitions
 
 ## SYNTAX
@@ -28,13 +27,12 @@ Get-TfsReleaseDefinition -InstanceName <String> [-CollectionName <String>] [-Por
 ```
 
 ## DESCRIPTION
-
 Get one or more TFS/Azure DevOps Release Definitions
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-TfsReleaseDefinition -InstanceName 'dsc1tfs1' -CollectionName automatedlab -ProjectName somenewname -Credential $cred
 ```
 
@@ -148,21 +146,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -UseSsl
-Indicates if SSL should be used to connect
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -SkipCertificateCheck
 Skip certificate validation
 
@@ -173,7 +156,22 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -UseSsl
+Indicates if SSL should be used to connect
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -184,7 +182,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

@@ -22,8 +22,7 @@ Converts a given IPv4 address to its binary representation as string
 ## EXAMPLES
 
 ### Convert an IP
-
-```powershell
+```
 PS C:\> ConvertTo-BinaryIp 192.168.2.101
 ```
 

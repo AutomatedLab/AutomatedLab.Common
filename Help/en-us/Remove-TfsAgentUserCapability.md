@@ -1,5 +1,5 @@
 ---
-external help file: AutomatedLab.Common-help.xml
+external help file: AutomatedLab.Common-Help.xml
 Module Name: AutomatedLab.Common
 online version:
 schema: 2.0.0
@@ -16,28 +16,28 @@ Removes capabilities from an existing build agent
 ```
 Remove-TfsAgentUserCapability -InstanceName <String> [-CollectionName <String>] -PoolName <String>
  -AgentId <UInt16> [-Port <UInt32>] [-ApiVersion <String>] [-UseSsl] -PersonalAccessToken <String>
- [-SkipCertificateCheck] -Capability <String[]> [<CommonParameters>]
+ [-SkipCertificateCheck] -Capability <String[]> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### CredId
 ```
 Remove-TfsAgentUserCapability -InstanceName <String> [-CollectionName <String>] -PoolName <String>
  -AgentId <UInt16> [-Port <UInt32>] [-ApiVersion <String>] [-UseSsl] -Credential <PSCredential>
- [-SkipCertificateCheck] -Capability <String[]> [<CommonParameters>]
+ [-SkipCertificateCheck] -Capability <String[]> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### PatObject
 ```
 Remove-TfsAgentUserCapability -InstanceName <String> [-CollectionName <String>] -PoolName <String>
  -Agent <Object> [-Port <UInt32>] [-ApiVersion <String>] [-UseSsl] -PersonalAccessToken <String>
- [-SkipCertificateCheck] -Capability <String[]> [<CommonParameters>]
+ [-SkipCertificateCheck] -Capability <String[]> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### CredObject
 ```
 Remove-TfsAgentUserCapability -InstanceName <String> [-CollectionName <String>] -PoolName <String>
  -Agent <Object> [-Port <UInt32>] [-ApiVersion <String>] [-UseSsl] -Credential <PSCredential>
- [-SkipCertificateCheck] -Capability <String[]> [<CommonParameters>]
+ [-SkipCertificateCheck] -Capability <String[]> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -46,7 +46,7 @@ Removes capabilities from an existing build agent
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Remove-TfsAgentUserCapability -InstanceName AL -CollectionName ALProject1 -PoolName Sharknado -AgentId 1 -Capability Cap1, Cap2
 ```
 
@@ -85,7 +85,8 @@ Accept wildcard characters: False
 ```
 
 ### -ApiVersion
-The API version to use. Capabilites require 5.1+
+The API version to use.
+Capabilites require 5.1+
 
 ```yaml
 Type: String
@@ -215,7 +216,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -230,6 +231,37 @@ Aliases:
 
 Required: False
 Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -241,7 +273,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

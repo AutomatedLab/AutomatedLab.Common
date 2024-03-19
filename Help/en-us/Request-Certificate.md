@@ -8,7 +8,6 @@ schema: 2.0.0
 # Request-Certificate
 
 ## SYNOPSIS
-
 Request a new certificate from a certificate authority
 
 ## SYNTAX
@@ -19,13 +18,13 @@ Request-Certificate [-Subject] <String> [[-SAN] <String[]>] [[-OnlineCA] <String
 ```
 
 ## DESCRIPTION
-
-Request a new certificate from a certificate authority. Supports multiple Subject Alternative Names
+Request a new certificate from a certificate authority.
+Supports multiple Subject Alternative Names
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Request-Certificate -Subject 'CN=nyanhp' -SAN 'CN=ElBarto' -OnlineCA (Find-CertificateAuthority -Domain contoso.com) -TemplateName DocEncryption
 ```
 
@@ -33,16 +32,16 @@ Attempts to request a certificate using the DocEncryption certificate template a
 
 ## PARAMETERS
 
-### -Subject
-The subject name
+### -OnlineCA
+The CA to query
 
 ```yaml
 Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: True
-Position: 0
+Required: False
+Position: 2
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -63,16 +62,16 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -OnlineCA
-The CA to query
+### -Subject
+The subject name
 
 ```yaml
 Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: False
-Position: 2
+Required: True
+Position: 0
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

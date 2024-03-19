@@ -22,8 +22,7 @@ Converts a given IPv4 to decimal
 ## EXAMPLES
 
 ### Convert an IP
-
-```powershell
+```
 PS C:\> ConvertTo-DecimalIP -IPAddress 192.168.2.101
 ```
 

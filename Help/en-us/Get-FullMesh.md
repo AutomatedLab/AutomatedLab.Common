@@ -22,30 +22,18 @@ Gets a uni- or bi-directional mesh for a given list of values
 ## EXAMPLES
 
 ### Domain trust
-```powershell
+```
 PS C:\> Get-FullMesh -List @('contoso.com','fabrikam.com','tailspintoys.com')
 ```
 
-Source           Destination
-------           -----------
-contoso.com      fabrikam.com
-contoso.com      tailspintoys.com
-fabrikam.com     contoso.com
-fabrikam.com     tailspintoys.com
-tailspintoys.com contoso.com
-tailspintoys.com fabrikam.com
+Source           Destination ------           ----------- contoso.com      fabrikam.com contoso.com      tailspintoys.com fabrikam.com     contoso.com fabrikam.com     tailspintoys.com tailspintoys.com contoso.com tailspintoys.com fabrikam.com
 
 ### One-way
-
-```powershell
+```
 PS C:\> Get-FullMesh -List @('contoso.com','fabrikam.com','tailspintoys.com') -OneWay
 ```
 
-Source       Destination
-------       -----------
-contoso.com  fabrikam.com
-contoso.com  tailspintoys.com
-fabrikam.com tailspintoys.com
+Source       Destination ------       ----------- contoso.com  fabrikam.com contoso.com  tailspintoys.com fabrikam.com tailspintoys.com
 
 ## PARAMETERS
 
@@ -74,7 +62,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
