@@ -1,5 +1,5 @@
 ---
-external help file: AutomatedLab.Common-help.xml
+external help file: AutomatedLab.Common-Help.xml
 Module Name: AutomatedLab.Common
 online version:
 schema: 2.0.0
@@ -68,14 +68,14 @@ Get all possible release steps, supports filter scripts
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-TfsReleaseStep -FilterScript {$_.Name -like "*Copy*"} -InstanceName $tfsHostName -Port $tfsPort -CollectionName $collectionName -Credential $tfsCred -UseSsl
 ```
 
 Gets all release steps where the name contains Copy from an Azure DevOps instance
 
 ### Example 2
-```powershell
+```
 PS C:\> Get-TfsReleaseStep -FriendlyName "Copy files to: Artifacts Share" -InstanceName $tfsHostName -Port $tfsPort -CollectionName $collectionName -Credential $tfsCred -UseSsl
 ```
 
@@ -114,7 +114,8 @@ Accept wildcard characters: False
 ```
 
 ### -FilterHashtable
-Your hashtable filter. Keys should be property names and values the desired property values.
+Your hashtable filter.
+Keys should be property names and values the desired property values.
 
 ```yaml
 Type: Hashtable
@@ -155,7 +156,7 @@ Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
-Accept wildcard characters: False
+Accept wildcard characters: True
 ```
 
 ### -InstanceName
@@ -203,21 +204,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -UseSsl
-Indicates if SSL should be used
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -SkipCertificateCheck
 Skip certificate validation
 
@@ -228,7 +214,22 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -UseSsl
+Indicates if SSL should be used
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -239,7 +240,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

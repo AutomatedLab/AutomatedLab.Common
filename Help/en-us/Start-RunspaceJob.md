@@ -1,5 +1,5 @@
 ---
-external help file: AutomatedLab.Common-help.xml
+external help file: AutomatedLab.Common-Help.xml
 Module Name: AutomatedLab.Common
 online version:
 schema: 2.0.0
@@ -18,19 +18,21 @@ Start-RunspaceJob [-ScriptBlock] <ScriptBlock> [-RunspacePool] <RunspacePool> [[
 ```
 
 ## DESCRIPTION
-Start a new script block inside of a runspace pool. The pool controls the parallelization going on.
+Start a new script block inside of a runspace pool.
+The pool controls the parallelization going on.
 You can optionally pass arguments.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> $pool = New-RunspacePool -Throttle 10
 PS C:\> $jobs = 1..100 | % { Start-RunspaceJob -RunspacePool $pool -ScriptBlock {Start-Sleep -Seconds 10; 'works'}}
 PS C:\> $jobs | Wait-RunspaceJob
 ```
 
-Enqueues 100 new jobs in a runspace pool that executes 10 jobs in parallel. Will finish after approximately 10 seconds.
+Enqueues 100 new jobs in a runspace pool that executes 10 jobs in parallel.
+Will finish after approximately 10 seconds.
 
 ## PARAMETERS
 
@@ -85,7 +87,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

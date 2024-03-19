@@ -8,7 +8,6 @@ schema: 2.0.0
 # Test-HashtableKeys
 
 ## SYNOPSIS
-
 Test the keys of a hashtable
 
 ## SYNTAX
@@ -19,13 +18,12 @@ Test-HashtableKeys [-Hashtable] <Hashtable> [[-MandatoryKeys] <String[]>] [[-Val
 ```
 
 ## DESCRIPTION
-
 Test the keys of a hashtable for mandatory keys as well as invalid keys
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> $bla = @{UserName = 'Hans'; Password = 'Swordfish'; HostName = 'Invalid'}
 PS C:\> Test-Hashtable -Hashtable $bla -MandatoryKeys UserName, Password -ValidKeys UserName, Password, ComputerName
 ```
@@ -33,7 +31,7 @@ PS C:\> Test-Hashtable -Hashtable $bla -MandatoryKeys UserName, Password -ValidK
 Writes an error since HostName is an invalid key
 
 ### Example 2
-```powershell
+```
 PS C:\> $bla = @{UserName = 'Hans'; Password = 'Swordfish'; HostName = 'Invalid'}
 PS C:\> Test-Hashtable -Hashtable $bla -MandatoryKeys UserName, Password -ValidKeys UserName, Password, ComputerName -Quiet
 ```
@@ -41,7 +39,7 @@ PS C:\> Test-Hashtable -Hashtable $bla -MandatoryKeys UserName, Password -ValidK
 Returns false and does not write an error
 
 ### Example 3
-```powershell
+```
 PS C:\> $bla = @{UserName = 'Hans';}
 PS C:\> Test-Hashtable -Hashtable $bla -MandatoryKeys UserName, Password -ValidKeys UserName, Password, ComputerName
 ```
@@ -80,21 +78,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ValidKeys
-The list of valid keys
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Quiet
 Indicates that no exception should be recordded
 
@@ -105,6 +88,21 @@ Aliases:
 
 Required: False
 Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ValidKeys
+The list of valid keys
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

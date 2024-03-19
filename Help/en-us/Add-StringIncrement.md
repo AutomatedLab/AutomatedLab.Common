@@ -22,8 +22,7 @@ Increments a given string "\<some text\> \<int\>" by one.
 ## EXAMPLES
 
 ### Connections
-
-```powershell
+```
 PS C:\> Add-StringIncrement -String "Local Area Connection 1"
 ```
 
