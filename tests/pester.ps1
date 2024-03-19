@@ -104,7 +104,7 @@ if ($TestFunctions)
 
 $testresults | Sort-Object Describe, Context, Name, Result, Message | Format-List
 
-if ($totalFailed -eq 0) { Write-Host  "All $totalRun tests executed without a single failure!" }
+if ($totalFailed -eq 0) { Write-Host  "All $totalRun tests executed without a single failure!"; exit 0 }
 else { Write-Host "$totalFailed tests out of $totalRun tests failed!" }
 
 if ($totalFailed -gt 0)
