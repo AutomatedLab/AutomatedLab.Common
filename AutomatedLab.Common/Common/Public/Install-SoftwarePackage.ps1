@@ -32,17 +32,6 @@ function Install-SoftwarePackage
             [string]$WorkingDirectory
         )
 
-        #if the path cannot be found and starts with \\automatedlabsources...
-        if ((-not (Test-Path -Path $Path) -and $Path -match '\\\\automatedlabsources[a-z]{5}\.file\.core\.windows\.net'))
-        {
-            #we assume, the LabSources share was not mapped correctly and try again by calling 'C:\AL\AzureLabSources.ps1'
-            $labSourcesConnectOutput = C:\AL\AzureLabSources.ps1
-            if ($labSourcesConnectOutput.AlternativeLabSourcesPath)
-            {
-                $Path = $Path.Replace($labSourcesConnectOutput.LabSourcesPath, $labSourcesConnectOutput.AlternativeLabSourcesPath)
-            }
-        }
-
         $pInfo = New-Object -TypeName System.Diagnostics.ProcessStartInfo
         $pInfo.FileName = $Path
         if (-not [string]::IsNullOrWhiteSpace($WorkingDirectory)) { $pInfo.WorkingDirectory = $WorkingDirectory }
@@ -75,6 +64,17 @@ function Install-SoftwarePackage
         New-Object -TypeName PSObject -Property $params
     }
     #endregion New-InstallProcess
+
+    #if the path cannot be found and starts with \\automatedlabsources...
+    if ((-not (Test-Path -Path $Path) -and $Path -match '\\automatedlabsources[a-z]{5}\.file\.core\.windows\.net'))
+    {
+        #we assume, the LabSources share was not mapped correctly and try again by calling 'C:\AL\AzureLabSources.ps1'
+        $labSourcesConnectOutput = C:\AL\AzureLabSources.ps1 2> $null
+        if ($labSourcesConnectOutput.AlternativeLabSourcesPath)
+        {
+            $Path = $Path.Replace($labSourcesConnectOutput.LabSourcesPath, $labSourcesConnectOutput.AlternativeLabSourcesPath)
+        }
+    }
 
     if (-not (Test-Path -Path $Path -PathType Leaf))
     {
