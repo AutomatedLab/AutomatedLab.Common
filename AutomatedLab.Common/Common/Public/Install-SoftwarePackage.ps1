@@ -32,8 +32,10 @@ function Install-SoftwarePackage
             [string]$WorkingDirectory
         )
 
-        if (-not ((Test-Path -Path $Path) -and $Path -match '\\automatedlabsources[a-z]{5}\.file\.core\.windows\.net'))
+        #if the path cannot be found and starts with \\automatedlabsources...
+        if ((-not (Test-Path -Path $Path) -and $Path -match '\\automatedlabsources[a-z]{5}\.file\.core\.windows\.net'))
         {
+            #we assume, the LabSources share was not mapped correctly and try again by calling 'C:\AL\AzureLabSources.ps1'
             $labSourcesConnectOutput = C:\AL\AzureLabSources.ps1
             if ($labSourcesConnectOutput.AlternativeLabSourcesPath)
             {
