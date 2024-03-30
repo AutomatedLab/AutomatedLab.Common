@@ -8,64 +8,29 @@ schema: 2.0.0
 # Install-SoftwarePackage
 
 ## SYNOPSIS
-
 Install a software package
 
 ## SYNTAX
 
 ```
 Install-SoftwarePackage [-Path] <String> [[-CommandLine] <String>] [[-AsScheduledJob] <Boolean>]
- [[-UseShellExecute] <Boolean>] [-ExpectedReturnCodes <Int32[]>] [[-Credential] <PSCredential>]
- [<CommonParameters>]
+ [[-UseShellExecute] <Boolean>] [-WorkingDirectory <String>] [-ExpectedReturnCodes <Int32[]>]
+ [[-Credential] <PSCredential>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-
-Install a binary package, with the ability to define expected return codes or have the setup
-run as a scheduled job
+Install a binary package, with the ability to define expected return codes or have the setup run as a scheduled job
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Install-SoftwarePackage -Path .\notepadplusplus.exe -CommandLine "/s"
 ```
 
 Runs the installer for Notepad++ with the silent switch.
 
 ## PARAMETERS
-
-### -Path
-The package path
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -CommandLine
-The command line arguments to use. Default for msi: /i /qn /L*v \<temporary log path\>
-Default for msu: /Online /Add-Package /PackagePath:""$cabFile"" /NoRestart /Quiet
-No defaults for exe
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
 
 ### -AsScheduledJob
 Run installation in a scheduled job in case the installation in the current PowerShell process does not work.
@@ -82,16 +47,17 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -UseShellExecute
-Set the property UseShellExecute for the ProcessStartInfo object
+### -CommandLine
+The command line arguments to use.
+Default for msi: /i /qn /L*v \<temporary log path\> Default for msu: /Online /Add-Package /PackagePath:""$cabFile"" /NoRestart /Quiet No defaults for exe
 
 ```yaml
-Type: Boolean
+Type: String
 Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 3
+Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -117,6 +83,51 @@ The list of expected return codes
 
 ```yaml
 Type: Int32[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Path
+The package path
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 0
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -UseShellExecute
+Set the property UseShellExecute for the ProcessStartInfo object
+
+```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WorkingDirectory
+{{ Fill WorkingDirectory Description }}
+
+```yaml
+Type: String
 Parameter Sets: (All)
 Aliases:
 

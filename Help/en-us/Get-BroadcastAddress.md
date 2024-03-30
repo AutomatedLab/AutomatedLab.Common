@@ -8,7 +8,6 @@ schema: 2.0.0
 # Get-BroadcastAddress
 
 ## SYNOPSIS
-
 Get the broadcast address of a network
 
 ## SYNTAX
@@ -18,13 +17,12 @@ Get-BroadcastAddress [-IPAddress] <IPAddress> [-SubnetMask] <IPAddress> [<Common
 ```
 
 ## DESCRIPTION
-
 Get the broadcast address of a network
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-BroadcastAddress -IPAddress 192.168.2.123 -SubnetMask 255.255.255.0
 ```
 
@@ -33,7 +31,6 @@ Returns the broadcast address 192.168.2.255
 ## PARAMETERS
 
 ### -IPAddress
-
 The IP Address
 
 ```yaml
@@ -49,7 +46,6 @@ Accept wildcard characters: False
 ```
 
 ### -SubnetMask
-
 The subnet mask
 
 ```yaml

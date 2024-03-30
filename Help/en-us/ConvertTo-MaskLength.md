@@ -22,8 +22,7 @@ Converts an IP to a CIDR subnet length
 ## EXAMPLES
 
 ### Dotted IP to CIDR
-
-```powershell
+```
 PS C:\> ConvertTo-MaskLength 255.255.255.248
 ```
 

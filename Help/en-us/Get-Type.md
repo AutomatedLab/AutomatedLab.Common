@@ -20,7 +20,7 @@ Get-Type [-GenericType] <String> [-T] <String[]> [<CommonParameters>]
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> {{ Add example code here }}
 ```
 

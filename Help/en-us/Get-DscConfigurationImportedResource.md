@@ -19,18 +19,17 @@ Get-DscConfigurationImportedResource -FilePath <String> [<CommonParameters>]
 
 ### ByConfiguration
 ```
-Get-DscConfigurationImportedResource -Configuration <System.Management.Automation.ConfigurationInfo> [<CommonParameters>]
+Get-DscConfigurationImportedResource -Configuration <ConfigurationInfo> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Retrieve all imported resource modules from a DSC configuration by examining the AST. Configurations
-need to be stored in files to be examined.
+Retrieve all imported resource modules from a DSC configuration by examining the AST.
+Configurations need to be stored in files to be examined.
 
 ## EXAMPLES
 
 ### Simple
-
-```powershell
+```
 @'
 configuration stuff
 {
@@ -54,12 +53,12 @@ Returns "nx"
 
 ## PARAMETERS
 
-### -FilePath
-The script file containing the DSC configuration
+### -Configuration
+A configuration that has already been imported an can be received using Get-Command
 
 ```yaml
-Type: String
-Parameter Sets: ByFile
+Type: ConfigurationInfo
+Parameter Sets: ByConfiguration
 Aliases:
 
 Required: True
@@ -69,12 +68,12 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Configuration
-A configuration that has already been imported an can be received using Get-Command
+### -FilePath
+The script file containing the DSC configuration
 
 ```yaml
-Type: ConfigurationInfo
-Parameter Sets: ByConfiguration
+Type: String
+Parameter Sets: ByFile
 Aliases:
 
 Required: True

@@ -22,8 +22,7 @@ Sends the entire function definition to a remote session, so that scoping is not
 ## EXAMPLES
 
 ### Send function
-
-```powershell
+```
 PS C:\ $Session = New-PSSession myTargetMachine
 PS C:\ Add-FunctionToPsSession $session -FunctionInfo (Get-Command Test-IsAdministrator)
 ```
@@ -31,21 +30,6 @@ PS C:\ Add-FunctionToPsSession $session -FunctionInfo (Get-Command Test-IsAdmini
 Sends the function Test-IsAdministrator to the remote session $session
 
 ## PARAMETERS
-
-### -Session
-One or more remote sessions that will receive the functions
-
-```yaml
-Type: PSSession[]
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
 
 ### -FunctionInfo
 The FunctionInfo of the function to send, e.g.
@@ -60,6 +44,21 @@ Required: True
 Position: 1
 Default value: None
 Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -Session
+One or more remote sessions that will receive the functions
+
+```yaml
+Type: PSSession[]
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 0
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

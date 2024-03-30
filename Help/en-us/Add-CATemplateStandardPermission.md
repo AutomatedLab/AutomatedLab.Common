@@ -8,7 +8,6 @@ schema: 2.0.0
 # Add-CATemplateStandardPermission
 
 ## SYNOPSIS
-
 This cmdlet enables standard permissions on a CA Template
 
 ## SYNTAX
@@ -18,13 +17,12 @@ Add-CATemplateStandardPermission [-TemplateName] <String> [-SamAccountName] <Str
 ```
 
 ## DESCRIPTION
-
 This cmdlet enables the Read, Enroll and AutoEnroll permissions on one template for one or more accounts
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Add-CATemplateStandardPermission -TemplateName WebServer1 -SamAccountName 'Domain Computers'
 ```
 
@@ -32,24 +30,7 @@ Gives members of the group Domain Computers the permission to Enroll and AutoEnr
 
 ## PARAMETERS
 
-### -TemplateName
-
-The name of the template for which permissions will be added.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -SamAccountName
-
 The list of accounts (users, computers, groups) that will receive Read, Enroll and AutoEnroll permissions
 
 ```yaml
@@ -59,6 +40,21 @@ Aliases:
 
 Required: True
 Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -TemplateName
+The name of the template for which permissions will be added.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 0
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

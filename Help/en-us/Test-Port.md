@@ -8,7 +8,6 @@ schema: 2.0.0
 # Test-Port
 
 ## SYNOPSIS
-
 Test a port
 
 ## SYNTAX
@@ -19,13 +18,12 @@ Test-Port [-ComputerName] <String[]> [-Port] <Int32> [-Count <Int32>] [-Delay <I
 ```
 
 ## DESCRIPTION
-
 Test a port
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Test-Port -ComputerName Host1,Host2 -Port 4711 -Count 7 -Tcp
 ```
 
@@ -45,21 +43,6 @@ Required: True
 Position: 0
 Default value: None
 Accept pipeline input: True (ByPropertyName, ByValue)
-Accept wildcard characters: False
-```
-
-### -Port
-The port to test
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
@@ -93,6 +76,36 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Port
+The port to test
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -Tcp
+Indicates that TCP is used
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -TcpTimeout
 The TCP timeout in milliseconds
 
@@ -108,41 +121,26 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -UdpTimeout
-THe UDP timeout in milliseconds
-
-```yaml
-Type: Int32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Tcp
-Indicates that TCP is used
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Udp
 Indicates that UDP is used
 
 ```yaml
 Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -UdpTimeout
+THe UDP timeout in milliseconds
+
+```yaml
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 

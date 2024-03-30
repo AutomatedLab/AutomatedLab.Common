@@ -1,5 +1,5 @@
 ---
-external help file: AutomatedLab.Common-help.xml
+external help file: AutomatedLab.Common-Help.xml
 Module Name: AutomatedLab.Common
 online version:
 schema: 2.0.0
@@ -8,7 +8,6 @@ schema: 2.0.0
 # Get-RequiredModulesFromMOF
 
 ## SYNOPSIS
-
 Analyze MOF file to extract required DSC resource modules
 
 ## SYNTAX
@@ -18,13 +17,12 @@ Get-RequiredModulesFromMOF [-Path] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-
 Analyze MOF file to extract required DSC resource modules
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-RequiredModulesFromMOF C:\tmp\ThatMof.mof
 ```
 
@@ -53,7 +51,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### System.Object

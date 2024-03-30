@@ -1,5 +1,5 @@
 ---
-external help file: AutomatedLab.Common-help.xml
+external help file: AutomatedLab.Common-Help.xml
 Module Name: AutomatedLab.Common
 online version:
 schema: 2.0.0
@@ -31,59 +31,13 @@ for a new team project
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> {{ Add example code here }}
 ```
 
 {{ Add example description here }}
 
 ## PARAMETERS
-
-### -InstanceName
-The instance name (dev.azure.com/username or your TFS host name)
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -CollectionName
-Your collection.
-Defaults to DefaultCollection
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Port
-The port of your installation/VSTS instance
-
-```yaml
-Type: UInt32
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
 
 ### -ApiVersion
 The API version to use.
@@ -101,11 +55,12 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -UseSsl
-Indicates that SSL should be used
+### -CollectionName
+Your collection.
+Defaults to DefaultCollection
 
 ```yaml
-Type: SwitchParameter
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -131,6 +86,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -InstanceName
+The instance name (dev.azure.com/username or your TFS host name)
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -PersonalAccessToken
 The VSTS access token as returned by Get-TfsAccessTokenString
 
@@ -140,6 +110,21 @@ Parameter Sets: Vsts
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Port
+The port of your installation/VSTS instance
+
+```yaml
+Type: UInt32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -156,7 +141,22 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -UseSsl
+Indicates that SSL should be used
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

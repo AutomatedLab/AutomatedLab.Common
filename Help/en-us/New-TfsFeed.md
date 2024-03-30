@@ -1,5 +1,5 @@
 ---
-external help file: AutomatedLab.Common-help.xml
+external help file: AutomatedLab.Common-Help.xml
 Module Name: AutomatedLab.Common
 online version:
 schema: 2.0.0
@@ -16,28 +16,28 @@ Creates a new feed
 ```
 New-TfsFeed -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] [-ApiVersion <String>]
  -FeedName <String> [-Description <String>] [-UseSsl] -Credential <PSCredential> [-Timeout <TimeSpan>]
- [-SkipCertificateCheck] [<CommonParameters>]
+ [-SkipCertificateCheck] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### GuidCred
 ```
 New-TfsFeed -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] [-ApiVersion <String>]
  -FeedName <String> [-Description <String>] [-UseSsl] -Credential <PSCredential> [-Timeout <TimeSpan>]
- [-SkipCertificateCheck] [<CommonParameters>]
+ [-SkipCertificateCheck] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### GuidPat
 ```
 New-TfsFeed -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] [-ApiVersion <String>]
  -FeedName <String> [-Description <String>] [-UseSsl] -PersonalAccessToken <String> [-Timeout <TimeSpan>]
- [-SkipCertificateCheck] [<CommonParameters>]
+ [-SkipCertificateCheck] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### NamePat
 ```
 New-TfsFeed -InstanceName <String> [-CollectionName <String>] [-Port <UInt32>] [-ApiVersion <String>]
  -FeedName <String> [-Description <String>] [-UseSsl] -PersonalAccessToken <String> [-Timeout <TimeSpan>]
- [-SkipCertificateCheck] [<CommonParameters>]
+ [-SkipCertificateCheck] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -46,7 +46,7 @@ Creates a new feed
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> {{ Add example code here }}
 ```
 
@@ -184,7 +184,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -214,6 +214,37 @@ Aliases:
 
 Required: False
 Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -225,7 +256,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

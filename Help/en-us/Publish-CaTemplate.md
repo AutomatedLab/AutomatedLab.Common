@@ -8,7 +8,6 @@ schema: 2.0.0
 # Publish-CaTemplate
 
 ## SYNOPSIS
-
 Publish a certificate template
 
 ## SYNTAX
@@ -18,13 +17,13 @@ Publish-CaTemplate [-TemplateName] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-
-Publish a certificate template, e.g. after creating it with New-CaTemplate
+Publish a certificate template, e.g.
+after creating it with New-CaTemplate
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Publish-CaTemplate -TemplateName WebServerCustom
 ```
 
@@ -33,7 +32,6 @@ Publishes the template WebServerCustom on the CA
 ## PARAMETERS
 
 ### -TemplateName
-
 Name of the template to publish
 
 ```yaml
