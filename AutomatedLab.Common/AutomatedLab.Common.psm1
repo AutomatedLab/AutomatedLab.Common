@@ -1,5 +1,15 @@
 # Get public and private function definition files.
 $modulebase =  $PSScriptRoot
+
+$script:hostFilePath = if ($PSEdition -eq 'Desktop' -or $IsWindows)
+{
+    "$($env:SystemRoot)\System32\drivers\etc\hosts"
+}
+elseif ($PSEdition -eq 'Core' -and $IsLinux)
+{
+    '/etc/hosts'
+}
+
 # Types first
 $typeExists = try { [AutomatedLab.Common.Win32Exception] }catch { }
 if (-not $typeExists)

@@ -18,16 +18,18 @@
 
     CLRVersion             = '4.0'
 
-    CompatiblePSEditions   = @('Desktop','Core')
+    CompatiblePSEditions   = @('Desktop', 'Core')
 
     FunctionsToExport      = @(
         'Add-AccountPrivilege',
         'Add-CATemplateStandardPermission',
         'Add-Certificate2',
         'Add-FunctionToPSSession',
+        'Add-HostEntry',
         'Add-StringIncrement',
         'Add-VariableToPSSession',
         'Add-TfsAgentUserCapability',
+        'Clear-HostFile',
         'ConvertTo-BinaryIP',
         'ConvertTo-DecimalIP',
         'ConvertTo-DottedDecimalIP',
@@ -42,6 +44,8 @@
         'Get-DotNetFrameworkVersion',
         'Get-DscConfigurationImportedResource',
         'Get-FullMesh',
+        'Get-HostEntry',
+        'Get-HostFile',
         'Get-NetworkAddress',
         'Get-NetworkRange',
         'Get-NetworkSummary',
@@ -83,6 +87,7 @@
         'Read-Choice',
         'Read-HashTable',
         'Receive-RunspaceJob',
+        'Remove-HostEntry',
         'Remove-PerformanceDataCollectorSet',
         'Remove-RunspacePool',
         'Remove-TfsAgentUserCapability',
