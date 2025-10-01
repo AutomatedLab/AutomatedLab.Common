@@ -102,7 +102,7 @@ function Get-TfsBuildStep
     }
     elseif ($result)
     {
-        ($result | ConvertFrom-JsonNewtonsoft).Value
+        ($result | ConvertFrom-Json).Value
     }
 
     if ($FriendlyName)
