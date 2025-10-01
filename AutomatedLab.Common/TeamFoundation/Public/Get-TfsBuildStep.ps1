@@ -60,11 +60,11 @@ function Get-TfsBuildStep
     $requestUrl = if ($UseSsl) {'https://' } else {'http://'}
     $requestUrl += if ( $Port -gt 0)
     {
-        '{0}{1}/_apis/distributedtask/tasks' -f $InstanceName, ":$Port", $CollectionName
+        '{0}{1}/{2}/_apis/distributedtask/tasks' -f $InstanceName, ":$Port", $CollectionName
     }
     else
     {
-        '{0}/_apis/distributedtask/tasks' -f $InstanceName, $CollectionName
+        '{0}/{1}/_apis/distributedtask/tasks' -f $InstanceName, $CollectionName
     }
 
     $requestParameters = @{
@@ -98,11 +98,15 @@ function Get-TfsBuildStep
     
     $steps = if ($result.value)
     {
-        $result.value
+        $result.value | Where-Object -Property visibility -Contains 'Build'
+    }
+    elseif ($result -is [string])
+    {
+        ($result | ConvertFrom-Json -AsHashtable).value | Where-Object -Property visibility -Contains 'Build'
     }
     elseif ($result)
     {
-        ($result | ConvertFrom-Json).Value
+        $result | Where-Object -Property visibility -Contains 'Build'
     }
 
     if ($FriendlyName)
