@@ -29,7 +29,6 @@ PS C:\> Get-ModuleDependency -Module (Get-Module AutomatedLab.Common)
 ```
 
 Returns a list of module dependencies' file system paths
-C:\Program Files\WindowsPowerShell\Modules\newtonsoft.json\1.0.2.201
 C:\Program Files\WindowsPowerShell\Modules\PSFileTransfer\5.46.1271
 C:\Program Files\WindowsPowerShell\Modules\AutomatedLab.Common\2.2.247
 

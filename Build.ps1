@@ -48,7 +48,7 @@
 # Grab nuget bits, install modules, set build variables, start build.
 Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
 
-Resolve-Module PlatyPS, Psake, PSDeploy, BuildHelpers, PSScriptAnalyzer, newtonsoft.json, PSFileTransfer, PSFramework, Pester
+Resolve-Module PlatyPS, Psake, PSDeploy, BuildHelpers, PSScriptAnalyzer, PSFileTransfer, PSFramework, Pester
 
 Set-BuildEnvironment -Force
 $null = mkdir (Join-Path $env:BHBuildOutput AutomatedLab.Common) -Force -ErrorAction SilentlyContinue

@@ -18,7 +18,7 @@
 
     CLRVersion             = '4.0'
 
-    CompatiblePSEditions   = @('Desktop','Core')
+    CompatiblePSEditions   = @('Desktop', 'Core')
 
     FunctionsToExport      = @(
         'Add-AccountPrivilege',
@@ -104,7 +104,7 @@
         'Wait-RunspaceJob'
     )
 
-    RequiredModules        = @('newtonsoft.json', 'PSFileTransfer')
+    RequiredModules        = @('PSFileTransfer')
 
     CmdletsToExport        = @()
 

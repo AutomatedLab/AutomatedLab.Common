@@ -100,6 +100,10 @@ function Get-TfsReleaseStep
     {
         $result.value | Where-Object -Property visibility -Contains 'Release'
     }
+    elseif ($result -is [string])
+    {
+        ($result | ConvertFrom-Json -AsHashtable).value | Where-Object -Property visibility -Contains 'Release'
+    }
     elseif ($result)
     {
         $result | Where-Object -Property visibility -Contains 'Release'
