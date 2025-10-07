@@ -45,16 +45,21 @@ Our DSC cmdlets contain functionality related to DSC.
 
 Our networking cmdlets contain everything necessary to make network calculations and so on.
 
+- Add-HostEntry: Adds an entry to the hosts file on Windows/Linux
+- Clear-HostFile: Clears a section from the hosts file on Windows/Linux
 - ConvertTo-BinaryIp: Converts a given IP address to binary notation
 - ConvertTo-DecimalIp: Converts a given IP address to decimal notation
 - ConvertTo-DottedDecimalIp: Converts a given IP address to Dotted Decimal
 - ConvertTo-Mask: Converts an integer (0-32) to a dotted subnet mask, e.g. 255.0.0.0
 - ConvertTo-MaskLength: Converts a dotted subnet mask to an integer
 - Get-BroadCastAddress: Returns the broadcast address of a given network
+- Get-HostEntry: Gets an entry to the hosts file on Windows/Linux
+- Get-HostFile: Gets a section from the hosts file on Windows/Linux
 - Get-NetworkAddress: Returns the network address of a given network
 - Get-NetworkRange: Returns the usable range of addresses of a given network
 - Get-NetworkSummary: Combines several cmdlets to return a summarized info object for a given IP and net mask
 - Get-PublicIpAddress: Returns the public IP address of the lab host
+- Remove-HostEntry: Removes an entry to the hosts file on Windows/Linux
 - Test-Port: Tests a TCP or UDP port with configurable timeouts
 
 ## Active Directory Certificate Services (PKI)
