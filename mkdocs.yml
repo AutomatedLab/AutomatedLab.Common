@@ -12,8 +12,10 @@ nav:
     - Add-CATemplateStandardPermission : en-us/Add-CATemplateStandardPermission.md
     - Add-Certificate2 : en-us/Add-Certificate2.md
     - Add-FunctionToPSSession : en-us/Add-FunctionToPSSession.md
+    - Add-HostEntry: en-us/Add-HostEntry.md
     - Add-StringIncrement : en-us/Add-StringIncrement.md
     - Add-VariableToPSSession : en-us/Add-VariableToPSSession.md
+    - Clear-HostFiles : en-us/Clear-HostFiles.md
     - ConvertTo-BinaryIP : en-us/ConvertTo-BinaryIP.md
     - ConvertTo-DecimalIP : en-us/ConvertTo-DecimalIP.md
     - ConvertTo-DottedDecimalIP : en-us/ConvertTo-DottedDecimalIP.md
@@ -28,6 +30,8 @@ nav:
     - Get-DotNetFrameworkVersion : en-us/Get-DotNetFrameworkVersion.md
     - Get-DscConfigurationImportedResource : en-us/Get-DscConfigurationImportedResource.md
     - Get-FullMesh : en-us/Get-FullMesh.md
+    - Get-HostEntry : en-us/Get-HostEntry.md
+    - Get-HostFile : en-us/Get-HostFile.md
     - Get-NetworkAddress : en-us/Get-NetworkAddress.md
     - Get-NetworkRange : en-us/Get-NetworkRange.md
     - Get-NetworkSummary : en-us/Get-NetworkSummary.md
@@ -66,6 +70,7 @@ nav:
     - Read-Choice : en-us/Read-Choice.md
     - Read-HashTable : en-us/Read-HashTable.md
     - Receive-RunspaceJob : en-us/Receive-RunspaceJob.md
+    - Remove-HostEntry : en-us/Remove-HostEntry.md
     - Remove-PerformanceDataCollectorSet : en-us/Remove-PerformanceDataCollectorSet.md
     - Remove-RunspacePool : en-us/Remove-RunspacePool.md
     - Remove-TfsFeed : en-us/Remove-TfsFeed.md
