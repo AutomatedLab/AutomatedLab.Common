@@ -25,7 +25,11 @@ function Sync-Parameter
     $commonParameters = [System.Management.Automation.Internal.CommonParameters].GetProperties().Name
     $commandParameterKeys = $Command.Parameters.Keys.GetEnumerator() | ForEach-Object { $_ }
     $parameterKeys = $Parameters.Keys.GetEnumerator() | ForEach-Object { $_ }
-    
+
+    # A null key collection makes Compare-Object throw
+    if ($null -eq $commandParameterKeys) { $commandParameterKeys = @() }
+    if ($null -eq $parameterKeys) { $parameterKeys = @() }
+
     $keysToRemove = Compare-Object -ReferenceObject $commandParameterKeys -DifferenceObject $parameterKeys |
         Select-Object -ExpandProperty InputObject
 
